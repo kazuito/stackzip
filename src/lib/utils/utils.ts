@@ -24,20 +24,21 @@ export function formatNumberWithCommas(num: number): string | null {
 }
 
 export function rmGitUrlPrefix(url = "") {
-  return url.replace(/^git[:+@](?=http)/i, "");
+  return url.replace(/^git[:+@](?=https?|git)/i, "");
 }
 
 export function rmUrlProtocol(url = "") {
-  return url.replace(/^(?:(https?|git):\/\/)?/i, "");
+  return url.replace(/^(?:https?|git):\/\//i, "");
 }
 
 export function parseGitHubUrl(url: string) {
   if (!url) return { owner: "", repo: "" };
 
-  // url = url.replace(/\.git$/i, "");
+  url = url.replace(/#[^/]*$/, "");
+  url = url.replace(/\.git$/i, "");
 
   const [_, owner, repo] =
-    url.match(/(?:github|ghub).com[/:]([^/]+)\/([^/?&#.]+)/i) ?? [];
+    url.match(/(?:github|ghub).com[/:]([^/]+)\/([^/?&#]+)/i) ?? [];
 
   return { owner, repo };
 }

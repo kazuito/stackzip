@@ -39,13 +39,6 @@ export default function Home() {
       return;
     }
 
-    setProjectBasics({
-      name: repo,
-      owner: owner,
-      type: "GitHub",
-      url: q,
-    });
-
     const branch = "master";
     const path = "package.json";
 
@@ -64,9 +57,17 @@ export default function Home() {
           setLibData(res[0].items[0]);
           setIsLoading(false);
         });
+
+        setProjectBasics({
+          name: repo,
+          owner: owner,
+          type: "GitHub",
+          url: q,
+        });
       })
       .catch((err) => {
         // alert("Invalid URL");
+        console.error(err);
         setLibGroups([]);
         setLibData(undefined);
         setIsLoading(false);
