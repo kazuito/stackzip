@@ -78,7 +78,7 @@ const LibDetails = ({ item }: Props) => {
   }, [item]);
 
   return (
-    <div className="flex flex-col bg-slate-800 px-4 py-6 rounded-lg w-full h-[calc(100vh-2rem)] sticky top-4 shrink-0">
+    <div className="flex flex-col bg-slate-800 px-4 py-6 rounded-lg w-full h-[calc(100vh-2rem)] sticky top-4 shrink-0 overflow-y-auto">
       <div className="flex gap-3 items-center">
         <img
           src={item?.icons[iconIndex]}
@@ -107,54 +107,61 @@ const LibDetails = ({ item }: Props) => {
           );
         })}
       </div>
-      <div className="mt-auto">
-        <Line
-          datasetIdKey="id"
-          options={{
-            responsive: true,
-            interaction: {
-              mode: "index",
-              intersect: false,
-            },
-            scales: {
-              x: {
-                // display: false,
-                ticks: {
-                  display: false,
-                },
-              },
-              y: {
-                // display: false,
-                ticks: {
-                  display: false,
-                },
-              },
-            },
-          }}
-          data={{
-            labels: yearlyDownloads.map((item: any) => ""),
-            datasets: [
-              {
-                data: yearlyDownloads.map((item: any) => item.downloads),
-                fill: true,
-                tension: 0.5,
-                // backgroundColor: "#0f0",
-                // borderColor: "#00f",
-              },
-            ],
-          }}
-        />
-      </div>
-      <div className="px-2 text-slate-300 flex flex-col gap-1 my-2">
-        <div className="text-xs gap-2 flex items-center text-slate-500">
-          <IconDownload size={14} />
-          <div>Weekly downloads</div>
+      <div className="text-slate-300 flex gap-3 my-2 mt-auto pt-6 items-center pl-2">
+        <div className="flex flex-col gap-1">
+          <div className="text-xs gap-1 flex items-center text-slate-500">
+            <IconDownload size={14} />
+            <div className="whitespace-nowrap">Weekly downloads</div>
+          </div>
+          <CountUp
+            start={preWeeklyDownloads}
+            end={weeklyDownloads}
+            duration={0.8}
+          />
         </div>
-        <CountUp
-          start={preWeeklyDownloads}
-          end={weeklyDownloads}
-          duration={0.8}
-        />
+        <div className="grow">
+          <Line
+            width="100%"
+            height="60px"
+            datasetIdKey="id"
+            options={{
+              maintainAspectRatio: false,
+              responsive: true,
+              interaction: {
+                mode: "index",
+                intersect: false,
+              },
+              scales: {
+                x: {
+                  display: false,
+                  ticks: {
+                    display: false,
+                  },
+                },
+                y: {
+                  display: false,
+                  ticks: {
+                    display: false,
+                  },
+                },
+              },
+            }}
+            data={{
+              labels: yearlyDownloads.map((item: any) => ""),
+              datasets: [
+                {
+                  data: yearlyDownloads.map((item: any) => item.downloads),
+                  fill: true,
+                  tension: 0.5,
+                  pointRadius: 0,
+                  backgroundColor: "#64748b",
+                  borderColor: "#64748b",
+                  borderWidth: 1,
+                },
+              ],
+            }}
+          />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 mt-4">
