@@ -86,7 +86,7 @@ const LibDetails = ({ item }: Props) => {
       <div className="flex gap-3 items-center">
         <img
           src={item?.icons[iconIndex]}
-          className="w-6 h-6"
+          className="w-6 h-6 rounded-md"
           onError={(e) => {
             e.preventDefault();
             setIconIndex(iconIndex + 1);
