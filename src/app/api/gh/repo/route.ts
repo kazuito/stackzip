@@ -1,26 +1,37 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
 import { Octokit } from "octokit";
+import queryGitHubGQL, { reposQuery } from "../gql/repo";
 
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 });
 
 export async function POST(req: Request) {
-  const data = await req.json();
+  console.log("Hello");
 
-  if (!data.owner || !data.repo) {
-    return NextResponse.json(
-      { error: "Please provide owner and repo" },
-      { status: 400 }
-    );
-  }
+  // const data = await req.json();
 
-  const repoData = await octokit
-    .request(`GET /repos/${data.owner}/${data.repo}/contents/package.json`)
-    .then((res) => res.data);
+  // if (!data.owner || !data.repo) {
+  //   return NextResponse.json(
+  //     { error: "Please provide owner and repo" },
+  //     { status: 400 }
+  //   );
+  // }
 
-  console.log(repoData);
+  const { q, keys } = reposQuery([
+    { owner: "kazuito", name: "jet-words" },
+    { owner: "facebook", name: "react" },
+  ]);
 
-  return Response.json({ ...repoData });
+  console.log(q);
+
+  const res = await queryGitHubGQL(q);
+
+  // console.log(repoData);
+
+  return Response.json({
+    data: res,
+    keys,
+  });
 }
