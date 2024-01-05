@@ -2,7 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { formatNumberWithCommas, isGitHubUrl, parseGitHubUrl } from "@/lib/utils/utils";
+import {
+  formatNumberWithCommas,
+  isGitHubUrl,
+  parseGitHubUrl,
+} from "@/lib/utils/utils";
 import { IconStar } from "@tabler/icons-react";
 
 type Props = {
@@ -54,7 +58,7 @@ const LibItem = ({
   setLibData: React.Dispatch<React.SetStateAction<LibItem | undefined>>;
   onClick: () => void;
 }) => {
-  const [iconUrl, setIconUrl] = useState<string>("aaa.png");
+  const [iconUrlIndex, setIconUrlIndex] = useState(0);
 
   return (
     <div
@@ -70,29 +74,12 @@ const LibItem = ({
       <div className="flex gap-2.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          key={iconUrl}
-          src={iconUrl}
+          key={iconUrlIndex}
+          src={item.icons[iconUrlIndex]}
           alt=""
           className="w-6 h-6 shrink-0 rounded-md"
           onError={() => {
-            // const ghUsername = parseGitHubUrl(libData?.repository?.url)?.owner;
-
-            // console.log(libData?.repository?.url, ghUsername);
-
-            // if (!ghUsername) {
-            setIconUrl("/npm.png");
-            //   return;
-            // }
-
-            // axios
-            //   .get(`https:/api.github.com/users/${ghUsername}`, {
-            //     responseType: "json",
-            //   })
-            //   .then((res) => {
-            //     let d = res.data;
-            //     if (d.type === "Organization") setIconUrl(d.avatar_url);
-            //     else setIconUrl("/npm.png");
-            //   });
+            setIconUrlIndex(iconUrlIndex + 1);
           }}
         />
         <div className="font-mono text-slate-100 truncate">{item.lib.name}</div>

@@ -30,6 +30,7 @@ const reposQuery = (repos: { owner: string; name: string }[]) => {
         ${keys[i]}: repository(owner: "${r.owner}", name: "${r.name}") {
           owner {
             __typename
+            avatarUrl
           }
           name
           createdAt

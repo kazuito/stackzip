@@ -7,5 +7,5 @@ export async function getNpmRegistryData(name: string) {
     })
     .then((res) => res.data);
 
-  return registryData;
+  return registryData as LibData;
 }

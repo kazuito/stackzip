@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getNpmRegistryData } from "../utils/npm";
-import { parseGitHubUrl } from "../utils/utils";
+import { isGitHubUrl, parseGitHubUrl } from "../utils/utils";
 
 export default async function parsePackageJson(
   text: string
@@ -32,7 +32,7 @@ export default async function parsePackageJson(
       })
     );
 
-    const packageRepos = await axios
+    const packageRepos: RepoData[] = await axios
       .post("/api/gh/repo", {
         repos: packageRegistries.map((d) => {
           const { owner, repo } = parseGitHubUrl(d?.lib?.repository?.url ?? "");
@@ -54,10 +54,30 @@ export default async function parsePackageJson(
 
     const groupData = {
       name: g.displayName,
-      items: packageRegistries.map((r, i) => {
+      items: packageRegistries.map((registry, i) => {
+        const repo = packageRepos[i];
+
+        const icons: string[] = [];
+
+        if (registry.lib?.homepage && !isGitHubUrl(registry.lib.homepage)) {
+          const urlOrigin = new URL(registry.lib.homepage).origin;
+
+          icons.push(urlOrigin + "/favicon.ico");
+          icons.push(urlOrigin + "/favicon.png");
+          icons.push(urlOrigin + "/favicon.svg");
+          icons.push(urlOrigin + "/favicon.jpg");
+        }
+
+        if (repo?.owner?.__typename === "Organization") {
+          icons.push(repo.owner.avatarUrl);
+        }
+
+        icons.push("./npm.png");
+
         return {
-          ...r,
-          repo: packageRepos[i],
+          ...registry,
+          repo,
+          icons,
         };
       }),
     };

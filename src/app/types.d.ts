@@ -2,6 +2,7 @@ type LibItem = {
   lib: LibData;
   repo: RepoData;
   usingVersion: string;
+  icons: string[];
 };
 
 type LibGroup = {
@@ -12,6 +13,7 @@ type LibGroup = {
 type RepoData = {
   owner: {
     __typename: string;
+    avatarUrl: string;
   };
   name: string;
   createdAt: string;

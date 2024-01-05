@@ -99,7 +99,7 @@ const LibDetails = ({ item }: Props) => {
         />
         <h2 className="font-mono text-slate-100">{item?.lib.name}</h2>
       </div>
-      <p className="mt-6 leading-normal text-slate-200">{item?.lib.description}</p>
+      <p className="mt-6 leading-normal text-slate-200 break-words">{item?.lib.description}</p>
       <div className="flex flex-wrap gap-1 mt-6 -ml-1">
         {item?.lib.keywords?.map((keyword, i) => {
           return (
