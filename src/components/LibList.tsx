@@ -14,8 +14,6 @@ type Props = {
 const LibList = ({ groups, setLibData, loading }: Props) => {
   const [activeItemId, setActiveItemId] = useState<number>(0);
 
-  console.log(loading);
-
   return (
     <div className="flex flex-col gap-4 mt-4 max-w-7xl mx-auto">
       {loading && (

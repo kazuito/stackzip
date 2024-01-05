@@ -7,8 +7,16 @@ import parsePackageJson from "@/lib/parse/package-json";
 import LibDetails from "@/components/LibDetails";
 import { parseGitHubUrl } from "@/lib/utils/utils";
 import { useRouter, useSearchParams } from "next/navigation";
+import Overview from "@/components/Overview";
 
 export default function Home() {
+  const [projectBasics, setProjectBasics] = useState<ProjectBasics>({
+    name: "",
+    owner: "",
+    type: "",
+    url: "",
+  });
+
   const [libGroups, setLibGroups] = useState<LibGroup[]>([]);
 
   const [libData, setLibData] = useState<LibItem>();
@@ -31,6 +39,13 @@ export default function Home() {
       return;
     }
 
+    setProjectBasics({
+      name: repo,
+      owner: owner,
+      type: "GitHub",
+      url: q,
+    });
+
     const branch = "master";
     const path = "package.json";
 
@@ -46,6 +61,7 @@ export default function Home() {
       .then((res) => {
         parsePackageJson(res.data as string).then((res) => {
           setLibGroups(res);
+          setLibData(res[0].items[0]);
           setIsLoading(false);
         });
       })
@@ -55,7 +71,7 @@ export default function Home() {
         setLibData(undefined);
         setIsLoading(false);
       });
-  }, [params]);
+  }, [params.get("q")]);
 
   const onSubmit = () => {
     const { owner, repo } = parseGitHubUrl(url);
@@ -91,6 +107,7 @@ export default function Home() {
         <LibDetails item={libData} />
       </div>
       <div className="row-start-2 col-start-2 pr-4 pb-4">
+        <Overview basics={projectBasics} />
         <LibList
           groups={libGroups}
           setLibData={setLibData}

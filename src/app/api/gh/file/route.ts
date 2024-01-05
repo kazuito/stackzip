@@ -22,7 +22,5 @@ export async function POST(req: Request) {
       res.data;
     });
 
-  console.log(fileData);
-
   return Response.json(fileData);
 }

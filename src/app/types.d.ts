@@ -1,3 +1,10 @@
+type ProjectBasics = {
+  name: string;
+  owner: string;
+  type: string;
+  url: string;
+};
+
 type LibItem = {
   lib: LibData;
   repo: RepoData;

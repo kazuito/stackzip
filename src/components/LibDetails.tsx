@@ -1,5 +1,3 @@
-import useLibIcon from "@/app/hooks/useLibIcon";
-import getLibIcon from "@/lib/utils/getLibIcon";
 import {
   IconBox,
   IconCertificate,
@@ -68,8 +66,6 @@ const LibDetails = ({ item }: Props) => {
         responseType: "json",
       })
       .then((res) => {
-        console.log(res.data);
-
         const summarizedDownloads = summarizeDownloads(res.data.downloads);
 
         setYearlyDownloads(summarizedDownloads);

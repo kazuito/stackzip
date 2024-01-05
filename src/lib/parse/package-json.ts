@@ -82,8 +82,6 @@ export default async function parsePackageJson(
       }),
     };
 
-    console.log(groupData);
-
     groups.push(groupData);
   }
 

@@ -6,10 +6,6 @@ import { useEffect } from "react";
 type Props = {};
 
 const Home = ({}: Props) => {
-  useEffect(() => {
-    console.log("Hello");
-  }, []);
-
   return (
     <div className="">
       <Link href="/zip" className="text-white">

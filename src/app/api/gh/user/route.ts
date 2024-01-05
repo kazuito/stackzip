@@ -22,7 +22,5 @@ export async function POST(req: Request) {
     })
     .then((res) => res.data);
 
-  console.log(userData);
-
   return Response.json({ ...userData });
 }
