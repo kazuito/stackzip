@@ -48,10 +48,10 @@ ChartJS.register(
 );
 
 type Props = {
-  data?: LibData;
+  item?: LibItem;
 };
 
-const LibDetails = ({ data }: Props) => {
+const LibDetails = ({ item }: Props) => {
   // const iconUrl = useLibIcon(data?.homepage);
   const [iconUrl, setIconUrl] = useState<string>("/npm.png");
   const [yearlyDownloads, setYearlyDownloads] = useState<any>([]);
@@ -59,18 +59,18 @@ const LibDetails = ({ data }: Props) => {
   const [preWeeklyDownloads, setPreWeeklyDownload] = useState<number>(0);
 
   useEffect(() => {
-    if (!data) return;
+    if (!item) return;
 
-    console.log(data);
+    console.log(item);
 
     setIconUrl(
-      data?.homepage
-        ? `${new URL(data?.homepage).origin}/favicon.ico`
+      item?.lib.homepage
+        ? `${new URL(item.lib?.homepage).origin}/favicon.ico`
         : "/npm.png"
     );
 
     axios
-      .get(`https://api.npmjs.org/downloads/range/last-year/${data.name}`, {
+      .get(`https://api.npmjs.org/downloads/range/last-year/${item.lib._id}`, {
         responseType: "json",
       })
       .then((res) => {
@@ -85,7 +85,7 @@ const LibDetails = ({ data }: Props) => {
       .catch((err) => {
         console.error(err);
       });
-  }, [data]);
+  }, [item]);
 
   return (
     <div className="flex flex-col bg-slate-800 px-4 py-6 rounded-lg w-full h-[calc(100vh-2rem)] sticky top-4 shrink-0">
@@ -97,11 +97,11 @@ const LibDetails = ({ data }: Props) => {
             setIconUrl("/npm.png");
           }}
         />
-        <h2 className="font-mono text-slate-100">{data?.name}</h2>
+        <h2 className="font-mono text-slate-100">{item?.lib.name}</h2>
       </div>
-      <p className="mt-6 leading-normal text-slate-200">{data?.description}</p>
+      <p className="mt-6 leading-normal text-slate-200">{item?.lib.description}</p>
       <div className="flex flex-wrap gap-1 mt-6 -ml-1">
-        {data?.keywords?.map((keyword, i) => {
+        {item?.lib.keywords?.map((keyword, i) => {
           return (
             <Link
               href={`https://www.npmjs.com/search?q=keywords:${keyword}`}
@@ -167,35 +167,35 @@ const LibDetails = ({ data }: Props) => {
       <div className="flex flex-col gap-2 mt-4">
         <ItemWithIcon
           icon={<IconWorld size={20} />}
-          value={data?.homepage}
-          href={data?.homepage}
+          value={item?.lib.homepage}
+          href={item?.lib.homepage}
           tooltip="Homepage"
         />
         <ItemWithIcon
           icon={<IconBox size={20} />}
-          value={`${data?._id}`}
-          href={`https://www.npmjs.com/package/${data?._id}`}
+          value={`${item?.lib._id}`}
+          href={`https://www.npmjs.com/package/${item?.lib._id}`}
           tooltip="npm"
         />
         <ItemWithIcon
           icon={<IconCode size={20} />}
-          value={rmGitUrlPrefix(data?.repository?.url)}
-          href={rmGitUrlPrefix(data?.repository?.url)}
+          value={rmGitUrlPrefix(item?.lib.repository?.url)}
+          href={rmGitUrlPrefix(item?.lib.repository?.url)}
           tooltip="Git repository"
         />
         <ItemWithIcon
           icon={<IconCertificate size={20} />}
-          value={data?.license}
+          value={item?.lib.license}
           tooltip="License"
         />
         <ItemWithIcon
           icon={<IconRocket size={20} />}
-          value={dayjs(data?.time.created).format("YYYY-MM-DD")}
+          value={dayjs(item?.lib.time.created).format("YYYY-MM-DD")}
           tooltip="Created at"
         />
         <ItemWithIcon
           icon={<IconTool size={20} />}
-          value={dayjs(data?.time.modified).format("YYYY-MM-DD")}
+          value={dayjs(item?.lib.time.modified).format("YYYY-MM-DD")}
           tooltip="Last modified at"
         />
       </div>

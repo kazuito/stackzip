@@ -6,7 +6,7 @@ import { isGitHubUrl, parseGitHubUrl } from "@/lib/utils/utils";
 
 type Props = {
   groups: LibGroup[];
-  setLibData: React.Dispatch<React.SetStateAction<LibData | undefined>>;
+  setLibData: React.Dispatch<React.SetStateAction<LibItem | undefined>>;
 };
 
 const LibList = ({ groups, setLibData }: Props) => {
@@ -43,53 +43,17 @@ const LibList = ({ groups, setLibData }: Props) => {
   );
 };
 
-const LibItem = (props: {
+const LibItem = ({
+  item,
+  ...props
+}: {
   item: LibItem;
   isFirst?: boolean;
   isActive?: boolean;
-  setLibData: React.Dispatch<React.SetStateAction<LibData | undefined>>;
+  setLibData: React.Dispatch<React.SetStateAction<LibItem | undefined>>;
   onClick: () => void;
 }) => {
-  const [libData, setLibData] = useState<any>();
   const [iconUrl, setIconUrl] = useState<string>("aaa.png");
-  // const [repoData, setRepoData] = useState<any>();
-
-  useEffect(() => {
-    axios
-      .get(`https://registry.npmjs.org/${props.item.name}`, {
-        responseType: "json",
-      })
-      .then((res) => {
-        // console.log(res.data);
-        setLibData(res.data);
-
-        if (props.isFirst) props.setLibData(res.data);
-      });
-  }, [props.item.name]);
-
-  useEffect(() => {
-    if (!libData) return;
-
-    // if (libData?.repository?.url) {
-    //   const { owner, repo } = parseGitHubUrl(libData.repository.url);
-
-    //   console.log(owner, repo);
-
-    //   axios
-    //     .get(`https://api.github.com/repos/${owner}/${repo}`, {
-    //       responseType: "json",
-    //     })
-    //     .then((res) => {
-    //       setRepoData(res.data);
-    //     });
-    // }
-
-    if (!libData?.homepage) return;
-
-    if (isGitHubUrl(libData.homepage)) return;
-
-    setIconUrl(`${new URL(libData?.homepage).origin}/favicon.ico`);
-  }, [libData]);
 
   return (
     <div
@@ -98,7 +62,7 @@ const LibItem = (props: {
         props.isActive && "!bg-blue-800 hover:!bg-blue-700"
       )}
       onClick={() => {
-        props.setLibData(libData);
+        props.setLibData(item);
         props.onClick();
       }}
     >
@@ -130,16 +94,14 @@ const LibItem = (props: {
             //   });
           }}
         />
-        <div className="font-mono text-slate-100 truncate">
-          {props.item.name}
-        </div>
+        <div className="font-mono text-slate-100 truncate">{item.lib.name}</div>
       </div>
       <div className="text-slate-400 text-sm mt-2.5 overflow-hidden h-10 shrink-0">
-        {libData?.description}
+        {item.lib.description}
       </div>
       <div className="flex gap-4 mt-2.5 h-full text-slate-500 text-xs font-mono justify-self-end">
-        <span>{libData?.license || "N/A"}</span>
-        <span className="ml-auto">{props.item.version}</span>
+        <span>{item.lib.license || "N/A"}</span>
+        <span className="ml-auto">{item.usingVersion}</span>
       </div>
     </div>
   );

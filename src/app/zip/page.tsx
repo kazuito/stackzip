@@ -11,7 +11,7 @@ export default function Home() {
   const [url, setUrl] = useState("https://github.com/tldraw/tldraw");
   const [libGroups, setLibGroups] = useState<LibGroup[]>([]);
 
-  const [libData, setLibData] = useState<LibData>();
+  const [libData, setLibData] = useState<LibItem>();
 
   const onSubmit = () => {
     const [_, owner, repo] = url.match(/github.com\/(.*)\/(.*)/) || [];
@@ -24,20 +24,7 @@ export default function Home() {
       return;
     }
 
-    // axios
-    //   .post("/api/gh/repo", {
-    //     owner,
-    //     repo,
-    //   })
-    //   .then((res) => res.data)
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
-
-    const fileData = axios
+    axios
       .get(
         `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`,
         {
@@ -45,20 +32,18 @@ export default function Home() {
         }
       )
       .then((res) => {
-        console.log(res.data);
-        const { dependencies, devDependencies } = parsePackageJson(
-          res.data as string
-        );
-        setLibGroups([
-          {
-            name: "Dependencies",
-            items: dependencies,
-          },
-          {
-            name: "Dev Dependencies",
-            items: devDependencies,
-          },
-        ]);
+        // async () => {
+        //   console.log("Hello");
+        //   setLibGroups(await parsePackageJson(res.data as string));
+        // };
+
+        parsePackageJson(res.data as string).then((res) => {
+          setLibGroups(res);
+        });
+
+        // const { dependencies, devDependencies } =  parsePackageJson(
+        //   res.data as string
+        // );
       });
   };
 
@@ -83,7 +68,7 @@ export default function Home() {
 
       {/* <div className="flex gap-4 px-4"> */}
       <div className="row-start-1 row-span-2 col-start-1 p-4">
-        <LibDetails data={libData} />
+        <LibDetails item={libData} />
       </div>
       <div className="row-start-2 col-start-2 pr-4 pb-4">
         <LibList groups={libGroups} setLibData={setLibData} />

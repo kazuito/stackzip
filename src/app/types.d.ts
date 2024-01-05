@@ -1,6 +1,7 @@
 type LibItem = {
-  name: string;
-  version: string;
+  lib: LibData;
+  repo: any;
+  usingVersion: string;
 };
 
 type LibGroup = {
@@ -25,7 +26,7 @@ type LibData = {
       scripts: {
         [key: string]: string;
       };
-      keywords: string[];
+      keywords?: string[];
       author: {
         name: string;
         email: string;
@@ -83,18 +84,18 @@ type LibData = {
     email: string;
   }[];
   description: string;
-  homepage: string;
-  keywords: string[];
-  author: {
-    name: string;
-    email: string;
+  homepage?: string;
+  keywords?: string[];
+  author?: {
+    name?: string;
+    email?: string;
   };
-  license: string;
-  readme: string;
-  readmeFilename: string;
-  repository: {
-    type: string;
-    url: string;
+  license?: string;
+  readme?: string;
+  readmeFilename?: string;
+  repository?: {
+    type?: string;
+    url?: string;
   };
   users: {
     [key: string]: boolean;
