@@ -2,10 +2,11 @@
 
 import LibList from "@/components/LibList";
 import axios from "axios";
-import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import parsePackageJson from "@/lib/parse/package-json";
 import LibDetails from "@/components/LibDetails";
+import { parseGitHubUrl } from "@/lib/utils/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Home() {
   const [url, setUrl] = useState("https://github.com/tldraw/tldraw");
@@ -13,16 +14,23 @@ export default function Home() {
 
   const [libData, setLibData] = useState<LibItem>();
 
-  const onSubmit = () => {
-    const [_, owner, repo] = url.match(/github.com\/(.*)\/(.*)/) || [];
+  const router = useRouter();
+  const params = useSearchParams();
+
+  useEffect(() => {
+    const q = params.get("q");
+
+    if (!q) return;
+
+    const { owner, repo } = parseGitHubUrl(q);
+
+    if (!owner || !repo) {
+      alert("Invalid URL");
+      return;
+    }
 
     const branch = "master";
     const path = "package.json";
-
-    if (!owner || !repo) {
-      console.error("Invalid URL");
-      return;
-    }
 
     axios
       .get(
@@ -32,19 +40,23 @@ export default function Home() {
         }
       )
       .then((res) => {
-        // async () => {
-        //   console.log("Hello");
-        //   setLibGroups(await parsePackageJson(res.data as string));
-        // };
-
         parsePackageJson(res.data as string).then((res) => {
           setLibGroups(res);
         });
-
-        // const { dependencies, devDependencies } =  parsePackageJson(
-        //   res.data as string
-        // );
+      }).catch((err)=>{
+        alert("Invalid URL");
       });
+  }, [params]);
+
+  const onSubmit = () => {
+    const { owner, repo } = parseGitHubUrl(url);
+
+    if (!owner || !repo) {
+      alert("Invalid URL");
+      return;
+    }
+
+    router.push(`zip/?q=${url}`);
   };
 
   return (
@@ -66,14 +78,12 @@ export default function Home() {
         </button>
       </div>
 
-      {/* <div className="flex gap-4 px-4"> */}
       <div className="row-start-1 row-span-2 col-start-1 p-4">
         <LibDetails item={libData} />
       </div>
       <div className="row-start-2 col-start-2 pr-4 pb-4">
         <LibList groups={libGroups} setLibData={setLibData} />
       </div>
-      {/* </div> */}
     </main>
   );
 }
