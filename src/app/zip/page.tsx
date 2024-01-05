@@ -9,13 +9,13 @@ import { parseGitHubUrl } from "@/lib/utils/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Home() {
-  const [url, setUrl] = useState("https://github.com/tldraw/tldraw");
   const [libGroups, setLibGroups] = useState<LibGroup[]>([]);
 
   const [libData, setLibData] = useState<LibItem>();
 
   const router = useRouter();
   const params = useSearchParams();
+  const [url, setUrl] = useState(params.get("q") || "");
 
   useEffect(() => {
     const q = params.get("q");
@@ -43,7 +43,8 @@ export default function Home() {
         parsePackageJson(res.data as string).then((res) => {
           setLibGroups(res);
         });
-      }).catch((err)=>{
+      })
+      .catch((err) => {
         alert("Invalid URL");
       });
   }, [params]);
@@ -60,7 +61,7 @@ export default function Home() {
   };
 
   return (
-    <main className="grid grid-cols-[max(30%,400px),auto] grid-rows-[auto,auto]">
+    <main className="grid grid-cols-[max(30%,400px),auto] grid-rows-[auto,1fr]">
       <div className="row-start-1 row-end-2 col-start-2 flex gap-2 max-w-xl mx-auto p-4 h-fit w-full">
         <input
           type="text"
