@@ -13,6 +13,8 @@ export default function Home() {
 
   const [libData, setLibData] = useState<LibItem>();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const router = useRouter();
   const params = useSearchParams();
   const [url, setUrl] = useState(params.get("q") || "");
@@ -32,6 +34,8 @@ export default function Home() {
     const branch = "master";
     const path = "package.json";
 
+    setIsLoading(true);
+
     axios
       .get(
         `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`,
@@ -42,10 +46,14 @@ export default function Home() {
       .then((res) => {
         parsePackageJson(res.data as string).then((res) => {
           setLibGroups(res);
+          setIsLoading(false);
         });
       })
       .catch((err) => {
-        alert("Invalid URL");
+        // alert("Invalid URL");
+        setLibGroups([]);
+        setLibData(undefined);
+        setIsLoading(false);
       });
   }, [params]);
 
@@ -83,7 +91,11 @@ export default function Home() {
         <LibDetails item={libData} />
       </div>
       <div className="row-start-2 col-start-2 pr-4 pb-4">
-        <LibList groups={libGroups} setLibData={setLibData} />
+        <LibList
+          groups={libGroups}
+          setLibData={setLibData}
+          loading={isLoading}
+        />
       </div>
     </main>
   );

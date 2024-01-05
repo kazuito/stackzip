@@ -2,48 +2,53 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import {
-  formatNumberWithCommas,
-  isGitHubUrl,
-  parseGitHubUrl,
-} from "@/lib/utils/utils";
+import { formatNumberWithCommas } from "@/lib/utils/utils";
 import { IconStar } from "@tabler/icons-react";
 
 type Props = {
   groups: LibGroup[];
   setLibData: React.Dispatch<React.SetStateAction<LibItem | undefined>>;
+  loading?: boolean;
 };
 
-const LibList = ({ groups, setLibData }: Props) => {
+const LibList = ({ groups, setLibData, loading }: Props) => {
   const [activeItemId, setActiveItemId] = useState<number>(0);
+
+  console.log(loading);
 
   return (
     <div className="flex flex-col gap-4 mt-4 max-w-7xl mx-auto">
-      {groups.map((group, i) => {
-        return (
-          <div key={i}>
-            <h3 className="text-slate-400 pb-2 text-lg font-semibold">
-              {group.name}
-            </h3>
-            <div className="grid grid-cols-1 gap-1 lg:grid-cols-2 xl:grid-cols-3  sm:gap-2">
-              {group.items.map((item, j) => {
-                return (
-                  <LibItem
-                    key={`${i}_${j}`}
-                    item={item}
-                    setLibData={setLibData}
-                    onClick={() => {
-                      setActiveItemId(i * 10000 + j);
-                    }}
-                    isFirst={j === 0 && i === 0}
-                    isActive={activeItemId === i * 10000 + j}
-                  />
-                );
-              })}
+      {loading && (
+        <div className="text-slate-400 animate-pulse mt-10 text-center">
+          Loading...
+        </div>
+      )}
+      {!loading &&
+        groups.map((group, i) => {
+          return (
+            <div key={i}>
+              <h3 className="text-slate-400 pb-2 text-lg font-semibold">
+                {group.name}
+              </h3>
+              <div className="grid grid-cols-1 gap-1 lg:grid-cols-2 xl:grid-cols-3 sm:gap-2">
+                {group.items.map((item, j) => {
+                  return (
+                    <LibItem
+                      key={`${i}_${j}`}
+                      item={item}
+                      setLibData={setLibData}
+                      onClick={() => {
+                        setActiveItemId(i * 10000 + j);
+                      }}
+                      isFirst={j === 0 && i === 0}
+                      isActive={activeItemId === i * 10000 + j}
+                    />
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
     </div>
   );
 };
