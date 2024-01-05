@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getNpmRegistryData } from "../utils/npm";
+import { parseGitHubUrl } from "../utils/utils";
 
 export default async function parsePackageJson(
   text: string
@@ -20,9 +21,6 @@ export default async function parsePackageJson(
   ];
 
   for await (const g of groupNames) {
-
-    console.log(g);
-
     const packageRegistries = await Promise.all(
       Object.entries(json?.[g.name] ?? [])?.map(async ([name, version]) => {
         const registryData = await getNpmRegistryData(name);
@@ -36,14 +34,23 @@ export default async function parsePackageJson(
 
     const packageRepos = await axios
       .post("/api/gh/repo", {
-        repos: packageRegistries.map((d) => ({
-          owner: d?.lib?.publisher?.username ?? "",
-          name: d?.lib?.name ?? "",
-        })),
-      })
-      .then((res) => res.data.keys.map((k: string) => res.data.data[k]));
+        repos: packageRegistries.map((d) => {
+          const { owner, repo } = parseGitHubUrl(d?.lib?.repository?.url ?? "");
 
-    if (packageRegistries.length === 0) continue;
+          return {
+            owner: owner,
+            name: repo,
+          };
+        }),
+      })
+      .then((res) => {
+        const d = res.data;
+
+        return d.keys.map((k: string) => d.data.data[k]);
+      });
+    // .then((res) => res.data.keys.map((k: string) => res.data.data[k]));
+
+    if (packageRepos.length === 0) continue;
 
     const groupData = {
       name: g.displayName,
@@ -55,8 +62,10 @@ export default async function parsePackageJson(
       }),
     };
 
+    console.log(groupData);
+
     groups.push(groupData);
-  };
+  }
 
   return groups;
 }

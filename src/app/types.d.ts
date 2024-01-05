@@ -1,12 +1,22 @@
 type LibItem = {
   lib: LibData;
-  repo: any;
+  repo: RepoData;
   usingVersion: string;
 };
 
 type LibGroup = {
   name: string;
   items: LibItem[];
+};
+
+type RepoData = {
+  owner: {
+    __typename: string;
+  };
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  stargazerCount: number;
 };
 
 type LibData = {

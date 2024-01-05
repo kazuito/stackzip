@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { isGitHubUrl, parseGitHubUrl } from "@/lib/utils/utils";
+import { formatNumberWithCommas, isGitHubUrl, parseGitHubUrl } from "@/lib/utils/utils";
+import { IconStar } from "@tabler/icons-react";
 
 type Props = {
   groups: LibGroup[];
@@ -99,9 +100,13 @@ const LibItem = ({
       <div className="text-slate-400 text-sm mt-2.5 overflow-hidden h-10 shrink-0">
         {item.lib.description}
       </div>
-      <div className="flex gap-4 mt-2.5 h-full text-slate-500 text-xs font-mono justify-self-end">
-        <span>{item.lib.license || "N/A"}</span>
-        <span className="ml-auto">{item.usingVersion}</span>
+      <div className="flex gap-4 mt-2.5 h-full text-slate-500 text-xs justify-self-end">
+        {/* <span>{item.lib.license || "N/A"}</span> */}
+        <span className="flex gap-1 items-center">
+          <IconStar size={10} />
+          {formatNumberWithCommas(item?.repo?.stargazerCount) || "-"}
+        </span>
+        <span className="ml-auto font-mono">{item.usingVersion}</span>
       </div>
     </div>
   );

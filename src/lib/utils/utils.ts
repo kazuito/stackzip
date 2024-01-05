@@ -35,7 +35,7 @@ export function parseGitHubUrl(url: string) {
   url = url.replace(/\.git$/i, "");
 
   const [_, owner, repo] =
-    url.match(/(?:github|ghub).com\/([^/]+)\/([^/]+)/i) ?? [];
+    url.match(/(?:github|ghub).com[/:]([^/]+)\/([^/]+)/i) ?? [];
 
   return { owner, repo };
 }
