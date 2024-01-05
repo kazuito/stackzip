@@ -53,7 +53,7 @@ type Props = {
 
 const LibDetails = ({ item }: Props) => {
   // const iconUrl = useLibIcon(data?.homepage);
-  const [iconUrl, setIconUrl] = useState<string>("/npm.png");
+  const [iconIndex, setIconIndex] = useState(0);
   const [yearlyDownloads, setYearlyDownloads] = useState<any>([]);
   const [weeklyDownloads, setWeeklyDownload] = useState<number>(0);
   const [preWeeklyDownloads, setPreWeeklyDownload] = useState<number>(0);
@@ -61,13 +61,7 @@ const LibDetails = ({ item }: Props) => {
   useEffect(() => {
     if (!item) return;
 
-    console.log(item);
-
-    setIconUrl(
-      item?.lib.homepage
-        ? `${new URL(item.lib?.homepage).origin}/favicon.ico`
-        : "/npm.png"
-    );
+    setIconIndex(0);
 
     axios
       .get(`https://api.npmjs.org/downloads/range/last-year/${item.lib._id}`, {
@@ -91,15 +85,18 @@ const LibDetails = ({ item }: Props) => {
     <div className="flex flex-col bg-slate-800 px-4 py-6 rounded-lg w-full h-[calc(100vh-2rem)] sticky top-4 shrink-0">
       <div className="flex gap-3 items-center">
         <img
-          src={iconUrl}
+          src={item?.icons[iconIndex]}
           className="w-6 h-6"
-          onError={() => {
-            setIconUrl("/npm.png");
+          onError={(e) => {
+            e.preventDefault();
+            setIconIndex(iconIndex + 1);
           }}
         />
         <h2 className="font-mono text-slate-100">{item?.lib.name}</h2>
       </div>
-      <p className="mt-6 leading-normal text-slate-200 break-words">{item?.lib.description}</p>
+      <p className="mt-6 leading-normal text-slate-200 break-words">
+        {item?.lib.description}
+      </p>
       <div className="flex flex-wrap gap-1 mt-6 -ml-1">
         {item?.lib.keywords?.map((keyword, i) => {
           return (
