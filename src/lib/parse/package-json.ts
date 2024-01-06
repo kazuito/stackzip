@@ -11,6 +11,10 @@ export default async function parsePackageJson(
 
   const groupNames = [
     {
+      name: "peerDependencies",
+      displayName: "Peer Dependencies",
+    },
+    {
       name: "dependencies",
       displayName: "Dependencies",
     },
@@ -18,12 +22,20 @@ export default async function parsePackageJson(
       name: "devDependencies",
       displayName: "Dev Dependencies",
     },
+    {
+      name: "resolutions",
+      displayName: "Resolutions",
+    },
   ];
 
   for await (const g of groupNames) {
     const packageRegistries = await Promise.all(
       Object.entries(json?.[g.name] ?? [])?.map(async ([name, version]) => {
+        if ((version as string).startsWith("npm:")) return null;
+
         const registryData = await getNpmRegistryData(name);
+
+        if (!registryData) return null;
 
         return {
           lib: registryData,
@@ -48,38 +60,41 @@ export default async function parsePackageJson(
 
         return d.keys.map((k: string) => d.data.data[k]);
       });
-    // .then((res) => res.data.keys.map((k: string) => res.data.data[k]));
 
     if (packageRepos.length === 0) continue;
 
     const groupData = {
       name: g.displayName,
-      items: packageRegistries.map((registry, i) => {
-        const repo = packageRepos[i];
+      items: packageRegistries
+        .map((registry, i) => {
+          if (!registry) return null;
 
-        const icons: string[] = [];
+          const repo = packageRepos[i];
 
-        if (registry.lib?.homepage && !isGitHubUrl(registry.lib.homepage)) {
-          const urlOrigin = new URL(registry.lib.homepage).origin;
+          const icons: string[] = [];
 
-          icons.push(urlOrigin + "/favicon.ico");
-          icons.push(urlOrigin + "/favicon.png");
-          icons.push(urlOrigin + "/favicon.svg");
-          icons.push(urlOrigin + "/favicon.jpg");
-        }
+          if (registry.lib?.homepage && !isGitHubUrl(registry.lib.homepage)) {
+            const urlOrigin = new URL(registry.lib.homepage).origin;
 
-        if (repo?.owner?.__typename === "Organization") {
-          icons.push(repo.owner.avatarUrl);
-        }
+            icons.push(urlOrigin + "/favicon.ico");
+            icons.push(urlOrigin + "/favicon.png");
+            icons.push(urlOrigin + "/favicon.svg");
+            icons.push(urlOrigin + "/favicon.jpg");
+          }
 
-        icons.push("./npm.png");
+          if (repo?.owner?.__typename === "Organization") {
+            icons.push(repo.owner.avatarUrl);
+          }
 
-        return {
-          ...registry,
-          repo,
-          icons,
-        };
-      }),
+          icons.push("./npm.png");
+
+          return {
+            ...registry,
+            repo,
+            icons,
+          };
+        })
+        .filter((d) => d) as LibItem[],
     };
 
     groups.push(groupData);
