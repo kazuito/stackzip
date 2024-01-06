@@ -45,6 +45,9 @@ type Props = {
 
 const LibDetails = ({ item }: Props) => {
   const [iconIndex, setIconIndex] = useState(0);
+  const [readmes, setReadmes] = useState<{
+    [key: string]: string;
+  }>({});
   const [yearlyDownloads, setYearlyDownloads] = useState<{
     [key: string]: {
       dayEnd: string;
@@ -59,9 +62,16 @@ const LibDetails = ({ item }: Props) => {
 
   useEffect(() => {
     if (!item?.repo) {
-      setReadme("");
+      setReadmes((prev) => {
+        return {
+          ...prev,
+          [`${item?.repo?.owner.login}/${item?.repo?.name}`]: "",
+        };
+      });
       return;
     }
+
+    if (`${item?.repo?.owner.login}/${item?.repo?.name}` in readmes) return;
 
     axios
       .get(
@@ -71,10 +81,23 @@ const LibDetails = ({ item }: Props) => {
         }
       )
       .then((res) => {
-        setReadme(res.data as string);
+        setReadmes((prev) => {
+          return {
+            ...prev,
+            [`${item?.repo?.owner.login}/${item?.repo?.name}`]:
+              res.data as string,
+          };
+        });
       })
       .catch((err) => {
         setReadme("");
+
+        setReadmes((prev) => {
+          return {
+            ...prev,
+            [`${item?.repo?.owner.login}/${item?.repo?.name}`]: "",
+          };
+        });
       });
   }, [item?.repo]);
 
@@ -248,7 +271,7 @@ const LibDetails = ({ item }: Props) => {
           remarkRehypeOptions={{ allowDangerousHtml: true }}
           className="markdown text-slate-300"
         >
-          {readme}
+          {readmes[`${item?.repo?.owner.login}/${item?.repo?.name}`]}
         </Markdown>
       </div>
     </div>
