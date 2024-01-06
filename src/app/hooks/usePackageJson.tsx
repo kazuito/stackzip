@@ -39,9 +39,15 @@ const usePackageJson = () => {
     groupNames.map((g) => {
       if (!json[g.name]) return null;
 
-      const entries = Object.entries(json[g.name]).map(([name, version]) => {
-        return { name, version: version as string, icons: ["./npm.png"] };
-      });
+      const entries = Object.entries(json[g.name])
+        .map(([name, version]) => {
+          if ((version as string).startsWith("npm:")) {
+            return null;
+          }
+
+          return { name, version: version as string, icons: ["./npm.png"] };
+        })
+        .filter((e) => e) as LibItem[];
 
       setGroups((prev) => [...prev, { name: g.displayName, items: entries }]);
 
@@ -114,7 +120,7 @@ const usePackageJson = () => {
                     if (thisRepo.owner.__typename === "Organization") {
                       icons = [
                         ...icons.slice(0, icons.length - 1),
-                        thisRepo.owner.avatarUrl,
+                        thisRepo.owner.avatarUrl + "&size=124",
                         ...icons.slice(icons.length - 1),
                       ];
                     }

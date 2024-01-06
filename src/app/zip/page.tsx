@@ -110,7 +110,7 @@ export default function Home() {
       })
       .then((res) => {
         setError(null);
-        setGroups([]);
+        // setGroups([]);
         setRepo(res.data);
         setLoading(false);
       })
