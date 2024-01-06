@@ -25,8 +25,9 @@ const LibList = ({ groups, setLibData, loading }: Props) => {
         groups.map((group, i) => {
           return (
             <div key={i}>
-              <h3 className="text-slate-400 pb-2 text-lg font-semibold">
-                {group.name}
+              <h3 className="pb-2 space-x-2">
+                <span className="text-lg font-semibold text-slate-400">{group.name}</span>
+                <span className="text-sm text-slate-600">{group.items.length} items</span>
               </h3>
               <div className="grid grid-cols-1 gap-1 lg:grid-cols-2 xl:grid-cols-3 sm:gap-2">
                 {group.items.map((item, j) => {
