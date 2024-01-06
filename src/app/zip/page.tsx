@@ -2,25 +2,36 @@
 
 import LibList from "@/components/LibList";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import parsePackageJson from "@/lib/parse/package-json";
 import LibDetails from "@/components/LibDetails";
 import { parseGitHubUrl } from "@/lib/utils/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import Overview from "@/components/Overview";
+import {
+  IconGitBranchDeleted,
+  IconLinkOff,
+  IconMoodLookDown,
+  IconMoodSad,
+} from "@tabler/icons-react";
 
 export default function Home() {
   const [libGroups, setLibGroups] = useState<LibGroup[]>([]);
 
   const [libData, setLibData] = useState<LibItem>();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const params = useSearchParams();
   const [url, setUrl] = useState(params.get("q") || "");
 
   const [repo, setRepo] = useState<GitHubRepo>();
+
+  const [error, setError] = useState<{
+    message: ReactNode;
+    icon: ReactNode;
+  } | null>();
 
   useEffect(() => {
     const q = params.get("q");
@@ -36,8 +47,6 @@ export default function Home() {
 
     const path = "package.json";
 
-    setIsLoading(true);
-
     axios
       .get(
         `https://raw.githubusercontent.com/${repo.full_name}/${repo.default_branch}/${path}`,
@@ -49,7 +58,7 @@ export default function Home() {
         parsePackageJson(res.data as string).then((res) => {
           setLibGroups(res);
           setLibData(res[0].items[0]);
-          setIsLoading(false);
+          setLoading(false);
         });
       })
       .catch((err) => {
@@ -57,7 +66,7 @@ export default function Home() {
         console.error(err);
         setLibGroups([]);
         setLibData(undefined);
-        setIsLoading(false);
+        setLoading(false);
       });
   }, [repo]);
 
@@ -65,13 +74,29 @@ export default function Home() {
     const { owner, repo } = parseGitHubUrl(url);
 
     if (!owner || !repo) {
-      alert("Invalid URL");
+      setError({
+        message:
+          url.length > 0 ? (
+            <>
+              <span className="text-slate-600">{url}</span>{" "}
+              <span className="text-nowrap">is invalid input</span>
+            </>
+          ) : (
+            "Enter a GitHub URL or paste package.json content"
+          ),
+        icon: <IconMoodSad size={80} />,
+      });
+      router.push(`/zip`);
       return;
     }
 
     if (!first && url === params.get("q")) {
       return;
     }
+
+    setLoading(true);
+
+    router.push(`zip/?q=${url}`);
 
     axios
       .post("/api/gh/repo", {
@@ -80,12 +105,16 @@ export default function Home() {
       })
       .then((res) => {
         setRepo(res.data);
-        router.push(`zip/?q=${url}`);
+        setError(null);
+        setLoading(false);
       })
       .catch((err) => {
-        alert("Repo not found");
-        router.push("/zip");
-        console.error(err);
+        setError({
+          message: <>Repository not found</>,
+          icon: <IconGitBranchDeleted size={80} />,
+        });
+
+        setLoading(false);
       });
   };
 
@@ -116,12 +145,23 @@ export default function Home() {
         <LibDetails item={libData} />
       </div>
       <div className="row-start-2 col-start-2 pr-4 pb-4">
-        {repo && <Overview repo={repo} />}
-        <LibList
-          groups={libGroups}
-          setLibData={setLibData}
-          loading={isLoading}
-        />
+        {loading && (
+          <div className="text-slate-500 animate-pulse font-medium text-center mt-20">
+            Loading...
+          </div>
+        )}
+        {!loading && error && (
+          <div className="mt-20 text-slate-500 flex flex-col items-center gap-4 max-w-md break-all mx-auto px-4 text-center">
+            {error.icon}
+            <div className="font-medium">{error.message}</div>
+          </div>
+        )}
+        {!loading && !error && (
+          <>
+            {repo && <Overview repo={repo} />}
+            <LibList groups={libGroups} setLibData={setLibData} />
+          </>
+        )}
       </div>
     </main>
   );
