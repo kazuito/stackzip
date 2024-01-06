@@ -18,7 +18,7 @@ export function summarizeDownloads(data: any[]) {
 }
 
 export function formatNumberWithCommas(num: number): string | null {
-  if (!num) return null;
+  if (typeof num !== "number") return null;
 
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -44,6 +44,6 @@ export function parseGitHubUrl(url: string) {
 }
 
 export function isGitHubUrl(url: string) {
-  const newUrl = rmGitUrlPrefix(rmUrlProtocol(url));
+  const newUrl = rmUrlProtocol(rmGitUrlPrefix(url));
   return /^(?:github|ghub)\.com\//i.test(newUrl);
 }

@@ -1,6 +1,11 @@
-import { parseGitHubUrl } from "@/lib/utils/utils";
+import {
+  formatNumberWithCommas,
+  isGitHubUrl,
+  parseGitHubUrl,
+  rmGitUrlPrefix,
+} from "@/lib/utils/utils";
 
-describe("Parse GitHub URL", () => {
+describe("utils: parseGitHubUrl", () => {
   it("should return owner and repo", () => {
     const cases = [
       {
@@ -20,6 +25,60 @@ describe("Parse GitHub URL", () => {
 
       expect(owner).toBe(c.owner);
       expect(repo).toBe(c.repo);
+    });
+  });
+});
+
+describe("utils: formatNumberWithCommas", () => {
+  it("should return formatted number", () => {
+    const cases: Array<[number, string]> = [
+      [0, "0"],
+      [999, "999"],
+      [1000, "1,000"],
+      [33847294, "33,847,294"],
+      [-1234, "-1,234"],
+      [-33847294, "-33,847,294"],
+    ];
+
+    cases.forEach((c) => {
+      expect(formatNumberWithCommas(c[0])).toBe(c[1]);
+    });
+  });
+
+  it("should return null", () => {
+    const cases = [null, undefined, "string", {}, []];
+
+    cases.forEach((c) => {
+      expect(formatNumberWithCommas(c as any)).toBeNull();
+    });
+  });
+});
+
+describe("utils: rmGitUrlPrefix", () => {
+  it("should remove git url prefix", () => {
+    const cases: Array<[string, string]> = [
+      ["git+https://abc.com", "https://abc.com"],
+      ["git+http://abc.com", "http://abc.com"],
+      ["git@https://abc.com", "https://abc.com"],
+      ["git:https://abc.com", "https://abc.com"],
+    ];
+
+    cases.forEach((c) => {
+      expect(rmGitUrlPrefix(c[0])).toBe(c[1]);
+    });
+  });
+});
+
+describe("utils: isGitHubUrl", () => {
+  it("should detect github urls", () => {
+    const cases: Array<[string, boolean]> = [
+      ["https://github.com/abc/def", true],
+      ["git+https://github.com/abc/def", true],
+      ["git+https://ghub.com/abc/def", true],
+    ];
+
+    cases.forEach((c) => {
+      expect(isGitHubUrl(c[0])).toBe(c[1]);
     });
   });
 });
