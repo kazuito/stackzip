@@ -34,7 +34,7 @@ export default function Home() {
     icon: ReactNode;
   } | null>();
 
-  const { groups: libGroups, setFileContents } = useLibGroups();
+  const { groups: libGroups, setGroups, setFileContents } = useLibGroups();
 
   useEffect(() => {
     const q = params.get("q");
@@ -109,8 +109,9 @@ export default function Home() {
         name: repo,
       })
       .then((res) => {
-        setRepo(res.data);
         setError(null);
+        setGroups([]);
+        setRepo(res.data);
         setLoading(false);
       })
       .catch((err) => {

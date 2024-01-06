@@ -50,8 +50,6 @@ const usePackageJson = () => {
         name: string;
       }[] = [];
 
-      console.log("entries", entries);
-
       Promise.all(
         entries.map(async ({ name, version, icons }, entry_i) => {
           await getNpmRegistryData(name).then((data) => {
@@ -93,15 +91,11 @@ const usePackageJson = () => {
           });
         })
       ).then(() => {
-        console.log("before req", repos);
-
         axios
           .post("/api/gh/repos", {
             repos,
           })
           .then((res) => {
-            console.log(res.data);
-
             const repoDataList: RepoData[] = res.data;
 
             setGroups((prev) => {
@@ -139,7 +133,7 @@ const usePackageJson = () => {
     });
   }, [fileContents]);
 
-  return { groups, setFileContents };
+  return { groups, setGroups, setFileContents };
 };
 
 export default usePackageJson;
