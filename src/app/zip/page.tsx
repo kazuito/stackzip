@@ -10,13 +10,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Overview from "@/components/Overview";
 
 export default function Home() {
-  const [projectBasics, setProjectBasics] = useState<ProjectBasics>({
-    name: "",
-    owner: "",
-    type: "",
-    url: "",
-  });
-
   const [libGroups, setLibGroups] = useState<LibGroup[]>([]);
 
   const [libData, setLibData] = useState<LibItem>();
@@ -30,19 +23,6 @@ export default function Home() {
   const [repo, setRepo] = useState<GitHubRepo>();
 
   useEffect(() => {
-    if (!projectBasics.owner || !projectBasics.name) return;
-
-    axios
-      .post("/api/gh/repo", {
-        owner: projectBasics.owner,
-        name: projectBasics.name,
-      })
-      .then((res) => {
-        setRepo(res.data);
-      });
-  }, [projectBasics]);
-
-  useEffect(() => {
     const q = params.get("q");
 
     if (!q) return;
@@ -54,14 +34,26 @@ export default function Home() {
       return;
     }
 
-    const branch = "master";
+    axios
+      .post("/api/gh/repo", {
+        owner: owner,
+        name: repo,
+      })
+      .then((res) => {
+        setRepo(res.data);
+      });
+  }, [params.get("q")]);
+
+  useEffect(() => {
+    if (!repo) return;
+
     const path = "package.json";
 
     setIsLoading(true);
 
     axios
       .get(
-        `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`,
+        `https://raw.githubusercontent.com/${repo.full_name}/${repo.default_branch}/${path}`,
         {
           responseType: "text",
         }
@@ -72,13 +64,6 @@ export default function Home() {
           setLibData(res[0].items[0]);
           setIsLoading(false);
         });
-
-        setProjectBasics({
-          name: repo,
-          owner: owner,
-          type: "GitHub",
-          url: q,
-        });
       })
       .catch((err) => {
         // alert("Invalid URL");
@@ -87,7 +72,7 @@ export default function Home() {
         setLibData(undefined);
         setIsLoading(false);
       });
-  }, [params.get("q")]);
+  }, [repo]);
 
   const onSubmit = () => {
     const { owner, repo } = parseGitHubUrl(url);
@@ -123,7 +108,7 @@ export default function Home() {
         <LibDetails item={libData} />
       </div>
       <div className="row-start-2 col-start-2 pr-4 pb-4">
-        <Overview basics={projectBasics} repo={repo} />
+        <Overview repo={repo} />
         <LibList
           groups={libGroups}
           setLibData={setLibData}

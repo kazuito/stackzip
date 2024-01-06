@@ -3,12 +3,10 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 type Props = {
-  basics: ProjectBasics;
   repo?: GitHubRepo;
 };
 
-const Overview = ({ basics, repo }: Props) => {
-
+const Overview = ({ repo }: Props) => {
   return (
     <div className="mt-2">
       <div className="text-slate-200 text-2xl font-semibold flex items-center">
@@ -24,11 +22,11 @@ const Overview = ({ basics, repo }: Props) => {
             width={124}
             height={124}
           />
-          {basics.owner}
+          {repo?.owner.login}
         </a>
         <span className="text-slate-600 text-xl px-2">/</span>
         <a href={repo?.html_url} target="_blank">
-          {basics.name}
+          {repo?.name}
         </a>
       </div>
 
