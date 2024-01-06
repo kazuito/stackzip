@@ -33,7 +33,7 @@ export default async function parsePackageJson(
     );
 
     const packageRepos: RepoData[] = await axios
-      .post("/api/gh/repo", {
+      .post("/api/gh/repos", {
         repos: packageRegistries.map((d) => {
           const { owner, repo } = parseGitHubUrl(d?.lib?.repository?.url ?? "");
 

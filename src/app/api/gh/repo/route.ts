@@ -9,19 +9,17 @@ const octokit = new Octokit({
 export async function POST(req: Request) {
   const data = await req.json();
 
-  if (!data.repos) {
+  if (!data?.owner || !data?.name) {
     return NextResponse.json(
-      { error: "Please provide repos" },
+      { error: "Please provide repo info" },
       { status: 400 }
     );
   }
 
-  const { q, keys } = reposQuery(data.repos);
-
-  const res = await queryGitHubGQL(q);
-
-  return Response.json({
-    data: res,
-    keys,
+  const res = await octokit.request("GET /repos/{owner}/{repo}", {
+    owner: data.owner,
+    repo: data.name,
   });
+
+  return Response.json(res.data);
 }
