@@ -8,8 +8,8 @@ type Props = {
 
 const Overview = ({ repo }: Props) => {
   return (
-    <div className="mt-2">
-      <div className="text-slate-200 text-2xl font-semibold flex items-center">
+    <>
+      <div className="pt-4 pb-4 sticky top-0 bg-gradient-to-b from-slate-950 to-transparent text-slate-200 text-2xl font-semibold flex items-center">
         <a
           href={repo?.owner?.html_url}
           className="flex items-center"
@@ -29,13 +29,12 @@ const Overview = ({ repo }: Props) => {
           {repo?.name}
         </a>
       </div>
-
-      <div className="mt-4">
+      <div className="">
         <p className="text-slate-200 text-sm">
           {repo?.description ?? "No description"}
         </p>
       </div>
-    </div>
+    </>
   );
 };
 
