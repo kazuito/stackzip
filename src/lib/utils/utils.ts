@@ -17,7 +17,7 @@ export function summarizeDownloads(data: any[]) {
   return summary.reverse();
 }
 
-export function formatNumberWithCommas(num: number): string | null {
+export function formatNumberWithCommas(num?: number): string | null {
   if (typeof num !== "number") return null;
 
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -31,7 +31,7 @@ export function rmUrlProtocol(url = "") {
   return url.replace(/^(?:https?|git):\/\//i, "");
 }
 
-export function parseGitHubUrl(url: string) {
+export function parseGitHubUrl(url?: string) {
   if (!url) return { owner: "", repo: "" };
 
   url = url.replace(/#[^/]*$/, "");
@@ -45,5 +45,5 @@ export function parseGitHubUrl(url: string) {
 
 export function isGitHubUrl(url: string) {
   const newUrl = rmUrlProtocol(rmGitUrlPrefix(url));
-  return /^(?:github|ghub)\.com\//i.test(newUrl);
+  return /^(?:github|ghub)\.com/i.test(newUrl);
 }

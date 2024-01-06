@@ -1,0 +1,145 @@
+import { getNpmRegistryData } from "@/lib/utils/npm";
+import { isGitHubUrl, parseGitHubUrl } from "@/lib/utils/utils";
+import axios from "axios";
+import { kMaxLength } from "buffer";
+import { fchmod } from "fs";
+import { useEffect, useState } from "react";
+
+const groupNames = [
+  {
+    name: "peerDependencies",
+    displayName: "Peer Dependencies",
+  },
+  {
+    name: "dependencies",
+    displayName: "Dependencies",
+  },
+  {
+    name: "devDependencies",
+    displayName: "Dev Dependencies",
+  },
+];
+const usePackageJson = () => {
+  const [fileContents, setFileContents] = useState<string>("");
+  const [groups, setGroups] = useState<LibGroup[]>([]);
+
+  useEffect(() => {
+    let json: any = null;
+
+    try {
+      json = JSON.parse(fileContents);
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (!json) return;
+
+    setGroups([]);
+
+    groupNames.map((g) => {
+      if (!json[g.name]) return null;
+
+      const entries = Object.entries(json[g.name]).map(([name, version]) => {
+        return { name, version: version as string, icons: ["./npm.png"] };
+      });
+
+      setGroups((prev) => [...prev, { name: g.displayName, items: entries }]);
+
+      let repos: {
+        owner: string;
+        name: string;
+      }[] = [];
+
+      console.log("entries", entries);
+
+      Promise.all(
+        entries.map(async ({ name, version, icons }, entry_i) => {
+          await getNpmRegistryData(name).then((data) => {
+            const { owner, repo } = parseGitHubUrl(data?.repository?.url);
+            repos[entry_i] = { owner, name: repo };
+
+            const home = data?.homepage && new URL(data.homepage).origin;
+
+            const icons =
+              home && !isGitHubUrl(home)
+                ? [
+                    `${home}/favicon.ico`,
+                    `${home}/favicon.png`,
+                    `${home}/favicon.svg`,
+                    "./npm.png",
+                  ]
+                : ["./npm.png"];
+
+            setGroups((prev) => {
+              return prev.map((group) => {
+                if (group.name !== g.displayName) return group;
+
+                return {
+                  ...group,
+                  items: group.items.map((item) => {
+                    if (item.name !== name) return item;
+
+                    return {
+                      ...item,
+                      lib: data,
+                      icons: icons,
+                    };
+                  }),
+                };
+              });
+            });
+
+            return data;
+          });
+        })
+      ).then(() => {
+        console.log("before req", repos);
+
+        axios
+          .post("/api/gh/repos", {
+            repos,
+          })
+          .then((res) => {
+            console.log(res.data);
+
+            const repoDataList: RepoData[] = res.data;
+
+            setGroups((prev) => {
+              return prev.map((group) => {
+                if (group.name !== g.displayName) return group;
+
+                return {
+                  ...group,
+                  items: group.items.map((item, i) => {
+                    let thisRepo = repoDataList[i];
+
+                    if (!thisRepo) return item;
+
+                    let icons = item.icons;
+
+                    if (thisRepo.owner.__typename === "Organization") {
+                      icons = [
+                        ...icons.slice(0, icons.length - 1),
+                        thisRepo.owner.avatarUrl,
+                        ...icons.slice(icons.length - 1),
+                      ];
+                    }
+
+                    return {
+                      ...item,
+                      repo: thisRepo,
+                      icons: icons,
+                    };
+                  }),
+                };
+              });
+            });
+          });
+      });
+    });
+  }, [fileContents]);
+
+  return { groups, setFileContents };
+};
+
+export default usePackageJson;

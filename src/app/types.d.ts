@@ -6,9 +6,10 @@ type ProjectBasics = {
 };
 
 type LibItem = {
-  lib: LibData;
-  repo: RepoData;
-  usingVersion: string;
+  lib?: LibData;
+  repo?: RepoData;
+  name: string;
+  version: string;
   icons: string[];
 };
 
@@ -29,9 +30,9 @@ type RepoData = {
 };
 
 type LibData = {
+  name: string;
   _id: string;
   _rev: string;
-  name: string;
   "dist-tags": {
     [key: string]: string;
   };

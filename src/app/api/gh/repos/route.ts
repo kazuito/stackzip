@@ -1,22 +1,23 @@
 import { NextResponse } from "next/server";
-import queryGitHubGQL, { reposQuery } from "../gql/repo";
+import ghGQL, { reposQuery } from "../gql/repo";
 
 export async function POST(req: Request) {
-  const data = await req.json();
+  const body = await req.json();
 
-  if (!data.repos) {
+  if (!body.repos) {
     return NextResponse.json(
       { error: "Please provide repos" },
       { status: 400 }
     );
   }
 
-  const { q, keys } = reposQuery(data.repos);
+  const { q, keys } = reposQuery(body.repos);
 
-  const res = await queryGitHubGQL(q);
+  const res: any = await ghGQL(q);
 
-  return Response.json({
-    data: res,
-    keys,
-  });
+  return Response.json(
+    (body.repos as Array<any>).map((_, i) => {
+      return res.data[`_${i}`];
+    })
+  );
 }

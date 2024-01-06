@@ -63,7 +63,7 @@ const LibDetails = ({ item }: Props) => {
   const [preWeeklyDownloads, setPreWeeklyDownload] = useState<number>(0);
 
   useEffect(() => {
-    if (!item) return;
+    if (!item || !item.lib) return;
 
     setIconIndex(0);
 
@@ -80,11 +80,11 @@ const LibDetails = ({ item }: Props) => {
 
           setYearlyDownloads((prev) => ({
             ...prev,
-            [`${item.lib._id}`]: summarizedDownloads,
+            [`${item.lib?._id}`]: summarizedDownloads,
           }));
           setPreWeeklyDownload(weeklyDownloads);
           setWeeklyDownload(summarizedDownloads?.at(-1)?.downloads);
-          setCurrentDatasetId(item.lib._id);
+          setCurrentDatasetId(item?.lib?._id ?? "");
         })
         .catch((err) => {
           console.error(err);
@@ -107,13 +107,13 @@ const LibDetails = ({ item }: Props) => {
             setIconIndex(iconIndex + 1);
           }}
         />
-        <h2 className="font-mono text-slate-100">{item?.lib.name}</h2>
+        <h2 className="font-mono text-slate-100">{item?.lib?.name}</h2>
       </div>
       <p className="mt-6 leading-normal text-slate-200 break-words">
-        {item?.lib.description}
+        {item?.lib?.description}
       </p>
       <div className="flex flex-wrap gap-1 mt-6 -ml-1">
-        {item?.lib.keywords?.map((keyword, i) => {
+        {item?.lib?.keywords?.map((keyword, i) => {
           return (
             <Link
               href={`https://www.npmjs.com/search?q=keywords:${keyword}`}
@@ -188,35 +188,35 @@ const LibDetails = ({ item }: Props) => {
       <div className="flex flex-col gap-2 mt-4">
         <ItemWithIcon
           icon={<IconWorld size={20} />}
-          value={item?.lib.homepage}
-          href={item?.lib.homepage}
+          value={item?.lib?.homepage}
+          href={item?.lib?.homepage}
           tooltip="Homepage"
         />
         <ItemWithIcon
           icon={<IconBox size={20} />}
-          value={`${item?.lib._id}`}
-          href={`https://www.npmjs.com/package/${item?.lib._id}`}
+          value={`${item?.lib?._id}`}
+          href={`https://www.npmjs.com/package/${item?.lib?._id}`}
           tooltip="npm"
         />
         <ItemWithIcon
           icon={<IconCode size={20} />}
-          value={rmGitUrlPrefix(item?.lib.repository?.url)}
-          href={rmGitUrlPrefix(item?.lib.repository?.url)}
+          value={rmGitUrlPrefix(item?.lib?.repository?.url)}
+          href={rmGitUrlPrefix(item?.lib?.repository?.url)}
           tooltip="Git repository"
         />
         <ItemWithIcon
           icon={<IconCertificate size={20} />}
-          value={item?.lib.license}
+          value={item?.lib?.license}
           tooltip="License"
         />
         <ItemWithIcon
           icon={<IconRocket size={20} />}
-          value={dayjs(item?.lib.time.created).format("YYYY-MM-DD")}
+          value={dayjs(item?.lib?.time.created).format("YYYY-MM-DD")}
           tooltip="Created at"
         />
         <ItemWithIcon
           icon={<IconTool size={20} />}
-          value={dayjs(item?.lib.time.modified).format("YYYY-MM-DD")}
+          value={dayjs(item?.lib?.time.modified).format("YYYY-MM-DD")}
           tooltip="Last modified at"
         />
       </div>

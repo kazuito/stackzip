@@ -73,8 +73,12 @@ describe("utils: isGitHubUrl", () => {
   it("should detect github urls", () => {
     const cases: Array<[string, boolean]> = [
       ["https://github.com/abc/def", true],
+      ["http://github.com/abc/def", true],
       ["git+https://github.com/abc/def", true],
       ["git+https://ghub.com/abc/def", true],
+      ["https://abc.com/abc/def", false],
+      ["http://abc.com/abc/def", false],
+      ["git+https://abc.com/abc/def", false],
     ];
 
     cases.forEach((c) => {

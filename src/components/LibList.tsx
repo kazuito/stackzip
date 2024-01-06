@@ -85,18 +85,18 @@ const LibItem = ({
             setIconUrlIndex(iconUrlIndex + 1);
           }}
         />
-        <div className="font-mono text-slate-100 truncate">{item.lib.name}</div>
+        <div className="font-mono text-slate-100 truncate">{item.name}</div>
       </div>
       <div className="text-slate-400 text-sm mt-2.5 overflow-hidden h-10 shrink-0">
-        {item.lib.description}
+        {item.lib?.description}
       </div>
       <div className="flex gap-4 mt-2.5 h-full text-slate-500 text-xs justify-self-end">
         {/* <span>{item.lib.license || "N/A"}</span> */}
         <span className="flex gap-1 items-center">
           <IconStar size={10} />
-          {formatNumberWithCommas(item?.repo?.stargazerCount) || "-"}
+          {formatNumberWithCommas(item.repo?.stargazerCount) || "-"}
         </span>
-        <span className="ml-auto font-mono">{item.usingVersion}</span>
+        <span className="ml-auto font-mono">{item.version}</span>
       </div>
     </div>
   );

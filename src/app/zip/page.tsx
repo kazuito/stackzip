@@ -14,9 +14,10 @@ import {
   IconMoodLookDown,
   IconMoodSad,
 } from "@tabler/icons-react";
+import useLibGroups from "../hooks/usePackageJson";
 
 export default function Home() {
-  const [libGroups, setLibGroups] = useState<LibGroup[]>([]);
+  // const [libGroups, setLibGroups] = useState<LibGroup[]>([]);
 
   const [libData, setLibData] = useState<LibItem>();
 
@@ -32,6 +33,8 @@ export default function Home() {
     message: ReactNode;
     icon: ReactNode;
   } | null>();
+
+  const { groups: libGroups, setFileContents } = useLibGroups();
 
   useEffect(() => {
     const q = params.get("q");
@@ -55,16 +58,18 @@ export default function Home() {
         }
       )
       .then((res) => {
-        parsePackageJson(res.data as string).then((res) => {
-          setLibGroups(res);
-          setLibData(res[0].items[0]);
-          setLoading(false);
-        });
+        setFileContents(res.data as string);
+
+        setLoading(false);
+        // parsePackageJson(res.data as string).then((res) => {
+        // setLibGroups(res);
+        //   setLibData(res[0].items[0]);
+        // });
       })
       .catch((err) => {
         // alert("Invalid URL");
         console.error(err);
-        setLibGroups([]);
+        // setLibGroups([]);
         setLibData(undefined);
         setLoading(false);
       });

@@ -27,10 +27,11 @@ const reposQuery = (repos: { owner: string; name: string }[]) => {
       .map(
         (r, i) =>
           `
-        ${keys[i]}: repository(owner: "${r.owner}", name: "${r.name}") {
+        _${i}: repository(owner: "${r.owner}", name: "${r.name}") {
           owner {
             __typename
             avatarUrl
+            login
           }
           name
           createdAt
