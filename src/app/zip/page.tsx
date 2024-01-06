@@ -91,28 +91,32 @@ export default function Home() {
 
   return (
     <main className="grid grid-cols-[max(30%,400px),auto] grid-rows-[auto,1fr]">
-      <div className="row-start-1 row-end-2 col-start-2 flex gap-2 max-w-xl mx-auto p-4 h-fit w-full">
+      <form
+        className="row-start-1 row-end-2 col-start-2 flex gap-2 max-w-xl mx-auto h-fit w-full grow py-4 ml-0"
+        onSubmit={(e) => {
+          e.preventDefault();
+          submit();
+        }}
+      >
         <input
           type="text"
-          className="bg-slate-800 py-3 px-5 text-slate-100 text-base rounded-lg font-mono w-full"
+          className="bg-slate-800 py-3 px-5 text-slate-100 text-base rounded-lg w-full"
           value={url}
+          placeholder="Enter GitHub URL or paste package.json content"
           onChange={(e) => {
             setUrl(e.target.value);
           }}
         />
-        <button
-          onClick={() => submit()}
-          className="text-white py-3 px-5 text-sm font-semibold text-nowrap bg-blue-700 rounded-lg active:scale-95"
-        >
-          Let's Go
+        <button className="text-white py-3 px-5 text-sm font-semibold text-nowrap bg-blue-700 rounded-lg active:scale-95">
+          Zip
         </button>
-      </div>
+      </form>
 
       <div className="row-start-1 row-span-2 col-start-1 p-4">
         <LibDetails item={libData} />
       </div>
       <div className="row-start-2 col-start-2 pr-4 pb-4">
-        <Overview repo={repo} />
+        {repo && <Overview repo={repo} />}
         <LibList
           groups={libGroups}
           setLibData={setLibData}
