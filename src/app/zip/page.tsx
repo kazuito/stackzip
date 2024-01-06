@@ -27,22 +27,9 @@ export default function Home() {
 
     if (!q) return;
 
-    const { owner, repo } = parseGitHubUrl(q);
-
-    if (!owner || !repo) {
-      alert("Invalid URL");
-      return;
-    }
-
-    axios
-      .post("/api/gh/repo", {
-        owner: owner,
-        name: repo,
-      })
-      .then((res) => {
-        setRepo(res.data);
-      });
-  }, [params.get("q")]);
+    submit(true);
+    setUrl(q);
+  }, []);
 
   useEffect(() => {
     if (!repo) return;
@@ -74,7 +61,7 @@ export default function Home() {
       });
   }, [repo]);
 
-  const onSubmit = () => {
+  const submit = (first = false) => {
     const { owner, repo } = parseGitHubUrl(url);
 
     if (!owner || !repo) {
@@ -82,7 +69,24 @@ export default function Home() {
       return;
     }
 
-    router.push(`zip/?q=${url}`);
+    if (!first && url === params.get("q")) {
+      return;
+    }
+
+    axios
+      .post("/api/gh/repo", {
+        owner: owner,
+        name: repo,
+      })
+      .then((res) => {
+        setRepo(res.data);
+        router.push(`zip/?q=${url}`);
+      })
+      .catch((err) => {
+        alert("Repo not found");
+        router.push("/zip");
+        console.error(err);
+      });
   };
 
   return (
@@ -97,7 +101,7 @@ export default function Home() {
           }}
         />
         <button
-          onClick={onSubmit}
+          onClick={() => submit()}
           className="text-white py-3 px-5 text-sm font-semibold text-nowrap bg-blue-700 rounded-lg active:scale-95"
         >
           Let's Go
