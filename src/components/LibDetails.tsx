@@ -141,7 +141,7 @@ const LibDetails = ({ item }: Props) => {
       <div className="flex gap-3 items-center sticky top-0 py-4 px-3 rounded-xl ml-1 bg-gradient-to-b from-slate-800 to-transparent">
         <img
           src={item?.icons[iconIndex]}
-          className="w-6 h-6 rounded-md"
+          className="w-6 h-6 rounded-md shrink-0"
           onError={(e) => {
             e.preventDefault();
             setIconIndex(iconIndex + 1);
