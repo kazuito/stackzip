@@ -52,8 +52,14 @@ type Props = {
 const LibDetails = ({ item }: Props) => {
   // const iconUrl = useLibIcon(data?.homepage);
   const [iconIndex, setIconIndex] = useState(0);
-  const [yearlyDownloads, setYearlyDownloads] = useState<any>([]);
-  const [weeklyDownloads, setWeeklyDownload] = useState<number>(0);
+  const [yearlyDownloads, setYearlyDownloads] = useState<{
+    [key: string]: {
+      dayEnd: string;
+      downloads: number;
+    }[];
+  }>({});
+  const [currentDatasetId, setCurrentDatasetId] = useState<string>("");
+  const [weeklyDownloads, setWeeklyDownload] = useState(0);
   const [preWeeklyDownloads, setPreWeeklyDownload] = useState<number>(0);
 
   useEffect(() => {
@@ -61,20 +67,33 @@ const LibDetails = ({ item }: Props) => {
 
     setIconIndex(0);
 
-    axios
-      .get(`https://api.npmjs.org/downloads/range/last-year/${item.lib._id}`, {
-        responseType: "json",
-      })
-      .then((res) => {
-        const summarizedDownloads = summarizeDownloads(res.data.downloads);
+    if (!(item.lib._id in yearlyDownloads)) {
+      axios
+        .get(
+          `https://api.npmjs.org/downloads/range/last-year/${item.lib._id}`,
+          {
+            responseType: "json",
+          }
+        )
+        .then((res) => {
+          const summarizedDownloads = summarizeDownloads(res.data.downloads);
 
-        setYearlyDownloads(summarizedDownloads);
-        setPreWeeklyDownload(weeklyDownloads);
-        setWeeklyDownload(summarizedDownloads?.at(-1)?.downloads);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+          setYearlyDownloads((prev) => ({
+            ...prev,
+            [`${item.lib._id}`]: summarizedDownloads,
+          }));
+          setPreWeeklyDownload(weeklyDownloads);
+          setWeeklyDownload(summarizedDownloads?.at(-1)?.downloads);
+          setCurrentDatasetId(item.lib._id);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      setPreWeeklyDownload(weeklyDownloads);
+      setWeeklyDownload(yearlyDownloads[item.lib._id]?.at(-1)?.downloads ?? 0);
+      setCurrentDatasetId(item.lib._id);
+    }
   }, [item]);
 
   return (
@@ -147,10 +166,12 @@ const LibDetails = ({ item }: Props) => {
               },
             }}
             data={{
-              labels: yearlyDownloads.map((item: any) => ""),
+              labels: yearlyDownloads[currentDatasetId]?.map((item: any) => ""),
               datasets: [
                 {
-                  data: yearlyDownloads.map((item: any) => item.downloads),
+                  data: yearlyDownloads[currentDatasetId]?.map(
+                    (item: any) => item.downloads
+                  ),
                   fill: true,
                   tension: 0.5,
                   pointRadius: 0,
