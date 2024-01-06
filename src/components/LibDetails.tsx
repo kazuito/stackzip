@@ -149,7 +149,7 @@ const LibDetails = ({ item }: Props) => {
         />
         <h2 className="font-mono text-slate-100">{item?.lib?.name}</h2>
       </div>
-      <div className="px-3.5 py-4 sticky bottom-0">
+      <div className="px-3.5 py-4">
         <div className="text-slate-300 flex gap-3 my-2 mt-auto items-center pl-2">
           <div className="flex flex-col gap-1">
             <div className="text-xs gap-1 flex items-center text-slate-500">
