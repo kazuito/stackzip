@@ -4,6 +4,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { formatNumberWithCommas } from "@/lib/utils/utils";
 import { IconStar } from "@tabler/icons-react";
+import CountUp from "react-countup";
 
 type Props = {
   groups: LibGroup[];
@@ -94,7 +95,11 @@ const LibItem = ({
         {/* <span>{item.lib.license || "N/A"}</span> */}
         <span className="flex gap-1 items-center">
           <IconStar size={10} />
-          {formatNumberWithCommas(item.repo?.stargazerCount) || "-"}
+          {item.repo?.stargazerCount ? (
+            <CountUp end={item.repo?.stargazerCount} />
+          ) : (
+            "-"
+          )}
         </span>
         <span className="ml-auto font-mono">{item.version}</span>
       </div>
