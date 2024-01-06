@@ -22,11 +22,15 @@ type RepoData = {
   owner: {
     __typename: string;
     avatarUrl: string;
+    login: string;
   };
   name: string;
   createdAt: string;
   updatedAt: string;
   stargazerCount: number;
+  defaultBranchRef: {
+    name: string;
+  };
 };
 
 type LibData = {

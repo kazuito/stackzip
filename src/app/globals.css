@@ -1,3 +1,119 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Additional vertical padding used by kbd tag. */
+/* .py-05 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+} */
+
+@layer components {
+  .markdown * {
+    @apply !break-all text-sm;
+  }
+  .markdown {
+    @apply text-gray-900 leading-normal break-words;
+  }
+
+  .markdown > * + * {
+    @apply mt-0 mb-4;
+  }
+
+  .markdown li + li {
+    @apply mt-1;
+  }
+
+  .markdown li > p + p {
+    @apply mt-6;
+  }
+
+  .markdown strong {
+    @apply font-semibold;
+  }
+
+  .markdown a {
+    @apply text-blue-600 font-semibold inline-block;
+  }
+
+  .markdown strong a {
+    @apply font-bold;
+  }
+
+  .markdown h1 {
+    @apply leading-tight border-b border-slate-500 text-xl font-semibold mb-4 mt-6 pb-2;
+  }
+
+  .markdown h2 {
+    @apply leading-tight border-b border-slate-500 text-lg font-semibold mb-4 mt-6 pb-2;
+  }
+
+  .markdown h3 {
+    @apply leading-snug text-lg font-semibold mb-4 mt-6;
+  }
+
+  .markdown h4 {
+    @apply leading-none text-base font-semibold mb-4 mt-6;
+  }
+
+  .markdown h5 {
+    @apply leading-tight text-sm font-semibold mb-4 mt-6;
+  }
+
+  .markdown h6 {
+    @apply leading-tight text-sm font-semibold text-gray-600 mb-4 mt-6;
+  }
+
+  .markdown blockquote {
+    @apply border-l-4 border-slate-400 px-4 text-slate-400;
+  }
+
+  .markdown ul {
+    @apply text-base pl-4 list-disc;
+  }
+
+  .markdown ol {
+    @apply text-base pl-4 list-decimal;
+  }
+
+  .markdown kbd {
+    @apply text-xs inline-block rounded border px-1 py-0.5 align-middle font-normal font-mono shadow;
+  }
+
+  .markdown table {
+    @apply rounded-md border-spacing-0 border-separate border border-slate-900 shadow-md;
+  }
+
+  .markdown th {
+    @apply py-1 px-3;
+  }
+
+  .markdown td {
+    @apply p-2;
+  }
+
+  .markdown img {
+    @apply rounded-md;
+  }
+
+  /* Override pygments style background color. */
+  .markdown :is(pre, code) {
+    @apply bg-slate-900 rounded-md text-xs text-slate-400;
+  }
+
+  .markdown pre {
+    @apply p-2 block overflow-auto;
+  }
+
+  .markdown code {
+    @apply py-0.5 px-1 inline-block;
+  }
+
+  .markdown summary + * {
+    @apply mt-2;
+  }
+
+  .markdown hr {
+    @apply border-slate-500 rounded-md;
+  }
+}

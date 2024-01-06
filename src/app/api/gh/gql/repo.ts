@@ -37,6 +37,9 @@ const reposQuery = (repos: { owner: string; name: string }[]) => {
           createdAt
           updatedAt
           stargazerCount
+          defaultBranchRef {
+            name
+          }
         }`
       )
       .join("\n")}
