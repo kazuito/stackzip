@@ -4,23 +4,10 @@ import { useEffect, useState } from "react";
 
 type Props = {
   basics: ProjectBasics;
+  repo?: GitHubRepo;
 };
 
-const Overview = ({ basics }: Props) => {
-  const [repo, setRepo] = useState<any>();
-
-  useEffect(() => {
-    if (!basics.owner || !basics.name) return;
-
-    axios
-      .post("/api/gh/repo", {
-        owner: basics.owner,
-        name: basics.name,
-      })
-      .then((res) => {
-        setRepo(res.data);
-      });
-  }, [basics]);
+const Overview = ({ basics, repo }: Props) => {
 
   return (
     <div className="mt-2">

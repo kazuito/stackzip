@@ -27,6 +27,21 @@ export default function Home() {
   const params = useSearchParams();
   const [url, setUrl] = useState(params.get("q") || "");
 
+  const [repo, setRepo] = useState<GitHubRepo>();
+
+  useEffect(() => {
+    if (!projectBasics.owner || !projectBasics.name) return;
+
+    axios
+      .post("/api/gh/repo", {
+        owner: projectBasics.owner,
+        name: projectBasics.name,
+      })
+      .then((res) => {
+        setRepo(res.data);
+      });
+  }, [projectBasics]);
+
   useEffect(() => {
     const q = params.get("q");
 
@@ -108,7 +123,7 @@ export default function Home() {
         <LibDetails item={libData} />
       </div>
       <div className="row-start-2 col-start-2 pr-4 pb-4">
-        <Overview basics={projectBasics} />
+        <Overview basics={projectBasics} repo={repo} />
         <LibList
           groups={libGroups}
           setLibData={setLibData}
