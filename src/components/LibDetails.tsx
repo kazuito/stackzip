@@ -21,6 +21,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import {
+  dayDiffText,
   rmGitUrlPrefix,
   rmUrlProtocol,
   summarizeDownloads,
@@ -241,12 +242,12 @@ const LibDetails = ({ item }: Props) => {
           />
           <ItemWithIcon
             icon={<IconRocket size={20} />}
-            value={dayjs(item?.lib?.time.created).format("YYYY-MM-DD")}
+            value={dayDiffText(dayjs(item?.lib?.time.created), dayjs())}
             tooltip="Created at"
           />
           <ItemWithIcon
             icon={<IconTool size={20} />}
-            value={dayjs(item?.lib?.time.modified).format("YYYY-MM-DD")}
+            value={dayDiffText(dayjs(item?.lib?.time.modified), dayjs())}
             tooltip="Last modified at"
           />
         </div>
