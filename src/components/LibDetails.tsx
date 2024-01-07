@@ -142,7 +142,7 @@ const LibDetails = ({ item }: Props) => {
   return (
     <div className="flex flex-col bg-slate-800 rounded-lg w-full h-[calc(100vh-2rem)] sticky top-4 shrink-0 overflow-y-auto overscroll-contain">
       <div className="h-2 w-full shrink-0"></div>
-      <div className="flex gap-3 items-center sticky top-0 py-4 px-3 rounded-xl ml-1 bg-gradient-to-b from-slate-800 to-transparent">
+      <div className="z-10 flex gap-3 items-center sticky top-0 py-4 px-3 rounded-xl ml-1 bg-gradient-to-b from-slate-800 to-transparent">
         <img
           src={item?.icons[iconIndex]}
           className="w-6 h-6 rounded-md shrink-0"
