@@ -107,11 +107,12 @@
   /* Override pygments style background color. */
   .markdown :is(pre, code) {
     @apply bg-slate-900 rounded-md text-slate-400;
-    font-size: smaller !important;
+    font-size: smaller;
   }
 
+  .markdown pre > code,
   .markdown code * {
-    font-size: inherit !important;
+    font-size: inherit;
   }
 
   .markdown code {

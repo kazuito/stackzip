@@ -31,6 +31,9 @@ import remarkGfm from "remark-gfm";
 import remarkHtml from "remark-html";
 import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
+import CodeCopyBtn from "./CodeCopyBtn";
+import { cn } from "@/lib/utils";
+import { v4 as uuid } from "uuid";
 
 ChartJS.register(
   CategoryScale,
@@ -271,6 +274,22 @@ const LibDetails = ({ item }: Props) => {
           rehypePlugins={[rehypeRaw, rehypeHighlight]}
           remarkRehypeOptions={{ allowDangerousHtml: true }}
           className="markdown text-slate-300"
+          components={{
+            pre: ({ node, children, className, ...props }) => {
+              console.log(node?.children[0]);
+
+              const id = "pre-" + uuid();
+
+              return (
+                <div className="relative group">
+                  <CodeCopyBtn targetId={id} />
+                  <pre {...props} id={id}>
+                    {children}
+                  </pre>
+                </div>
+              );
+            },
+          }}
         >
           {readmes[`${item?.repo?.owner.login}/${item?.repo?.name}`]}
         </Markdown>
