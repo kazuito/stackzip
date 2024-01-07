@@ -28,6 +28,10 @@
     @apply mt-6;
   }
 
+  .markdown li > * + * {
+    @apply mt-2;
+  }
+
   .markdown strong {
     @apply font-semibold;
   }
@@ -115,7 +119,19 @@
     @apply p-0;
   }
 
+  .markdown summary {
+    @apply cursor-pointer;
+  }
+
   .markdown summary + * {
+    @apply mt-2;
+  }
+
+  .markdown details p + p {
+    @apply mt-6;
+  }
+
+  .markdown details * + table {
     @apply mt-2;
   }
 
