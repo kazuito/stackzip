@@ -275,11 +275,23 @@ const LibDetails = ({ item }: Props) => {
           remarkRehypeOptions={{ allowDangerousHtml: true }}
           className="markdown text-slate-300"
           components={{
+            img: ({ node, ...props }) => {
+              const src: string = String(node?.properties.src);
+
+              if (!src || /^https?/.test(src)) {
+                return <img {...props} />;
+              }
+
+              const newSrc = `https://raw.githubusercontent.com/${
+                item?.repo?.owner.login
+              }/${item?.repo?.name}/${
+                item?.repo?.defaultBranchRef.name
+              }/${src.replace(/^\./, "")}`;
+
+              return <img {...props} src={newSrc} />;
+            },
             pre: ({ node, children, className, ...props }) => {
-              console.log(node?.children[0]);
-
               const id = "pre-" + uuid();
-
               return (
                 <div className="relative group">
                   <CodeCopyBtn targetId={id} />
