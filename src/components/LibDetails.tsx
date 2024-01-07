@@ -30,6 +30,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkHtml from "remark-html";
 import rehypeRaw from "rehype-raw";
+import rehypeHighlight from "rehype-highlight";
 
 ChartJS.register(
   CategoryScale,
@@ -267,7 +268,7 @@ const LibDetails = ({ item }: Props) => {
         </div>
         <Markdown
           remarkPlugins={[remarkHtml, remarkGfm]}
-          rehypePlugins={[rehypeRaw]}
+          rehypePlugins={[rehypeRaw, rehypeHighlight]}
           remarkRehypeOptions={{ allowDangerousHtml: true }}
           className="markdown text-slate-300"
         >

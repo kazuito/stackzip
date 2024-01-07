@@ -24,6 +24,10 @@
     @apply mt-1;
   }
 
+  .markdown li::marker {
+    @apply text-xs;
+  }
+
   .markdown li > p + p {
     @apply mt-6;
   }
@@ -103,7 +107,11 @@
   /* Override pygments style background color. */
   .markdown :is(pre, code) {
     @apply bg-slate-900 rounded-md text-slate-400;
-    font-size: smaller;
+    font-size: smaller !important;
+  }
+
+  .markdown code * {
+    font-size: inherit !important;
   }
 
   .markdown code {
