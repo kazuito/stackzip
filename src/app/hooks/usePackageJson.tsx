@@ -27,7 +27,7 @@ const usePackageJson = () => {
     try {
       json = JSON.parse(fileContents);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     if (!json) return;

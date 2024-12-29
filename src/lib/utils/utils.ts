@@ -61,8 +61,6 @@ export function dayDiffText(start?: Dayjs, end?: Dayjs) {
 
   const diff = end.diff(start, "hour");
 
-  console.log(diff);
-
   let [val, unit] = ((): [number | null, string] => {
     if (diff < 24) return [diff, "hour"];
     if (diff < 48) return [null, "day"];
