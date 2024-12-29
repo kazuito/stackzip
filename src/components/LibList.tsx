@@ -19,10 +19,10 @@ const LibList = ({ groups, setLibData }: Props) => {
         return (
           <div key={i}>
             <h3 className="pb-2 space-x-2">
-              <span className="text-lg font-semibold text-slate-400">
+              <span className="text-lg font-semibold text-zinc-400">
                 {group.name}
               </span>
-              <span className="text-sm text-slate-600">
+              <span className="text-sm text-zinc-600">
                 {group.items.length} packages
               </span>
             </h3>
@@ -64,8 +64,8 @@ const LibItem = ({
   return (
     <div
       className={cn(
-        "flex flex-col p-4 pb-2 rounded-lg bg-slate-800 cursor-pointer transition-all active:scale-[0.98] hover:bg-slate-700 lg:min-h-32",
-        props.isActive && "!bg-blue-800 hover:!bg-blue-700"
+        "flex flex-col p-4 pb-2 rounded-lg bg-zinc-800 cursor-pointer transition-all active:scale-[0.98] hover:bg-zinc-700 lg:min-h-32",
+        props.isActive && "ring-2 ring-white/40 hover:ring-white/60"
       )}
       onClick={() => {
         props.setLibData(item);
@@ -83,12 +83,12 @@ const LibItem = ({
             setIconUrlIndex(iconUrlIndex + 1);
           }}
         />
-        <div className="font-mono text-slate-100 truncate">{item.name}</div>
+        <div className="font-mono text-zinc-100 truncate">{item.name}</div>
       </div>
-      <div className="text-slate-400 text-sm mt-2.5 overflow-hidden h-10 shrink-0">
+      <div className="text-zinc-400 text-sm mt-2.5 overflow-hidden h-10 shrink-0">
         {item.lib?.description}
       </div>
-      <div className="flex gap-4 mt-2.5 h-full text-slate-500 text-xs justify-self-end">
+      <div className="flex gap-4 mt-2.5 h-full text-zinc-500 text-xs justify-self-end">
         {/* <span>{item.lib.license || "N/A"}</span> */}
         <span className="flex gap-1 items-center">
           <IconStar size={10} />

@@ -140,9 +140,9 @@ const LibDetails = ({ item }: Props) => {
   }, [item]);
 
   return (
-    <div className="flex flex-col bg-slate-800 rounded-lg w-full h-[calc(100vh-2rem)] sticky top-4 shrink-0 overflow-y-auto overscroll-contain">
+    <div className="flex flex-col bg-zinc-800 rounded-lg w-full h-[calc(100vh-2rem)] sticky top-4 shrink-0 overflow-y-auto overscroll-contain">
       <div className="h-2 w-full shrink-0"></div>
-      <div className="z-10 flex gap-3 items-center sticky top-0 py-4 px-3 rounded-xl ml-1 bg-gradient-to-b from-slate-800 to-transparent">
+      <div className="z-10 flex gap-3 items-center sticky top-0 py-4 px-3 rounded-xl ml-1 bg-gradient-to-b from-zinc-800 to-transparent">
         <img
           src={item?.icons[iconIndex]}
           className="w-6 h-6 rounded-md shrink-0"
@@ -151,12 +151,12 @@ const LibDetails = ({ item }: Props) => {
             setIconIndex(iconIndex + 1);
           }}
         />
-        <h2 className="font-mono text-slate-100">{item?.lib?.name}</h2>
+        <h2 className="font-mono text-zinc-100">{item?.lib?.name}</h2>
       </div>
       <div className="px-3.5 py-4">
-        <div className="text-slate-300 flex gap-3 my-2 mt-auto items-center pl-2">
+        <div className="text-zinc-300 flex gap-3 my-2 mt-auto items-center pl-2">
           <div className="flex flex-col gap-1">
-            <div className="text-xs gap-1 flex items-center text-slate-500">
+            <div className="text-xs gap-1 flex items-center text-zinc-500">
               <IconDownload size={14} />
               <div className="whitespace-nowrap">Weekly downloads</div>
             </div>
@@ -252,7 +252,7 @@ const LibDetails = ({ item }: Props) => {
         </div>
       </div>
       <div className="px-3.5 mt-4">
-        <p className="leading-normal text-slate-200 break-words">
+        <p className="leading-normal text-zinc-200 break-words">
           {item?.lib?.description}
         </p>
         <div className="flex flex-wrap gap-1 py-6 -ml-1">
@@ -262,7 +262,7 @@ const LibDetails = ({ item }: Props) => {
                 href={`https://www.npmjs.com/search?q=keywords:${keyword}`}
                 target="_blank"
                 key={i}
-                className="text-slate-500 bg-slate-900 py-1 px-2 text-xs rounded-md hover:underline cursor-pointer"
+                className="text-zinc-500 bg-zinc-900 py-1 px-2 text-xs rounded-md hover:underline cursor-pointer"
               >
                 {keyword}
               </Link>
@@ -273,7 +273,7 @@ const LibDetails = ({ item }: Props) => {
           remarkPlugins={[remarkHtml, remarkGfm]}
           rehypePlugins={[rehypeRaw, rehypeHighlight]}
           remarkRehypeOptions={{ allowDangerousHtml: true }}
-          className="markdown text-slate-300"
+          className="markdown text-zinc-300"
           components={{
             img: ({ node, ...props }) => {
               const src: string = String(node?.properties.src);
@@ -322,7 +322,7 @@ const ItemWithIcon = (props: {
     return (
       <Link
         href={props.href ?? ""}
-        className="flex gap-2 items-center group w-fit truncate max-w-[100%] text-slate-400 hover:text-slate-100"
+        className="flex gap-2 items-center group w-fit truncate max-w-[100%] text-zinc-400 hover:text-zinc-100"
         target="_blank"
       >
         <div className="shrink-0">{props.icon}</div>
@@ -333,7 +333,7 @@ const ItemWithIcon = (props: {
     );
 
   return (
-    <div className="flex gap-2 items-center group w-fit truncate max-w-[100%] text-slate-400 hover:text-slate-100">
+    <div className="flex gap-2 items-center group w-fit truncate max-w-[100%] text-zinc-400 hover:text-zinc-100">
       <div className="shrink-0">{props.icon}</div>
       <div className="truncate font-mono text-sm">{props.value}</div>
     </div>

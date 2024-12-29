@@ -25,7 +25,7 @@ const CodeCopyBtn = ({ targetId }: Props) => {
   return (
     <button
       className={cn(
-        "absolute right-1.5 top-1.5 p-1.5 bg-slate-900 bg-opacity-50 rounded-md opacity-0 group-hover:opacity-100 transition-all text-slate-400 hover:text-slate-300 active:scale-90",
+        "absolute right-1.5 top-1.5 p-1.5 bg-zinc-900 bg-opacity-50 rounded-md opacity-0 group-hover:opacity-100 transition-all text-zinc-400 hover:text-zinc-300 active:scale-90",
         copied && "!opacity-100 scale-[1.15] active:scale-[1.1]"
       )}
       onClick={copy}

@@ -75,7 +75,7 @@ export default function Home() {
         message:
           query.length > 0 ? (
             <>
-              <span className="text-slate-600">{query}</span>{" "}
+              <span className="text-zinc-600">{query}</span>{" "}
               <span className="text-nowrap">is invalid input</span>
             </>
           ) : (
@@ -119,7 +119,7 @@ export default function Home() {
   return (
     <main className="grid grid-cols-[max(30%,400px),auto] grid-rows-[auto,1fr]">
       <form
-        className="row-start-1 row-end-2 col-start-2 flex gap-2 max-w-xl mx-auto h-fit w-full grow py-4 ml-0"
+        className="row-start-1 row-end-2 col-start-2 flex gap-2 h-fit w-full grow py-4 ml-0 pr-4"
         onSubmit={(e) => {
           e.preventDefault();
           submit();
@@ -127,14 +127,14 @@ export default function Home() {
       >
         <input
           type="text"
-          className="bg-slate-800 py-3 px-5 text-slate-100 text-base rounded-lg w-full"
+          className="bg-zinc-800 py-2.5 px-4 text-zinc-100 text-base rounded-lg w-full outline-none"
           value={query}
-          placeholder="Enter GitHub URL or paste package.json content"
+          placeholder="Enter GitHub repository"
           onChange={(e) => {
             setQuery(e.target.value);
           }}
         />
-        <button className="text-white py-3 px-5 text-sm font-semibold text-nowrap bg-blue-700 rounded-lg active:scale-95">
+        <button className="text-black font-semibold text-sm py-2 px-5 text-nowrap bg-white rounded-lg hover:bg-opacity-90">
           Zip
         </button>
       </form>
@@ -144,12 +144,12 @@ export default function Home() {
       </div>
       <div className="row-start-2 col-start-2 pr-4 pb-4">
         {loading && (
-          <div className="text-slate-500 animate-pulse font-medium text-center mt-20">
+          <div className="text-zinc-500 animate-pulse font-medium text-center mt-20">
             Loading...
           </div>
         )}
         {!loading && error && (
-          <div className="mt-20 text-slate-500 flex flex-col items-center gap-4 max-w-md break-all mx-auto px-4 text-center">
+          <div className="mt-20 text-zinc-500 flex flex-col items-center gap-4 max-w-md break-all mx-auto px-4 text-center">
             {error.icon}
             <div className="font-medium">{error.message}</div>
           </div>
