@@ -15,7 +15,7 @@ import {
 import axios from "axios";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import useLibGroups from "../hooks/usePackageJson";
 
 export default function Home() {
@@ -34,7 +34,14 @@ export default function Home() {
     icon: ReactNode;
   } | null>();
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const { groups: libGroups, setGroups, setFileContents } = useLibGroups();
+
+  const handleResetQuery = () => {
+    setQuery("");
+    inputRef.current?.focus();
+  };
 
   useEffect(() => {
     const q = params.get("q");
@@ -139,6 +146,7 @@ export default function Home() {
               <IconSearch size={20} />
             </div>
             <input
+              ref={inputRef}
               type="text"
               className="bg-zinc-800 py-2.5 px-3 text-zinc-100 text-base rounded-lg w-full outline-none"
               value={query}
@@ -150,7 +158,7 @@ export default function Home() {
             <button
               type="button"
               className="absolute right-1.5 hover:bg-zinc-700 p-1.5 rounded-md group-hover:opacity-100 group-focus-within:opacity-100 opacity-0 transition-all"
-              onClick={() => setQuery("")}
+              onClick={handleResetQuery}
             >
               <IconX size={20} className="text-white" />
             </button>
