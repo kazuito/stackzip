@@ -4,8 +4,16 @@ import LibDetails from "@/components/LibDetails";
 import LibList from "@/components/LibList";
 import Overview from "@/components/Overview";
 import { parseQuery } from "@/lib/utils/utils";
-import { IconGitBranchDeleted, IconMoodSad } from "@tabler/icons-react";
+import {
+  IconBrandGithub,
+  IconCoffee,
+  IconGitBranchDeleted,
+  IconMoodSad,
+  IconSearch,
+  IconX,
+} from "@tabler/icons-react";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import useLibGroups from "../hooks/usePackageJson";
@@ -118,26 +126,49 @@ export default function Home() {
 
   return (
     <main className="grid grid-cols-[max(30%,400px),auto] grid-rows-[auto,1fr]">
-      <form
-        className="row-start-1 row-end-2 col-start-2 flex gap-2 h-fit w-full grow py-4 ml-0 pr-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          submit();
-        }}
-      >
-        <input
-          type="text"
-          className="bg-zinc-800 py-2.5 px-4 text-zinc-100 text-base rounded-lg w-full outline-none"
-          value={query}
-          placeholder="Enter GitHub repository"
-          onChange={(e) => {
-            setQuery(e.target.value);
+      <div className="row-start-1 row-end-2 col-start-2 flex gap-4 w-full py-3.5 pr-4 items-center">
+        <form
+          className="flex w-full gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            submit();
           }}
-        />
-        <button className="text-black font-semibold text-sm py-2 px-5 text-nowrap bg-white rounded-lg hover:bg-opacity-90">
-          Zip
-        </button>
-      </form>
+        >
+          <label className="flex bg-zinc-800 relative items-center rounded-lg w-full focus-within:ring-2 ring-zinc-600 group">
+            <div className="pl-3 text-zinc-500">
+              <IconSearch size={20} />
+            </div>
+            <input
+              type="text"
+              className="bg-zinc-800 py-2.5 px-3 text-zinc-100 text-base rounded-lg w-full outline-none"
+              value={query}
+              placeholder="Enter GitHub repository"
+              onChange={(e) => {
+                setQuery(e.target.value);
+              }}
+            />
+            <button
+              type="button"
+              className="absolute right-1.5 hover:bg-zinc-700 p-1.5 rounded-md group-hover:opacity-100 group-focus-within:opacity-100 opacity-0 transition-all"
+              onClick={() => setQuery("")}
+            >
+              <IconX size={20} className="text-white" />
+            </button>
+          </label>
+          <button className="text-black font-semibold text-sm py-2 px-6 text-nowrap bg-white rounded-lg hover:bg-opacity-90">
+            Zip
+          </button>
+        </form>
+        <div className="flex">
+          <Link
+            href="https://github.com/kazuito/stackzip"
+            target="_blank"
+            className="text-zinc-200 p-3 block rounded-lg hover:bg-zinc-800 transition-colors hover:text-white"
+          >
+            <IconBrandGithub size={22} />
+          </Link>
+        </div>
+      </div>
 
       <div className="row-start-1 row-span-2 col-start-1 p-4">
         <LibDetails item={libData} />

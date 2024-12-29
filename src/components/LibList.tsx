@@ -65,7 +65,7 @@ const LibItem = ({
     <div
       className={cn(
         "flex flex-col p-4 pb-2 rounded-lg bg-zinc-800 cursor-pointer transition-all active:scale-[0.98] hover:bg-zinc-700 lg:min-h-32",
-        props.isActive && "ring-2 ring-white/40 hover:ring-white/60"
+        props.isActive && "ring-2 ring-zinc-500 hover:ring-zinc-400"
       )}
       onClick={() => {
         props.setLibData(item);
