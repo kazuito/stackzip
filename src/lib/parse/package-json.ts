@@ -89,7 +89,10 @@ export default async function parsePackageJson(
           icons.push("./npm.png");
 
           return {
-            ...registry,
+            name: registry.lib.name,
+            version: registry.lib.versions[registry.usingVersion].version,
+            lib: registry.lib,
+            usingVersion: registry.usingVersion,
             repo,
             icons,
           };
