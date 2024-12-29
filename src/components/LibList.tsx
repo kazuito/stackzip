@@ -1,9 +1,6 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { formatNumberWithCommas } from "@/lib/utils/utils";
 import { IconStar } from "@tabler/icons-react";
+import { useState } from "react";
 import CountUp from "react-countup";
 
 type Props = {
@@ -26,7 +23,7 @@ const LibList = ({ groups, setLibData }: Props) => {
                 {group.name}
               </span>
               <span className="text-sm text-slate-600">
-                {group.items.length} items
+                {group.items.length} packages
               </span>
             </h3>
             <div className="grid grid-cols-1 gap-1 lg:grid-cols-2 xl:grid-cols-3 sm:gap-2">

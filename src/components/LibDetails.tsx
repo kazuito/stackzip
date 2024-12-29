@@ -1,4 +1,10 @@
 import {
+  dayDiffText,
+  rmGitUrlPrefix,
+  rmUrlProtocol,
+  summarizeDownloads,
+} from "@/lib/utils/utils";
+import {
   IconBox,
   IconCertificate,
   IconCode,
@@ -8,33 +14,26 @@ import {
   IconWorld,
 } from "@tabler/icons-react";
 import axios from "axios";
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+} from "chart.js";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-} from "chart.js";
 import { Line } from "react-chartjs-2";
-import {
-  dayDiffText,
-  rmGitUrlPrefix,
-  rmUrlProtocol,
-  summarizeDownloads,
-} from "@/lib/utils/utils";
 import CountUp from "react-countup";
 import Markdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import remarkHtml from "remark-html";
-import rehypeRaw from "rehype-raw";
-import rehypeHighlight from "rehype-highlight";
-import CodeCopyBtn from "./CodeCopyBtn";
-import { cn } from "@/lib/utils";
 import { v4 as uuid } from "uuid";
+import CodeCopyBtn from "./CodeCopyBtn";
 
 ChartJS.register(
   CategoryScale,
