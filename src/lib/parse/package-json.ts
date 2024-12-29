@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getNpmRegistryData } from "../utils/npm";
-import { isGitHubUrl, parseGitHubUrl } from "../utils/utils";
+import { isGitHubUrl, parseQuery } from "../utils/utils";
 
 export default async function parsePackageJson(
   text: string
@@ -47,7 +47,7 @@ export default async function parsePackageJson(
     const packageRepos: RepoData[] = await axios
       .post("/api/gh/repos", {
         repos: packageRegistries.map((d) => {
-          const { owner, repo } = parseGitHubUrl(d?.lib?.repository?.url ?? "");
+          const { owner, repo } = parseQuery(d?.lib?.repository?.url ?? "");
 
           return {
             owner: owner,

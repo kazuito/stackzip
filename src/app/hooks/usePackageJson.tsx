@@ -1,8 +1,6 @@
 import { getNpmRegistryData } from "@/lib/utils/npm";
-import { isGitHubUrl, parseGitHubUrl } from "@/lib/utils/utils";
+import { isGitHubUrl, parseQuery } from "@/lib/utils/utils";
 import axios from "axios";
-import { kMaxLength } from "buffer";
-import { fchmod } from "fs";
 import { useEffect, useState } from "react";
 
 const groupNames = [
@@ -59,7 +57,7 @@ const usePackageJson = () => {
       Promise.all(
         entries.map(async ({ name, version, icons }, entry_i) => {
           await getNpmRegistryData(name).then((data) => {
-            const { owner, repo } = parseGitHubUrl(data?.repository?.url);
+            const { owner, repo } = parseQuery(data?.repository?.url);
             repos[entry_i] = { owner, name: repo };
 
             const home = data?.homepage && new URL(data.homepage).origin;

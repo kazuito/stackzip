@@ -1,31 +1,23 @@
 "use client";
 
-import LibList from "@/components/LibList";
-import axios from "axios";
-import { ReactNode, useEffect, useState } from "react";
-import parsePackageJson from "@/lib/parse/package-json";
 import LibDetails from "@/components/LibDetails";
-import { parseGitHubUrl } from "@/lib/utils/utils";
-import { useRouter, useSearchParams } from "next/navigation";
+import LibList from "@/components/LibList";
 import Overview from "@/components/Overview";
-import {
-  IconGitBranchDeleted,
-  IconLinkOff,
-  IconMoodLookDown,
-  IconMoodSad,
-} from "@tabler/icons-react";
+import { parseQuery } from "@/lib/utils/utils";
+import { IconGitBranchDeleted, IconMoodSad } from "@tabler/icons-react";
+import axios from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ReactNode, useEffect, useState } from "react";
 import useLibGroups from "../hooks/usePackageJson";
 
 export default function Home() {
-  // const [libGroups, setLibGroups] = useState<LibGroup[]>([]);
-
   const [libData, setLibData] = useState<LibItem>();
 
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const params = useSearchParams();
-  const [url, setUrl] = useState(params.get("q") || "");
+  const [query, setQuery] = useState(params.get("q") || "");
 
   const [repo, setRepo] = useState<GitHubRepo>();
 
@@ -42,7 +34,7 @@ export default function Home() {
     if (!q) return;
 
     submit(true);
-    setUrl(q);
+    setQuery(q);
   }, []);
 
   useEffect(() => {
@@ -76,14 +68,14 @@ export default function Home() {
   }, [repo]);
 
   const submit = (first = false) => {
-    const { owner, repo } = parseGitHubUrl(url);
+    const { owner, repo } = parseQuery(query);
 
     if (!owner || !repo) {
       setError({
         message:
-          url.length > 0 ? (
+          query.length > 0 ? (
             <>
-              <span className="text-slate-600">{url}</span>{" "}
+              <span className="text-slate-600">{query}</span>{" "}
               <span className="text-nowrap">is invalid input</span>
             </>
           ) : (
@@ -95,13 +87,13 @@ export default function Home() {
       return;
     }
 
-    if (!first && url === params.get("q")) {
+    if (!first && query === params.get("q")) {
       return;
     }
 
     setLoading(true);
 
-    router.push(`zip/?q=${url}`);
+    router.push(`zip/?q=${query}`);
 
     axios
       .post("/api/gh/repo", {
@@ -136,10 +128,10 @@ export default function Home() {
         <input
           type="text"
           className="bg-slate-800 py-3 px-5 text-slate-100 text-base rounded-lg w-full"
-          value={url}
+          value={query}
           placeholder="Enter GitHub URL or paste package.json content"
           onChange={(e) => {
-            setUrl(e.target.value);
+            setQuery(e.target.value);
           }}
         />
         <button className="text-white py-3 px-5 text-sm font-semibold text-nowrap bg-blue-700 rounded-lg active:scale-95">

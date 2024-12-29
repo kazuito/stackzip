@@ -33,8 +33,14 @@ export function rmUrlProtocol(url = "") {
   return url.replace(/^(?:https?|git):\/\//i, "");
 }
 
-export function parseGitHubUrl(url?: string) {
+export function parseQuery(url?: string) {
   if (!url) return { owner: "", repo: "" };
+
+  // if url is a valid owner/repo string
+  if (/^\w+\/\w+$/.test(url)) {
+    const [owner, repo] = url.split("/");
+    return { owner, repo };
+  }
 
   url = url.replace(/#[^/]*$/, "");
   url = url.replace(/\.git$/i, "");
