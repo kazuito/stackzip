@@ -37,7 +37,7 @@ export function parseQuery(url?: string) {
   if (!url) return { owner: "", repo: "" };
 
   // if url is a valid owner/repo string
-  if (/^\w+\/\w+$/.test(url)) {
+  if (/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(url)) {
     const [owner, repo] = url.split("/");
     return { owner, repo };
   }
