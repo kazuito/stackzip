@@ -34,7 +34,7 @@ function ZipPageContent() {
     defaultValue: "",
   });
   const [packages, setPackages] = useState<NpmPackage[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(!!query);
   const [error, setError] = useState<string | null>(null);
   const [activeGroups, setActiveGroups] = useState<string[]>([]);
   const [sortKey, setSortKey] = useState<keyof typeof sortBy>("stars");
