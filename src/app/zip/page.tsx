@@ -9,13 +9,12 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
-  SelectLabel,
 } from "@/components/ui/select";
 import { NpmPackage } from "@/lib/npm";
 import { cn } from "@/lib/utils";
-import { LoaderIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { Suspense, useEffect, useMemo, useState } from "react";
 

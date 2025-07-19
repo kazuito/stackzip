@@ -23,7 +23,7 @@ const Page = () => {
                 <TelescopeIcon className="size-[0.8lh]" />
                 insights
               </span>{" "}
-              <span className="inline-flex transition-all mask-b-from-50% starting:blur-xs duration-1000">
+              <span className="inline-flex transition-all mask-b-from-50% starting:blur-lg duration-1000 starting:opacity-0">
                 revealed
               </span>
             </div>
