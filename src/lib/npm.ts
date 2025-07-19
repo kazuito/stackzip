@@ -65,7 +65,8 @@ export async function fetchNpmPackageMetadata(packageName: string) {
   const res = await fetch(`https://registry.npmjs.org/${packageName}`);
 
   if (!res.ok) {
-    throw new Error("Failed to fetch npm package data");
+    // throw new Error("Failed to fetch npm package data");
+    return {};
   }
 
   const data = await res.json();
