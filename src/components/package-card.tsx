@@ -1,10 +1,10 @@
-import { fetchPackagesData } from "@/lib/npm";
+import { fetchPackagesData, NpmPackage } from "@/lib/npm";
 import { StarIcon } from "lucide-react";
 import numeral from "numeral";
 import ExternalLink from "./external-link";
 
 type Props = {
-  pkg: Awaited<ReturnType<typeof fetchPackagesData>>[number];
+  pkg: NpmPackage;
 };
 
 const PackageCard = ({ pkg }: Props) => {

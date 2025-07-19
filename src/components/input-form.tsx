@@ -22,7 +22,7 @@ const InputForm = ({ onSubmit, defaultQuery }: Props) => {
           onSubmit(query);
         }}
       >
-        <div className="flex gap-2">
+        <div className="flex">
           <Input
             placeholder="URL for package.json"
             value={query}

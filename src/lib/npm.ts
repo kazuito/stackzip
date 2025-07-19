@@ -122,3 +122,5 @@ export async function fetchPackageJson(url: string) {
 
   return packages;
 }
+
+export type NpmPackage = Awaited<ReturnType<typeof fetchPackagesData>>[number];
