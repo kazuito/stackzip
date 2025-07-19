@@ -57,7 +57,6 @@ export default function ZipPage() {
   const onSubmit = (q: string) => {
     if (q.trim() === "" || query === q) return;
     setQuery(q);
-    fetchData(q);
   };
 
   const fetchData = async (q: string) => {
@@ -72,7 +71,7 @@ export default function ZipPage() {
   useEffect(() => {
     if (!query) return;
     fetchData(query);
-  }, []);
+  }, [query]);
 
   useEffect(() => {
     setActiveGroups(groupNames);

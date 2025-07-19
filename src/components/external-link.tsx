@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ArrowUpRightIcon, ExternalLinkIcon } from "lucide-react";
+import { ArrowUpRightIcon } from "lucide-react";
 import Link from "next/link";
 
 type Props = {

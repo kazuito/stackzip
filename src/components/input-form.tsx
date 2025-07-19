@@ -4,7 +4,6 @@ import { SearchIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 type Props = {
   onSubmit: (query: string) => void;

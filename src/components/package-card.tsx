@@ -1,4 +1,4 @@
-import { fetchPackagesData, NpmPackage } from "@/lib/npm";
+import { NpmPackage } from "@/lib/npm";
 import { StarIcon } from "lucide-react";
 import numeral from "numeral";
 import ExternalLink from "./external-link";
