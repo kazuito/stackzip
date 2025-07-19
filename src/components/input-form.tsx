@@ -14,25 +14,23 @@ const InputForm = ({ onSubmit, defaultQuery }: Props) => {
   const [query, setQuery] = useState(defaultQuery || "");
 
   return (
-    <div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit(query);
-        }}
-      >
-        <div className="flex">
-          <Input
-            placeholder="URL for package.json"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <Button type="submit" size="icon">
-            <SearchIcon />
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(query);
+      }}
+    >
+      <div className="flex">
+        <Input
+          placeholder="URL for package.json"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <Button type="submit" size="icon">
+          <SearchIcon />
+        </Button>
+      </div>
+    </form>
   );
 };
 

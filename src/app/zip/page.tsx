@@ -1,6 +1,7 @@
 "use client";
 
 import { getPackagesData } from "@/app/zip/actions";
+import Header from "@/components/header";
 import InputForm from "@/components/input-form";
 import PackageCard from "@/components/package-card";
 import { Button } from "@/components/ui/button";
@@ -78,72 +79,68 @@ function ZipPageContent() {
   }, [groupNames]);
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <div>
-        <InputForm onSubmit={onSubmit} defaultQuery={query} />
-        <div className="flex items-center mt-4">
-          <div className="flex gap-px">
-            {groupNames.map((groupName) => {
-              const isActive = activeGroups.includes(groupName);
-              return (
-                <Button
-                  key={groupName}
-                  size="sm"
-                  variant={isActive ? "default" : "outline"}
-                  className={cn("", !isActive && "opacity-50")}
-                  onClick={() => {
-                    setActiveGroups((prev) =>
-                      isActive
-                        ? prev.filter((g) => g !== groupName)
-                        : [...prev, groupName]
-                    );
-                  }}
-                >
-                  {groupName}
-                </Button>
-              );
-            })}
-          </div>
-          <div className="ml-auto">
-            <Select
-              value={sortKey}
-              onValueChange={(value) =>
-                setSortKey(value as keyof typeof sortBy)
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent align="end">
-                {Object.entries(sortBy).map(([key, { label }]) => (
-                  <SelectItem key={key} value={key}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+    <div className="max-w-5xl mx-auto px-6">
+      <InputForm onSubmit={onSubmit} defaultQuery={query} />
+      <div className="flex items-center mt-4">
+        <div className="flex gap-px">
+          {groupNames.map((groupName) => {
+            const isActive = activeGroups.includes(groupName);
+            return (
+              <Button
+                key={groupName}
+                size="sm"
+                variant={isActive ? "default" : "outline"}
+                className={cn("", !isActive && "opacity-50")}
+                onClick={() => {
+                  setActiveGroups((prev) =>
+                    isActive
+                      ? prev.filter((g) => g !== groupName)
+                      : [...prev, groupName]
+                  );
+                }}
+              >
+                {groupName}
+              </Button>
+            );
+          })}
         </div>
-        {loading && (
-          <div className="flex items-center justify-center gap-2 mt-20 animate-bounce">
-            <LoaderIcon className="size-4 animate-spin" />
-            Loading packages...
-          </div>
-        )}
-        {error && <p className="text-red-500">Error: {error}</p>}
-        {!loading && !error && computedPackages.length === 0 && (
-          <p className="flex justify-center mt-20 text-foreground/60">
-            No packages found.
-          </p>
-        )}
-        {!loading && !error && computedPackages.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4">
-            {computedPackages.map((pkg, index) => (
-              <PackageCard key={index} pkg={pkg} />
-            ))}
-          </div>
-        )}
+        <div className="ml-auto">
+          <Select
+            value={sortKey}
+            onValueChange={(value) => setSortKey(value as keyof typeof sortBy)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent align="end">
+              {Object.entries(sortBy).map(([key, { label }]) => (
+                <SelectItem key={key} value={key}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
+      {loading && (
+        <div className="flex items-center justify-center gap-2 mt-20 animate-bounce">
+          <LoaderIcon className="size-4 animate-spin" />
+          Loading packages...
+        </div>
+      )}
+      {error && <p className="text-red-500">Error: {error}</p>}
+      {!loading && !error && computedPackages.length === 0 && (
+        <p className="flex justify-center mt-20 text-foreground/60">
+          No packages found.
+        </p>
+      )}
+      {!loading && !error && computedPackages.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4">
+          {computedPackages.map((pkg, index) => (
+            <PackageCard key={index} pkg={pkg} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
