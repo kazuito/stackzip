@@ -7,23 +7,21 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  defaultQuery: string;
+  onSubmit: (query: string) => void;
+  defaultQuery?: string;
 };
 
-const InputForm = ({ defaultQuery }: Props) => {
+const InputForm = ({ onSubmit, defaultQuery }: Props) => {
   const [query, setQuery] = useState(defaultQuery || "");
-  const router = useRouter();
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (query.trim()) {
-      router.push(`/zip?q=${encodeURIComponent(query)}`);
-    }
-  };
 
   return (
-    <div className="">
-      <form onSubmit={handleSubmit}>
+    <div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit(query);
+        }}
+      >
         <div className="flex gap-2">
           <Input
             placeholder="URL for package.json"

@@ -3,7 +3,6 @@ import z from "zod";
 import { fetchRepoStars } from "./github";
 
 const NpmPackageMetadataSchema = z.object({
-  name: z.string(),
   license: z.string().optional(),
   description: z.string().optional(),
   repository: z
@@ -13,57 +12,56 @@ const NpmPackageMetadataSchema = z.object({
     .optional(),
 });
 
-export async function fetchPackages(url: string) {
-  const packageGroups = await fetchPackageJson(url);
-  const flatPackages = await Promise.all(
-    packageGroups
-      .flatMap((group) => group.packages.map((pkg) => pkg))
-      .map(async (pkg) => {
-        const packageData = await fetchNpmPackageData(pkg.name);
-        const repo = parseGithubUrl(packageData.repository?.url ?? "");
-        return {
-          ...pkg,
-          npm: {
-            ...packageData,
-            repository: {
-              url: packageData.repository?.url ?? "",
-              owner: repo?.owner ?? null,
-              name: repo?.name ?? null,
-            },
+export async function fetchPackagesData(url: string) {
+  const packages = await fetchPackageJson(url);
+
+  const packagesWithNpmMetadata = await Promise.all(
+    packages.map(async (pkg) => {
+      const packageData = await fetchNpmPackageMetadata(pkg.name);
+      const repo = parseGithubUrl(packageData.repository?.url ?? "");
+      return {
+        ...pkg,
+        npm: {
+          ...packageData,
+          url: `https://www.npmjs.com/package/${pkg.name}`,
+          repository: {
+            url: packageData.repository?.url ?? "",
+            owner: repo?.owner ?? null,
+            name: repo?.name ?? null,
           },
-        };
-      })
+        },
+      };
+    })
   );
+
   const packageStarsData = await fetchRepoStars(
-    flatPackages
+    packagesWithNpmMetadata
       .map((pkg) => ({
         owner: pkg.npm.repository.owner,
         name: pkg.npm.repository.name,
       }))
       .filter((repo) => repo.owner && repo.name)
   );
-  const packages = packageGroups.map((group) => ({
-    group: group.group,
-    packages: group.packages.map((pkg) => {
-      const enrichedPkg = flatPackages.find(
-        (fp) => fp.name === pkg.name && fp.version === pkg.version
-      );
-      const starsData = packageStarsData.find(
-        (repo) =>
-          repo.owner === enrichedPkg?.npm.repository.owner &&
-          repo.name === enrichedPkg?.npm.repository.name
-      );
-      return {
-        ...pkg,
-        ...enrichedPkg,
-        stars: starsData ? starsData.stars : null,
-      };
-    }),
-  }));
-  return packages;
+
+  const packagesData = packagesWithNpmMetadata.map((pkg) => {
+    const star = packageStarsData.find(
+      (repo) =>
+        repo.owner === pkg.npm.repository.owner &&
+        repo.name === pkg.npm.repository.name
+    );
+    return {
+      ...pkg,
+      github: {
+        url: `https://github.com/${pkg.npm.repository.owner}/${pkg.npm.repository.name}`,
+        stars: star?.stars ?? null,
+      },
+    };
+  });
+
+  return packagesData;
 }
 
-export async function fetchNpmPackageData(packageName: string) {
+export async function fetchNpmPackageMetadata(packageName: string) {
   const res = await fetch(`https://registry.npmjs.org/${packageName}`);
 
   if (!res.ok) {
@@ -108,16 +106,19 @@ export async function fetchPackageJson(url: string) {
     throw new Error("Invalid package.json format");
   }
 
-  return Object.entries(parsedData.data).map(
-    ([groupName, deps]) => ({
-      group: groupName,
-      packages: Object.entries(deps as Record<string, string>).map(
-        ([name, version]) => ({
-          name,
-          version,
-        })
-      ),
-    }),
-    {} as Record<string, { name: string; version: string }[]>
+  const packages = Object.entries(parsedData.data).reduce<
+    { name: string; version: string; group: string }[]
+  >(
+    (acc, [groupName, deps]) => [
+      ...acc,
+      ...Object.entries(deps).map(([name, version]) => ({
+        name,
+        version,
+        group: groupName,
+      })),
+    ],
+    []
   );
+
+  return packages;
 }
