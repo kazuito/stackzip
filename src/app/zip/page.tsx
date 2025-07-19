@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectLabel,
 } from "@/components/ui/select";
 import { NpmPackage } from "@/lib/npm";
 import { cn } from "@/lib/utils";
@@ -112,11 +114,14 @@ function ZipPageContent() {
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent align="end">
-              {Object.entries(sortBy).map(([key, { label }]) => (
-                <SelectItem key={key} value={key}>
-                  {label}
-                </SelectItem>
-              ))}
+              <SelectGroup>
+                <SelectLabel>Sort by</SelectLabel>
+                {Object.entries(sortBy).map(([key, { label }]) => (
+                  <SelectItem key={key} value={key}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
