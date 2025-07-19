@@ -1,14 +1,13 @@
-import { NpmPackage } from "@/lib/npm";
+import { Package } from "@/lib/npm";
 import { StarIcon } from "lucide-react";
 import numeral from "numeral";
-import ExternalLink from "./external-link";
 
 type Props = {
-  pkg: NpmPackage;
+  pkg: Package;
 };
 
 const PackageCard = ({ pkg }: Props) => {
-  const formattedStars = numeral(pkg.github.stars).format("0,0");
+  const formattedStars = numeral(pkg?.github?.stargazerCount).format("0,0");
 
   return (
     <div className="p-4 border -mr-px group/card -mb-px flex font-mono flex-col hover:bg-sidebar transition-all">
@@ -28,8 +27,8 @@ const PackageCard = ({ pkg }: Props) => {
           {pkg.npm?.license}
         </div>
         <div className="hidden gap-3 group-hover/card:flex text-foreground/60">
-          <ExternalLink href={pkg.npm.url}>npm</ExternalLink>
-          <ExternalLink href={pkg.github.url}>GitHub</ExternalLink>
+          {/* <ExternalLink href={pkg.npm?.url}>npm</ExternalLink>
+          <ExternalLink href={pkg.github?.url}>GitHub</ExternalLink> */}
         </div>
       </div>
     </div>

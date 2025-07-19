@@ -1,6 +1,5 @@
 "use client";
 
-import { getPackagesData } from "@/app/zip/actions";
 import InputForm from "@/components/input-form";
 import PackageCard from "@/components/package-card";
 import { Button } from "@/components/ui/button";
@@ -13,20 +12,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { NpmPackage } from "@/lib/npm";
+import { Dependency, GithubRepoData, NpmPackageData, Package } from "@/lib/npm";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { Suspense, useEffect, useMemo, useState } from "react";
+import {
+  getDependencies,
+  getGithubReposData,
+  getNpmPackagesData,
+} from "./actions";
 
 const sortBy = {
   stars: {
     label: "Stars",
-    fn: (a: NpmPackage, b: NpmPackage) =>
-      (b.github.stars ?? 0) - (a.github.stars ?? 0),
+    fn: (a: Package, b: Package) =>
+      (b.github?.stargazerCount ?? 0) - (a.github?.stargazerCount ?? 0),
   },
   name: {
     label: "Name",
-    fn: (a: NpmPackage, b: NpmPackage) => a.name.localeCompare(b.name),
+    fn: (a: Package, b: Package) => a.name.localeCompare(b.name) ?? 0,
   },
 };
 
@@ -34,20 +38,28 @@ function ZipPageContent() {
   const [query, setQuery] = useQueryState("q", {
     defaultValue: "",
   });
-  const [packages, setPackages] = useState<NpmPackage[]>([]);
   const [loading, setLoading] = useState(!!query);
   const [error, setError] = useState<string | null>(null);
   const [activeGroups, setActiveGroups] = useState<string[]>([]);
   const [sortKey, setSortKey] = useState<keyof typeof sortBy>("stars");
 
-  const groupNames = useMemo(
-    () =>
-      packages.reduce((acc, pkg) => {
-        if (!acc.includes(pkg.group)) acc.push(pkg.group);
-        return acc;
-      }, [] as string[]),
-    [packages]
-  );
+  const [dependencies, setDependencies] = useState<Dependency[]>([]);
+  const [npmDataList, setNpmDataList] = useState<NpmPackageData[]>([]);
+  const [githubDataList, setGithubDataList] = useState<GithubRepoData[]>([]);
+
+  const packages = useMemo(() => {
+    return dependencies.map((dep) => {
+      const npmData = npmDataList.find((data) => data?.name === dep.name);
+      const githubData = githubDataList.find(
+        (data) => data?.packageName === dep.name
+      );
+      return {
+        ...dep,
+        npm: npmData || null,
+        github: githubData || null,
+      };
+    });
+  }, [dependencies, npmDataList, githubDataList]);
 
   const computedPackages = useMemo(() => {
     return packages
@@ -55,18 +67,39 @@ function ZipPageContent() {
       .sort(sortBy[sortKey].fn);
   }, [packages, activeGroups, sortKey]);
 
+  const groupNames = useMemo(() => {
+    const groupsSet = new Set<string>();
+    dependencies.forEach((pkg) => groupsSet.add(pkg.group));
+    const groups = Array.from(groupsSet).sort();
+    setActiveGroups(groups);
+    return groups;
+  }, [dependencies]);
+
   const onSubmit = (q: string) => {
     if (q.trim() === "" || query === q) return;
     setQuery(q);
   };
 
   const fetchData = async (q: string) => {
-    setLoading(true);
-    setError(null);
-    const result = await getPackagesData(q);
-    setPackages(result.data);
-    setError(result.error);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const deps = await getDependencies(q);
+      setDependencies(deps);
+      setLoading(false);
+      const npmDataListTemp = await getNpmPackagesData(
+        deps.map((dep) => dep.name)
+      );
+      setNpmDataList(npmDataListTemp);
+      const githubDataListTemp = await getGithubReposData(
+        npmDataListTemp.filter((pkg): pkg is Package => pkg !== null)
+      );
+      setGithubDataList(githubDataListTemp);
+    } catch (err) {
+      setLoading(false);
+      setError(
+        (err as Error).message || "An error occurred while fetching data."
+      );
+    }
   };
 
   useEffect(() => {

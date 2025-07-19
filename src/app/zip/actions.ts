@@ -1,17 +1,20 @@
 "use server";
 
-import { fetchPackagesData } from "../../lib/npm";
+import {
+  fetchDependencies,
+  fetchGithubReposData,
+  fetchNpmPackagesData,
+  Package,
+} from "../../lib/npm";
 
-export async function getPackagesData(url: string) {
-  try {
-    return {
-      data: await fetchPackagesData(url),
-      error: null,
-    };
-  } catch (error) {
-    return {
-      data: [],
-      error: error instanceof Error ? error.message : "Unknown error",
-    };
-  }
+export async function getDependencies(query: string) {
+  return await fetchDependencies(query);
+}
+
+export async function getNpmPackagesData(packageNames: string[]) {
+  return await fetchNpmPackagesData(packageNames);
+}
+
+export async function getGithubReposData(packages: Package[]) {
+  return await fetchGithubReposData(packages);
 }
