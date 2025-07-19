@@ -15,7 +15,7 @@ import { NpmPackage } from "@/lib/npm";
 import { cn } from "@/lib/utils";
 import { LoaderIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
-import { useEffect, useMemo, useState, Suspense } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 
 const sortBy = {
   stars: {
@@ -123,8 +123,8 @@ function ZipPageContent() {
       </div>
       {loading && (
         <div className="flex items-center justify-center gap-2 mt-20 animate-bounce">
-          <LoaderIcon className="size-4 animate-spin" />
           Loading packages...
+          <div className="w-[4px] h-[0.7lh] bg-foreground/80 animate-caret-blink"></div>
         </div>
       )}
       {error && <p className="text-red-500">Error: {error}</p>}
