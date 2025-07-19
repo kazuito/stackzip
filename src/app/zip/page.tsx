@@ -37,6 +37,7 @@ export default function ZipPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeGroups, setActiveGroups] = useState<string[]>([]);
+  const [sortKey, setSortKey] = useState<keyof typeof sortBy>("stars");
 
   const groupNames = useMemo(
     () =>
@@ -47,9 +48,11 @@ export default function ZipPage() {
     [packages]
   );
 
-  const computedPackages = packages.filter((pkg) => {
-    return activeGroups.includes(pkg.group);
-  });
+  const computedPackages = useMemo(() => {
+    return packages
+      .filter((pkg) => activeGroups.includes(pkg.group))
+      .sort(sortBy[sortKey].fn);
+  }, [packages, activeGroups, sortKey]);
 
   const onSubmit = (q: string) => {
     if (q.trim() === "" || query === q) return;
@@ -103,9 +106,14 @@ export default function ZipPage() {
             })}
           </div>
           <div className="ml-auto">
-            <Select>
+            <Select
+              value={sortKey}
+              onValueChange={(value) =>
+                setSortKey(value as keyof typeof sortBy)
+              }
+            >
               <SelectTrigger>
-                <SelectValue placeholder="Select group" />
+                <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent align="end">
                 {Object.entries(sortBy).map(([key, { label }]) => (
