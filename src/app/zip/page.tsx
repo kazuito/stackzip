@@ -1,7 +1,6 @@
 "use client";
 
 import { getPackagesData } from "@/app/zip/actions";
-import Header from "@/components/header";
 import InputForm from "@/components/input-form";
 import PackageCard from "@/components/package-card";
 import { Button } from "@/components/ui/button";
@@ -79,7 +78,7 @@ function ZipPageContent() {
   }, [groupNames]);
 
   return (
-    <div className="max-w-5xl mx-auto px-6">
+    <div className="max-w-5xl mx-auto px-6 font-mono">
       <InputForm onSubmit={onSubmit} defaultQuery={query} />
       <div className="flex items-center mt-4">
         <div className="flex gap-px">
