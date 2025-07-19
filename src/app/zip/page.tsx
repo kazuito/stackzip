@@ -15,7 +15,7 @@ import { NpmPackage } from "@/lib/npm";
 import { cn } from "@/lib/utils";
 import { LoaderIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 
 const sortBy = {
   stars: {
@@ -29,7 +29,7 @@ const sortBy = {
   },
 };
 
-export default function ZipPage() {
+function ZipPageContent() {
   const [query, setQuery] = useQueryState("q", {
     defaultValue: "",
   });
@@ -145,5 +145,13 @@ export default function ZipPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ZipPage() {
+  return (
+    <Suspense>
+      <ZipPageContent />
+    </Suspense>
   );
 }
