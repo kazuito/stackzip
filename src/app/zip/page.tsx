@@ -4,11 +4,30 @@ import { getPackagesData } from "@/app/zip/actions";
 import InputForm from "@/components/input-form";
 import PackageCard from "@/components/package-card";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { NpmPackage } from "@/lib/npm";
 import { cn } from "@/lib/utils";
 import { LoaderIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useEffect, useMemo, useState } from "react";
+
+const sortBy = {
+  stars: {
+    label: "Stars",
+    fn: (a: NpmPackage, b: NpmPackage) =>
+      (b.github.stars ?? 0) - (a.github.stars ?? 0),
+  },
+  name: {
+    label: "Name",
+    fn: (a: NpmPackage, b: NpmPackage) => a.name.localeCompare(b.name),
+  },
+};
 
 export default function ZipPage() {
   const [query, setQuery] = useQueryState("q", {
@@ -60,27 +79,43 @@ export default function ZipPage() {
     <div className="max-w-5xl mx-auto p-6">
       <div>
         <InputForm onSubmit={onSubmit} defaultQuery={query} />
-        <div className="flex mt-4 gap-px">
-          {groupNames.map((groupName) => {
-            const isActive = activeGroups.includes(groupName);
-            return (
-              <Button
-                key={groupName}
-                size="sm"
-                variant={isActive ? "default" : "outline"}
-                className={cn("", !isActive && "opacity-50")}
-                onClick={() => {
-                  setActiveGroups((prev) =>
-                    isActive
-                      ? prev.filter((g) => g !== groupName)
-                      : [...prev, groupName]
-                  );
-                }}
-              >
-                {groupName}
-              </Button>
-            );
-          })}
+        <div className="flex items-center mt-4">
+          <div className="flex gap-px">
+            {groupNames.map((groupName) => {
+              const isActive = activeGroups.includes(groupName);
+              return (
+                <Button
+                  key={groupName}
+                  size="sm"
+                  variant={isActive ? "default" : "outline"}
+                  className={cn("", !isActive && "opacity-50")}
+                  onClick={() => {
+                    setActiveGroups((prev) =>
+                      isActive
+                        ? prev.filter((g) => g !== groupName)
+                        : [...prev, groupName]
+                    );
+                  }}
+                >
+                  {groupName}
+                </Button>
+              );
+            })}
+          </div>
+          <div className="ml-auto">
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Select group" />
+              </SelectTrigger>
+              <SelectContent align="end">
+                {Object.entries(sortBy).map(([key, { label }]) => (
+                  <SelectItem key={key} value={key}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         {loading && (
           <div className="flex items-center justify-center gap-2 mt-20 animate-bounce">
