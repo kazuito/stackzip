@@ -12,7 +12,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Dependency, GithubRepoData, NpmPackageData, Package } from "@/lib/npm";
+import {
+  Dependency,
+  GithubRepoData,
+  NpmPackageData,
+  Package,
+} from "@/lib/packages";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { Suspense, useEffect, useMemo, useState } from "react";
@@ -91,7 +96,7 @@ function ZipPageContent() {
       );
       setNpmDataList(npmDataListTemp);
       const githubDataListTemp = await getGithubReposData(
-        npmDataListTemp.filter((pkg): pkg is Package => pkg !== null)
+        npmDataListTemp.filter((pkg): pkg is NpmPackageData => pkg !== null)
       );
       setGithubDataList(githubDataListTemp);
     } catch (err) {
@@ -171,9 +176,9 @@ function ZipPageContent() {
         </p>
       )}
       {!loading && !error && computedPackages.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4">
-          {computedPackages.map((pkg, index) => (
-            <PackageCard key={index} pkg={pkg} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 my-4">
+          {computedPackages.map((pkg) => (
+            <PackageCard key={pkg.name} pkg={pkg} />
           ))}
         </div>
       )}

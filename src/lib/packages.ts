@@ -1,6 +1,5 @@
 import parseGithubUrl from "parse-github-url";
 import z from "zod";
-import { fetchRepoStars } from "./github";
 import crypto from "crypto";
 
 type Repo = {
@@ -120,6 +119,7 @@ export async function fetchGithubReposData(npmPackages: NpmPackageData[]) {
     const repoData = parsedData.data.data[alias];
     return {
       packageName: pkg.name,
+      url: `https://github.com/${repo.owner}/${repo.name}`,
       ...repoData,
     };
   });
@@ -147,6 +147,7 @@ export async function fetchNpmPackageData(packageName: string) {
 
   return {
     name: packageName,
+    url: `https://www.npmjs.com/package/${packageName}`,
     ...parsedData.data,
   };
 }
