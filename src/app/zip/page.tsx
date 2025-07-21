@@ -28,6 +28,7 @@ import {
   getNpmPackagesData,
   getPackageJson,
 } from "./actions";
+import { Scroller } from "@/components/ui/scroller";
 
 const sortBy = {
   stars: {
@@ -140,8 +141,12 @@ function ZipPageContent() {
           <PackageJsonCard data={packageJsonData} />
         </div>
       )}
-      <div className="flex items-center mt-4">
-        <div className="flex gap-px">
+      <div className="flex items-center mt-4 gap-4">
+        <Scroller
+          orientation="horizontal"
+          className="flex gap-px"
+          hideScrollbar
+        >
           {groupNames.map((groupName) => {
             const isActive = activeGroups.includes(groupName);
             return (
@@ -162,7 +167,7 @@ function ZipPageContent() {
               </Button>
             );
           })}
-        </div>
+        </Scroller>
         <div className="ml-auto">
           <Select
             value={sortKey}
