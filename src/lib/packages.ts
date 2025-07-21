@@ -13,7 +13,7 @@ const NpmPackageDataSchema = z.object({
   repository: z.object({
     url: z.string(),
   }),
-  homepage: z.string()
+  homepage: z.string(),
 });
 
 const GithubGraphqlApiResponseSchema = z.object({
@@ -28,7 +28,15 @@ const GithubGraphqlApiResponseSchema = z.object({
   ),
 });
 
-const PackageJsonSchema = z.object({
+const PackageJsonMetadataSchema = z.object({
+  name: z.string(),
+  version: z.string(),
+  description: z.string().optional(),
+  scripts: z.record(z.string(), z.string()).optional(),
+  license: z.string().optional(),
+});
+
+const PackageJsonDepsSchema = z.object({
   dependencies: z.record(z.string(), z.string()).optional(),
   acceptDependencies: z.record(z.string(), z.string()).optional(),
   optionalDependencies: z.record(z.string(), z.string()).optional(),
@@ -181,7 +189,7 @@ export async function fetchNpmPackagesData(packageNames: string[]) {
  * @param url
  * @returns
  */
-export async function fetchDependencies(url: string) {
+export async function fetchPackageJson(url: string) {
   const parsed = parseGithubUrl(url);
 
   if (!parsed) {
@@ -196,28 +204,46 @@ export async function fetchDependencies(url: string) {
   }
 
   const data = await res.text();
-  const parsedData = PackageJsonSchema.safeParse(JSON.parse(data));
 
-  if (!parsedData.success) {
-    throw new Error("Invalid package.json format");
+  const parsedMetadata = PackageJsonMetadataSchema.safeParse(JSON.parse(data));
+  if (!parsedMetadata.success) {
+    throw new Error("Invalid package.json metadata format");
+  }
+
+  const metadata = {
+    ...parsedMetadata.data,
+    url,
+  };
+
+  const parsedDeps = PackageJsonDepsSchema.safeParse(JSON.parse(data));
+  if (!parsedDeps.success) {
+    throw new Error("Invalid package.json dependencies format");
   }
 
   const dependencies: { name: string; version: string; group: string }[] = [];
 
-  for (const [groupName, deps] of Object.entries(parsedData.data)) {
+  for (const [groupName, deps] of Object.entries(parsedDeps.data)) {
     for (const [name, version] of Object.entries(deps)) {
       dependencies.push({ name, version, group: groupName });
     }
   }
 
-  return dependencies;
+  return {
+    metadata,
+    dependencies,
+  };
 }
 
 export type NpmPackageData = Awaited<ReturnType<typeof fetchNpmPackageData>>;
 export type GithubRepoData = Awaited<
   ReturnType<typeof fetchGithubReposData>
 >[number];
-export type Dependency = Awaited<ReturnType<typeof fetchDependencies>>[number];
+export type PackageJsonData = Awaited<
+  ReturnType<typeof fetchPackageJson>
+>["metadata"];
+export type Dependency = Awaited<
+  ReturnType<typeof fetchPackageJson>
+>["dependencies"][number];
 export type Package = Dependency & {
   npm: NpmPackageData | null;
   github: GithubRepoData | null;

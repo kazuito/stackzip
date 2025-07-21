@@ -1,6 +1,7 @@
 "use client";
 
 import InputForm from "@/components/input-form";
+import PackageJsonCard from "@/components/pacage-json-card";
 import PackageCard from "@/components/package-card";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,14 +18,15 @@ import {
   GithubRepoData,
   NpmPackageData,
   Package,
+  PackageJsonData,
 } from "@/lib/packages";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import {
-  getDependencies,
   getGithubReposData,
   getNpmPackagesData,
+  getPackageJson,
 } from "./actions";
 
 const sortBy = {
@@ -55,6 +57,8 @@ function ZipPageContent() {
   const [error, setError] = useState<string | null>(null);
   const [activeGroups, setActiveGroups] = useState<string[]>([]);
   const [sortKey, setSortKey] = useState<keyof typeof sortBy>("stars");
+
+  const [packageJsonData, setPackageJsonData] = useState<PackageJsonData>();
 
   const [dependencies, setDependencies] = useState<Dependency[]>([]);
   const [npmDataList, setNpmDataList] = useState<NpmPackageData[]>([]);
@@ -97,7 +101,8 @@ function ZipPageContent() {
     setError(null);
     try {
       setLoadingMessage(LOADING_MESSAGES.initial);
-      const deps = await getDependencies(q);
+      const { metadata, dependencies: deps } = await getPackageJson(q);
+      setPackageJsonData(metadata);
       setDependencies(deps);
       setLoadingMessage(LOADING_MESSAGES.npm);
       const npmDataListTemp = await getNpmPackagesData(
@@ -130,6 +135,11 @@ function ZipPageContent() {
   return (
     <div className="max-w-5xl mx-auto px-6 font-mono">
       <InputForm onSubmit={onSubmit} defaultQuery={query} />
+      {packageJsonData && (
+        <div className="mt-4">
+          <PackageJsonCard data={packageJsonData} />
+        </div>
+      )}
       <div className="flex items-center mt-4">
         <div className="flex gap-px">
           {groupNames.map((groupName) => {
@@ -189,7 +199,7 @@ function ZipPageContent() {
       {!loadingMessage && !error && computedPackages.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 my-4">
           {computedPackages.map((pkg) => (
-            <PackageCard key={pkg.name} pkg={pkg} />
+            <PackageCard key={`${pkg.name}-${pkg.version}`} pkg={pkg} />
           ))}
         </div>
       )}

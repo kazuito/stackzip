@@ -1,15 +1,14 @@
 "use server";
 
 import {
-  fetchDependencies,
   fetchGithubReposData,
   fetchNpmPackagesData,
+  fetchPackageJson,
   NpmPackageData,
-  Package,
 } from "../../lib/packages";
 
-export async function getDependencies(query: string) {
-  return await fetchDependencies(query);
+export async function getPackageJson(query: string) {
+  return await fetchPackageJson(query);
 }
 
 export async function getNpmPackagesData(packageNames: string[]) {
