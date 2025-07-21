@@ -29,6 +29,7 @@ import {
   getPackageJson,
 } from "./actions";
 import { Scroller } from "@/components/ui/scroller";
+import { ListFilterIcon } from "lucide-react";
 
 const sortBy = {
   stars: {
@@ -58,6 +59,7 @@ function ZipPageContent() {
   const [error, setError] = useState<string | null>(null);
   const [activeGroups, setActiveGroups] = useState<string[]>([]);
   const [sortKey, setSortKey] = useState<keyof typeof sortBy>("stars");
+  const [sortDesc, setSortDesc] = useState(true);
 
   const [packageJsonData, setPackageJsonData] = useState<PackageJsonData>();
 
@@ -80,10 +82,11 @@ function ZipPageContent() {
   }, [dependencies, npmDataList, githubDataList]);
 
   const computedPackages = useMemo(() => {
-    return packages
+    const sorted = packages
       .filter((pkg) => activeGroups.includes(pkg.group))
       .sort(sortBy[sortKey].fn);
-  }, [packages, activeGroups, sortKey]);
+    return sortDesc ? sorted : sorted.reverse();
+  }, [packages, activeGroups, sortKey, sortDesc]);
 
   const groupNames = useMemo(() => {
     const groupsSet = new Set<string>();
@@ -168,7 +171,21 @@ function ZipPageContent() {
             );
           })}
         </Scroller>
-        <div className="ml-auto">
+        <div className="ml-auto flex">
+          <Button
+            size="icon"
+            variant="outline"
+            className="-mr-px"
+            onClick={() => setSortDesc(!sortDesc)}
+            title="Toggle sort order"
+          >
+            <ListFilterIcon
+              className={cn(
+                "transition-all duration-400",
+                !sortDesc && "rotate-x-180"
+              )}
+            />
+          </Button>
           <Select
             value={sortKey}
             onValueChange={(value) => setSortKey(value as keyof typeof sortBy)}
