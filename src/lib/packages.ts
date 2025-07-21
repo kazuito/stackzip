@@ -2,7 +2,7 @@ import parseGithubUrl from "parse-github-url";
 import z from "zod";
 import crypto from "crypto";
 
-type Repo = {
+export type Repo = {
   owner: string | null;
   name: string | null;
 };
