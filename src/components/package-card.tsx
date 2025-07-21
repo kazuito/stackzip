@@ -4,6 +4,8 @@ import Image from "next/image";
 import numeral from "numeral";
 import parseGithubUrl from "parse-github-url";
 import ExternalLink from "./external-link";
+import { Badge } from "./ui/badge";
+import { Scroller } from "./ui/scroller";
 
 type Props = {
   pkg: Package;
@@ -30,9 +32,22 @@ const PackageCard = ({ pkg }: Props) => {
           {pkg.version}
         </div>
       </div>
-      <div className="mt-3 text-foreground/60 sm:text-sm line-clamp-3 min-h-[60px]">
+      <div className="mt-3 text-foreground/60 line-clamp-3 sm:text-sm sm:line-clamp-2 min-h-[2lh]">
         {pkg.npm?.description}
       </div>
+      {pkg.npm?.keywords && (
+        <Scroller
+          className="flex gap-1 mt-3"
+          orientation="horizontal"
+          hideScrollbar
+        >
+          {pkg.npm.keywords.map((keyword, i) => (
+            <Badge key={`${keyword}-${i}`} variant="outline">
+              {keyword}
+            </Badge>
+          ))}
+        </Scroller>
+      )}
       <div className="flex justify-between mt-auto pt-3">
         <div className="flex items-center gap-1">
           <StarIcon className="size-3" />

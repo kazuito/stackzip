@@ -14,6 +14,7 @@ const NpmPackageDataSchema = z.object({
     url: z.string(),
   }),
   homepage: z.string(),
+  keywords: z.array(z.string()).optional(),
 });
 
 const GithubGraphqlApiResponseSchema = z.object({
@@ -34,6 +35,7 @@ const PackageJsonMetadataSchema = z.object({
   description: z.string().optional(),
   scripts: z.record(z.string(), z.string()).optional(),
   license: z.string().optional(),
+  keywords: z.array(z.string()).optional(),
 });
 
 const PackageJsonDepsSchema = z.object({
