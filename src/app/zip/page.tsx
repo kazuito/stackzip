@@ -170,6 +170,16 @@ function ZipPageContent() {
                   </Button>
                 );
               })}
+              {activeGroups.length < groupNames.length && (
+                <Button
+                  size="sm"
+                  variant="link"
+                  className="ml-1 text-blue-500"
+                  onClick={() => setActiveGroups(groupNames)}
+                >
+                  Show all
+                </Button>
+              )}
             </Scroller>
             <div className="ml-auto flex">
               <Button
