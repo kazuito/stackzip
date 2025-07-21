@@ -145,11 +145,7 @@ function ZipPageContent() {
             <PackageJsonCard data={packageJsonData} />
           </div>
           <div className="flex items-center mt-4 gap-4">
-            <Scroller
-              orientation="horizontal"
-              className="flex gap-px"
-              hideScrollbar
-            >
+            <Scroller orientation="horizontal" className="flex grow" hideScrollbar>
               {groupNames.map((groupName) => {
                 const isActive = activeGroups.includes(groupName);
                 return (
@@ -157,7 +153,7 @@ function ZipPageContent() {
                     key={groupName}
                     size="sm"
                     variant={isActive ? "default" : "outline"}
-                    className={cn("", !isActive && "opacity-50")}
+                    className={cn("border -mr-px", !isActive && "opacity-50")}
                     onClick={() => {
                       setActiveGroups((prev) =>
                         isActive
