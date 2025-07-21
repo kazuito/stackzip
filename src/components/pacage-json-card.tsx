@@ -10,7 +10,7 @@ type Props = {
 
 const PackageJsonCard = ({ data }: Props) => {
   return (
-    <div className="p-4 flex flex-col gap-4 md:flex-row border">
+    <div className="p-4 flex flex-col gap-4 md:flex-row border border-dashed">
       <div className="flex-1">
         <div className="flex items-center">
           <Link href={data.url} className="font-semibold">
@@ -53,17 +53,15 @@ const PackageJsonCard = ({ data }: Props) => {
           <div>
             <div className="text-sm">Scripts</div>
             <Scroller className="flex flex-wrap gap-2 mt-2 max-h-32">
-              {Object.entries(data.scripts).map(
-                ([scriptName, _]) => (
-                  <Badge
-                    variant="outline"
-                    key={scriptName}
-                    className="text-sm font-medium"
-                  >
-                    {scriptName}
-                  </Badge>
-                )
-              )}
+              {Object.entries(data.scripts).map(([scriptName, _]) => (
+                <Badge
+                  variant="outline"
+                  key={scriptName}
+                  className="text-sm font-medium"
+                >
+                  {scriptName}
+                </Badge>
+              ))}
             </Scroller>
           </div>
         )}

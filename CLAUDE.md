@@ -53,4 +53,4 @@ pnpm lint            # Run ESLint
 
 ## Development Workflow
 
-- Always run `pnpm build` to confirm there's no errors after making changes
+- Run `pnpm run test:run` and `pnpm build` to confirm there's no errors after making changes
