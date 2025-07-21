@@ -3,20 +3,24 @@ import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import numeral from "numeral";
 import parseGithubUrl from "parse-github-url";
-import ExternalLink from "./external-link";
-import { Badge } from "./ui/badge";
-import { Scroller } from "./ui/scroller";
+import ExternalLink from "../external-link";
+import { Badge } from "../ui/badge";
+import { Scroller } from "../ui/scroller";
 
 type Props = {
   pkg: Package;
+  onClick?: () => void;
 };
 
-const PackageCard = ({ pkg }: Props) => {
+const PackageCard = ({ pkg, onClick }: Props) => {
   const formattedStars = numeral(pkg?.github?.stargazerCount).format("0,0");
   const repo = parseGithubUrl(pkg?.npm?.repository?.url || "");
 
   return (
-    <div className="p-4 border -mr-px group/card -mb-px flex font-mono flex-col hover:bg-sidebar transition-all">
+    <div
+      className="p-4 cursor-default border -mr-px group/card -mb-px flex font-mono flex-col hover:bg-sidebar transition-all"
+      onClick={onClick}
+    >
       <div className="flex justify-between items-center gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
           <Image

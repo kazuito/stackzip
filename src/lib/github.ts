@@ -1,10 +1,23 @@
-import { Repo } from "./packages";
+import { Package, Repo } from "./packages";
+import parseGithubUrl from "parse-github-url";
+
+export async function fetchPackageDetails(pkg: Package) {
+  const repo = parseGithubUrl(pkg.npm?.repository?.url ?? "");
+  if (!repo) return null;
+
+  const readme = await fetchReadme(repo);
+
+  return {
+    readme,
+  };
+}
 
 export async function fetchReadme(repo: Repo) {
   const url = `https://api.github.com/repos/${repo.owner}/${repo.name}/readme`;
 
   const headers = new Headers({
     Accept: "application/vnd.github.v3.raw",
+    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
   });
 
   const res = await fetch(url, {
@@ -12,9 +25,11 @@ export async function fetchReadme(repo: Repo) {
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch README: ${res.statusText}`);
+    return null;
   }
 
   const readme = await res.text();
   return readme;
 }
+
+export type PackageDetails = Awaited<ReturnType<typeof fetchPackageDetails>>;

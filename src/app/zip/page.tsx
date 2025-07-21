@@ -2,8 +2,9 @@
 
 import InputForm from "@/components/input-form";
 import PackageJsonCard from "@/components/pacage-json-card";
-import PackageCard from "@/components/package-card";
+import PackageCard from "@/components/package/package-card";
 import { Button } from "@/components/ui/button";
+import { Scroller } from "@/components/ui/scroller";
 import {
   Select,
   SelectContent,
@@ -21,6 +22,7 @@ import {
   PackageJsonData,
 } from "@/lib/packages";
 import { cn } from "@/lib/utils";
+import { ListFilterIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import {
@@ -28,8 +30,7 @@ import {
   getNpmPackagesData,
   getPackageJson,
 } from "./actions";
-import { Scroller } from "@/components/ui/scroller";
-import { ListFilterIcon } from "lucide-react";
+import PackageDrawer from "@/components/package/package-drawer";
 
 const sortBy = {
   stars: {
@@ -66,6 +67,8 @@ function ZipPageContent() {
   const [dependencies, setDependencies] = useState<Dependency[]>([]);
   const [npmDataList, setNpmDataList] = useState<NpmPackageData[]>([]);
   const [githubDataList, setGithubDataList] = useState<GithubRepoData[]>([]);
+
+  const [activePackage, setActivePackage] = useState<Package | null>(null);
 
   const packages = useMemo(() => {
     return dependencies.map((dep) => {
@@ -145,7 +148,11 @@ function ZipPageContent() {
             <PackageJsonCard data={packageJsonData} />
           </div>
           <div className="flex items-center mt-4 gap-4">
-            <Scroller orientation="horizontal" className="flex grow" hideScrollbar>
+            <Scroller
+              orientation="horizontal"
+              className="flex grow"
+              hideScrollbar
+            >
               {groupNames.map((groupName) => {
                 const isActive = activeGroups.includes(groupName);
                 return (
@@ -231,10 +238,18 @@ function ZipPageContent() {
       {!loadingMessage && !error && computedPackages.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 my-4 starting:blur-sm starting:opacity-0 transition-all duration-400">
           {computedPackages.map((pkg) => (
-            <PackageCard key={`${pkg.name}-${pkg.version}`} pkg={pkg} />
+            <PackageCard
+              key={`${pkg.name}-${pkg.version}`}
+              onClick={() => setActivePackage(pkg)}
+              pkg={pkg}
+            />
           ))}
         </div>
       )}
+      <PackageDrawer
+        pkg={activePackage}
+        onClose={() => setActivePackage(null)}
+      />
     </div>
   );
 }

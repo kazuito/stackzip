@@ -162,10 +162,21 @@ export async function fetchNpmPackageData(packageName: string) {
     return null;
   }
 
+  const repo = parseGithubUrl(parsedData.data.repository.url);
+  const repoUrl =
+    repo?.owner && repo?.name
+      ? `https://github.com/${repo.owner}/${repo.name}`
+      : null;
+
   return {
     name: packageName,
     url: `https://www.npmjs.com/package/${packageName}`,
     ...parsedData.data,
+    repository: {
+      url: repoUrl,
+      owner: repo?.owner || null,
+      name: repo?.name || null,
+    },
   };
 }
 
