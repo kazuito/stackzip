@@ -223,7 +223,7 @@ function ZipPageContent() {
         </p>
       )}
       {!loadingMessage && !error && computedPackages.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 my-4 starting:blur-sm starting:scale-98 transition-all duration-400">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 my-4 starting:blur-sm starting:opacity-0 transition-all duration-400">
           {computedPackages.map((pkg) => (
             <PackageCard key={`${pkg.name}-${pkg.version}`} pkg={pkg} />
           ))}
