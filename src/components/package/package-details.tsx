@@ -2,7 +2,7 @@ import { getPackageDetails } from "@/app/zip/actions";
 import { type PackageDetails } from "@/lib/github";
 import { Package } from "@/lib/packages";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Badge } from "../ui/badge";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -10,6 +10,7 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
 import "github-markdown-css/github-markdown-light.css";
 import "highlight.js/styles/github.css";
+import { Skeleton } from "../ui/skeleton";
 
 type Props = {
   pkg: Package;
@@ -17,16 +18,21 @@ type Props = {
 
 const PackageDetails = ({ pkg }: Props) => {
   const [details, setDetails] = useState<PackageDetails | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const fetchDetails = async () => {
-    setLoading(true);
-    setDetails(await getPackageDetails(pkg));
-    setLoading(false);
-  };
+  const loading = useRef(false);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading.current) return;
+
+    const fetchDetails = async () => {
+      loading.current = true;
+      try {
+        const result = await getPackageDetails(pkg);
+        setDetails(result);
+      } finally {
+        loading.current = false;
+      }
+    };
+
     fetchDetails();
   }, [pkg]);
 
@@ -58,14 +64,18 @@ const PackageDetails = ({ pkg }: Props) => {
           </div>
         )}
         <div className="mt-4">
-          <div className="markdown-body [&_pre>code.hljs]:p-0!">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeHighlight, rehypeRaw]}
-            >
-              {details?.readme}
-            </ReactMarkdown>
-          </div>
+          {loading.current ? (
+            <Skeleton className="w-full h-[50vh]" />
+          ) : (
+            <div className="markdown-body [&_pre>code.hljs]:p-0!">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeHighlight, rehypeRaw]}
+              >
+                {details?.readme}
+              </ReactMarkdown>
+            </div>
+          )}
         </div>
       </div>
     </div>
