@@ -1,8 +1,8 @@
 import { Package } from "@/lib/packages";
 import { useEffect, useState } from "react";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
 import { useMedia } from "react-use";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
+import { Drawer, DrawerContent, DrawerTitle } from "../ui/drawer";
 import PackageDetails from "./package-details";
 
 type Props = {
@@ -24,7 +24,10 @@ const PackageDrawer = ({ pkg, onClose }: Props) => {
   if (isDesktop) {
     return (
       <Dialog open={!!pkg} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl! w-full mx-auto h-[90vh]" showCloseButton={false}>
+        <DialogContent
+          className="max-w-4xl! w-full mx-auto h-[90vh]"
+          showCloseButton={false}
+        >
           <DialogTitle className="sr-only">{displayPackage.name}</DialogTitle>
           <PackageDetails pkg={displayPackage} />
         </DialogContent>

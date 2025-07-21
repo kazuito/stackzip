@@ -53,7 +53,7 @@ const PackageJsonCard = ({ data }: Props) => {
           <div>
             <div className="text-sm">Scripts</div>
             <Scroller className="flex flex-wrap gap-2 mt-2 max-h-32">
-              {Object.entries(data.scripts).map(([scriptName, _]) => (
+              {Object.entries(data.scripts).map(([scriptName]) => (
                 <Badge
                   variant="outline"
                   key={scriptName}
