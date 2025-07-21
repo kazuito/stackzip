@@ -1,3 +1,4 @@
+import LandingForm from "@/components/landing-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -33,20 +34,9 @@ const Page = () => {
             Transform any package.json URL into a rich, visual dependency
             explorer.
           </p>
-
-          <div className="flex justify-center items-center max-w-md mx-auto">
-            <Input placeholder="URL for package.json" className="flex-1" />
-            <Button asChild className="whitespace-nowrap">
-              <Link href="/zip" className="flex items-center gap-2">
-                Explore now <ArrowRightIcon className="w-4 h-4" />
-              </Link>
-            </Button>
-          </div>
-
-          <p className="text-sm text-gray-500">
-            Try it with any public GitHub package.json URL
-          </p>
         </div>
+
+        <LandingForm />
       </div>
 
       {/* Features Section */}

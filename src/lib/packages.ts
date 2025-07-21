@@ -8,13 +8,12 @@ type Repo = {
 };
 
 const NpmPackageDataSchema = z.object({
-  license: z.string().optional(),
+  license: z.string(),
   description: z.string().optional(),
-  repository: z
-    .object({
-      url: z.string(),
-    })
-    .optional(),
+  repository: z.object({
+    url: z.string(),
+  }),
+  homepage: z.string()
 });
 
 const GithubGraphqlApiResponseSchema = z.object({
@@ -24,16 +23,18 @@ const GithubGraphqlApiResponseSchema = z.object({
       z.object({
         stargazerCount: z.number(),
       }),
-      z.null()
+      z.null(),
     ])
   ),
 });
 
 const PackageJsonSchema = z.object({
   dependencies: z.record(z.string(), z.string()).optional(),
-  devDependencies: z.record(z.string(), z.string()).optional(),
-  peerDependencies: z.record(z.string(), z.string()).optional(),
+  acceptDependencies: z.record(z.string(), z.string()).optional(),
   optionalDependencies: z.record(z.string(), z.string()).optional(),
+  devDependencies: z.record(z.string(), z.string()).optional(),
+  bundleDependencies: z.record(z.string(), z.string()).optional(),
+  peerDependencies: z.record(z.string(), z.string()).optional(),
 });
 
 export const repoHash = (repo: Repo) => {
