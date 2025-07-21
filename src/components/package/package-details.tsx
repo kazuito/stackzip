@@ -12,6 +12,7 @@ import "github-markdown-css/github-markdown-light.css";
 import "highlight.js/styles/github.css";
 import { Skeleton } from "../ui/skeleton";
 import ExternalLink from "../external-link";
+import { ScaleIcon } from "lucide-react";
 
 type Props = {
   pkg: Package;
@@ -19,18 +20,21 @@ type Props = {
 
 const PackageDetails = ({ pkg }: Props) => {
   const [details, setDetails] = useState<PackageDetails | null>(null);
-  const loading = useRef(false);
+  const [loading, setLoading] = useState(false);
+  const fetchingRef = useRef(false);
 
   useEffect(() => {
-    if (loading.current) return;
+    if (fetchingRef.current) return;
 
     const fetchDetails = async () => {
-      loading.current = true;
+      fetchingRef.current = true;
+      setLoading(true);
       try {
         const result = await getPackageDetails(pkg);
         setDetails(result);
       } finally {
-        loading.current = false;
+        setLoading(false);
+        fetchingRef.current = false;
       }
     };
 
@@ -48,11 +52,16 @@ const PackageDetails = ({ pkg }: Props) => {
           alt={`Avatar of ${pkg.npm.repository.owner || "repository owner"}`}
           className="rounded-sm size-7 shrink-0"
         />
-        <div className="font-semibold text-lg">{pkg.name}</div>
-        <div className="ml-auto flex gap-4">
-          <div className="text-sm text-foreground/60">{pkg.version}</div>
+        <div className="font-semibold text-lg shrink-0">{pkg.name}</div>
+        <div className="ml-auto flex gap-4 items-center min-w-0">
+          <div className="text-sm text-foreground/60 truncate">
+            {pkg.version}
+          </div>
           {pkg.npm.license && (
-            <div className="text-sm text-foreground/60">{pkg.npm.license}</div>
+            <Badge variant="secondary" className="text-sm text-foreground/60">
+              <ScaleIcon />
+              {pkg.npm.license}
+            </Badge>
           )}
         </div>
       </div>
@@ -74,10 +83,10 @@ const PackageDetails = ({ pkg }: Props) => {
           <ExternalLink href={pkg.npm.repository.url}>GitHub</ExternalLink>
         </div>
         <div className="mt-6">
-          {loading.current ? (
-            <Skeleton className="w-full h-[50vh]" />
+          {loading ? (
+            <Skeleton className="w-full h-[100vh]" />
           ) : (
-            <div className="markdown-body ">
+            <div className="markdown-body starting:opacity-0 transition-all duration-200">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight, rehypeRaw]}
