@@ -20,9 +20,12 @@ const NpmPackageDataSchema = z.object({
 const GithubGraphqlApiResponseSchema = z.object({
   data: z.record(
     z.string(),
-    z.object({
-      stargazerCount: z.number(),
-    })
+    z.union([
+      z.object({
+        stargazerCount: z.number(),
+      }),
+      z.null()
+    ])
   ),
 });
 
@@ -142,7 +145,10 @@ export async function fetchNpmPackageData(packageName: string) {
   const parsedData = NpmPackageDataSchema.safeParse(data);
 
   if (!parsedData.success) {
-    throw new Error("Invalid npm package data format");
+    // throw new Error(
+    //   `Invalid npm package data for ${packageName}: ${parsedData.error.message}`
+    // );
+    return null;
   }
 
   return {

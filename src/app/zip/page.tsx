@@ -39,11 +39,19 @@ const sortBy = {
   },
 };
 
+const LOADING_MESSAGES = {
+  initial: "Reading package.json...",
+  npm: "Loading npm data...",
+  github: "Loading GitHub data...",
+};
+
 function ZipPageContent() {
   const [query, setQuery] = useQueryState("q", {
     defaultValue: "",
   });
-  const [loading, setLoading] = useState(!!query);
+  const [loadingMessage, setLoadingMessage] = useState(
+    !!query ? LOADING_MESSAGES.initial : null
+  );
   const [error, setError] = useState<string | null>(null);
   const [activeGroups, setActiveGroups] = useState<string[]>([]);
   const [sortKey, setSortKey] = useState<keyof typeof sortBy>("stars");
@@ -86,24 +94,27 @@ function ZipPageContent() {
   };
 
   const fetchData = async (q: string) => {
+    setError(null);
     try {
-      setLoading(true);
+      setLoadingMessage(LOADING_MESSAGES.initial);
       const deps = await getDependencies(q);
       setDependencies(deps);
-      setLoading(false);
+      setLoadingMessage(LOADING_MESSAGES.npm);
       const npmDataListTemp = await getNpmPackagesData(
         deps.map((dep) => dep.name)
       );
       setNpmDataList(npmDataListTemp);
+      setLoadingMessage(LOADING_MESSAGES.github);
       const githubDataListTemp = await getGithubReposData(
         npmDataListTemp.filter((pkg): pkg is NpmPackageData => pkg !== null)
       );
       setGithubDataList(githubDataListTemp);
     } catch (err) {
-      setLoading(false);
       setError(
         (err as Error).message || "An error occurred while fetching data."
       );
+    } finally {
+      setLoadingMessage(null);
     }
   };
 
@@ -163,19 +174,19 @@ function ZipPageContent() {
           </Select>
         </div>
       </div>
-      {loading && (
+      {loadingMessage && (
         <div className="flex items-center justify-center gap-2 mt-20 animate-bounce">
-          Loading packages...
+          {loadingMessage}
           <div className="w-[4px] h-[0.7lh] bg-foreground/80 animate-caret-blink"></div>
         </div>
       )}
       {error && <p className="text-red-500">Error: {error}</p>}
-      {!loading && !error && computedPackages.length === 0 && (
+      {!loadingMessage && !error && computedPackages.length === 0 && (
         <p className="flex justify-center mt-20 text-foreground/60">
           No packages found.
         </p>
       )}
-      {!loading && !error && computedPackages.length > 0 && (
+      {!loadingMessage && !error && computedPackages.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 my-4">
           {computedPackages.map((pkg) => (
             <PackageCard key={pkg.name} pkg={pkg} />
