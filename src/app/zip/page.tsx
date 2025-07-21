@@ -140,72 +140,76 @@ function ZipPageContent() {
     <div className="max-w-5xl mx-auto px-6 font-mono">
       <InputForm onSubmit={onSubmit} defaultQuery={query} />
       {packageJsonData && (
-        <div className="mt-4">
-          <PackageJsonCard data={packageJsonData} />
+        <div className="starting:blur-sm starting:scale-98 transition-all duration-400">
+          <div className="mt-4">
+            <PackageJsonCard data={packageJsonData} />
+          </div>
+          <div className="flex items-center mt-4 gap-4">
+            <Scroller
+              orientation="horizontal"
+              className="flex gap-px"
+              hideScrollbar
+            >
+              {groupNames.map((groupName) => {
+                const isActive = activeGroups.includes(groupName);
+                return (
+                  <Button
+                    key={groupName}
+                    size="sm"
+                    variant={isActive ? "default" : "outline"}
+                    className={cn("", !isActive && "opacity-50")}
+                    onClick={() => {
+                      setActiveGroups((prev) =>
+                        isActive
+                          ? prev.filter((g) => g !== groupName)
+                          : [...prev, groupName]
+                      );
+                    }}
+                  >
+                    {groupName}
+                  </Button>
+                );
+              })}
+            </Scroller>
+            <div className="ml-auto flex">
+              <Button
+                size="icon"
+                variant="outline"
+                className="-mr-px"
+                onClick={() => setSortDesc(!sortDesc)}
+                title="Toggle sort order"
+              >
+                <ListFilterIcon
+                  className={cn(
+                    "transition-all duration-400",
+                    !sortDesc && "rotate-x-180"
+                  )}
+                />
+              </Button>
+              <Select
+                value={sortKey}
+                onValueChange={(value) =>
+                  setSortKey(value as keyof typeof sortBy)
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent align="end">
+                  <SelectGroup>
+                    <SelectLabel>Sort by</SelectLabel>
+                    {Object.entries(sortBy).map(([key, { label }]) => (
+                      <SelectItem key={key} value={key}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </div>
       )}
-      <div className="flex items-center mt-4 gap-4">
-        <Scroller
-          orientation="horizontal"
-          className="flex gap-px"
-          hideScrollbar
-        >
-          {groupNames.map((groupName) => {
-            const isActive = activeGroups.includes(groupName);
-            return (
-              <Button
-                key={groupName}
-                size="sm"
-                variant={isActive ? "default" : "outline"}
-                className={cn("", !isActive && "opacity-50")}
-                onClick={() => {
-                  setActiveGroups((prev) =>
-                    isActive
-                      ? prev.filter((g) => g !== groupName)
-                      : [...prev, groupName]
-                  );
-                }}
-              >
-                {groupName}
-              </Button>
-            );
-          })}
-        </Scroller>
-        <div className="ml-auto flex">
-          <Button
-            size="icon"
-            variant="outline"
-            className="-mr-px"
-            onClick={() => setSortDesc(!sortDesc)}
-            title="Toggle sort order"
-          >
-            <ListFilterIcon
-              className={cn(
-                "transition-all duration-400",
-                !sortDesc && "rotate-x-180"
-              )}
-            />
-          </Button>
-          <Select
-            value={sortKey}
-            onValueChange={(value) => setSortKey(value as keyof typeof sortBy)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectGroup>
-                <SelectLabel>Sort by</SelectLabel>
-                {Object.entries(sortBy).map(([key, { label }]) => (
-                  <SelectItem key={key} value={key}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
       {loadingMessage && (
         <div className="flex items-center justify-center gap-2 mt-20 animate-bounce">
           {loadingMessage}
@@ -219,7 +223,7 @@ function ZipPageContent() {
         </p>
       )}
       {!loadingMessage && !error && computedPackages.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 my-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 my-4 starting:blur-sm starting:scale-98 transition-all duration-400">
           {computedPackages.map((pkg) => (
             <PackageCard key={`${pkg.name}-${pkg.version}`} pkg={pkg} />
           ))}
