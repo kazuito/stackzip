@@ -119,4 +119,13 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .markdown-body {
+    & img {
+      @apply inline;
+    }
+    & pre > code.hljs {
+      @apply p-0!;
+    }
+  }
 }

@@ -11,6 +11,7 @@ import rehypeRaw from "rehype-raw";
 import "github-markdown-css/github-markdown-light.css";
 import "highlight.js/styles/github.css";
 import { Skeleton } from "../ui/skeleton";
+import ExternalLink from "../external-link";
 
 type Props = {
   pkg: Package;
@@ -36,10 +37,10 @@ const PackageDetails = ({ pkg }: Props) => {
     fetchDetails();
   }, [pkg]);
 
-  if (!pkg.npm?.repository) return null;
+  if (!pkg.npm?.repository?.url) return null;
   return (
-    <div className="font-mono overflow-y-auto">
-      <div className="flex gap-3 items-center sticky top-0 bg-background p-4">
+    <div className="font-mono overflow-y-auto md:px-4">
+      <div className="flex gap-3 items-center sticky top-0 bg-background p-4 md:pt-8">
         <Image
           src={`https://github.com/${pkg.npm.repository.owner}.png`}
           width={40}
@@ -48,7 +49,12 @@ const PackageDetails = ({ pkg }: Props) => {
           className="rounded-sm size-7 shrink-0"
         />
         <div className="font-semibold text-lg">{pkg.name}</div>
-        <div className="text-sm text-foreground/60 ml-auto">{pkg.version}</div>
+        <div className="ml-auto flex gap-4">
+          <div className="text-sm text-foreground/60">{pkg.version}</div>
+          {pkg.npm.license && (
+            <div className="text-sm text-foreground/60">{pkg.npm.license}</div>
+          )}
+        </div>
       </div>
       <div className="p-4 pt-0">
         <div className="text-base sm:text-sm text-foreground/60">
@@ -63,11 +69,15 @@ const PackageDetails = ({ pkg }: Props) => {
             ))}
           </div>
         )}
-        <div className="mt-4">
+        <div className="flex mt-4 gap-3">
+          <ExternalLink href={pkg.npm.url}>npm</ExternalLink>
+          <ExternalLink href={pkg.npm.repository.url}>GitHub</ExternalLink>
+        </div>
+        <div className="mt-6">
           {loading.current ? (
             <Skeleton className="w-full h-[50vh]" />
           ) : (
-            <div className="markdown-body [&_pre>code.hljs]:p-0!">
+            <div className="markdown-body ">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight, rehypeRaw]}
