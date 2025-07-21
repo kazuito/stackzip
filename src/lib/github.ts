@@ -1,3 +1,4 @@
+import { env } from "./env";
 import { Package, Repo } from "./packages";
 import parseGithubUrl from "parse-github-url";
 
@@ -17,7 +18,7 @@ export async function fetchReadme(repo: Repo) {
 
   const headers = new Headers({
     Accept: "application/vnd.github.v3.raw",
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    Authorization: `Bearer ${env.secret.GITHUB_TOKEN}`,
   });
 
   const res = await fetch(url, {

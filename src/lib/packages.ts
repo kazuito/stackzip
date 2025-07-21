@@ -1,6 +1,7 @@
 import parseGithubUrl from "parse-github-url";
 import z from "zod";
 import crypto from "crypto";
+import { env } from "./env";
 
 export type Repo = {
   owner: string | null;
@@ -101,7 +102,7 @@ export async function fetchGithubReposData(npmPackages: NpmPackageData[]) {
 
   const headers = new Headers({
     "Content-Type": "application/json",
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    Authorization: `Bearer ${env.secret.GITHUB_TOKEN}`,
   });
 
   const res = await fetch("https://api.github.com/graphql", {
