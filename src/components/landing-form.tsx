@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { ArrowRightIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { ArrowRightIcon } from "lucide-react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 const LandingForm = () => {
   const [query, setQuery] = useState(

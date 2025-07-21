@@ -1,8 +1,6 @@
 import Link from "next/link";
 
-type Props = {} & React.HTMLAttributes<HTMLDivElement>;
-
-const Header = ({ children }: Props) => {
+const Header = () => {
   return (
     <header className="h-14 flex items-center px-6 max-w-5xl mx-auto">
       <Link href="/" className="font-bold font-mono">

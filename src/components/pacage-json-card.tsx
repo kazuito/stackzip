@@ -1,7 +1,7 @@
 import { PackageJsonData } from "@/lib/packages";
+import { ScaleIcon } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
-import { ScaleIcon } from "lucide-react";
 import { Scroller } from "./ui/scroller";
 
 type Props = {
@@ -54,7 +54,7 @@ const PackageJsonCard = ({ data }: Props) => {
             <div className="text-sm">Scripts</div>
             <Scroller className="flex flex-wrap gap-2 mt-2 max-h-32">
               {Object.entries(data.scripts).map(
-                ([scriptName, scriptCommand]) => (
+                ([scriptName, _]) => (
                   <Badge
                     variant="outline"
                     key={scriptName}
