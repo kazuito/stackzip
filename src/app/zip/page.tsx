@@ -3,6 +3,7 @@
 import InputForm from "@/components/input-form";
 import PackageJsonCard from "@/components/pacage-json-card";
 import PackageCard from "@/components/package/package-card";
+import PackageDrawer from "@/components/package/package-drawer";
 import { Button } from "@/components/ui/button";
 import { Scroller } from "@/components/ui/scroller";
 import {
@@ -26,7 +27,6 @@ import { ListFilterIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { getGithubReposData, getNpmPackagesData, getPackageJson } from "./actions";
-import PackageDrawer from "@/components/package/package-drawer";
 
 const sortBy = {
   stars: {
@@ -208,7 +208,9 @@ function ZipPageContent() {
       )}
       {error && <p className="text-red-500">Error: {error}</p>}
       {!loadingMessage && !error && computedPackages.length === 0 && (
-        <p className="text-foreground/60 mt-20 flex justify-center">No packages found.</p>
+        <p className="text-foreground/60 mt-20 flex justify-center transition-all duration-400 starting:-translate-y-2 starting:blur-xs starting:opacity-0">
+          No packages found.
+        </p>
       )}
       {!loadingMessage && !error && computedPackages.length > 0 && (
         <div className="my-4 grid grid-cols-1 transition-all duration-400 sm:grid-cols-2 lg:grid-cols-3 starting:translate-y-2 starting:opacity-0 starting:blur-sm">
