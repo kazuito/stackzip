@@ -26,7 +26,7 @@ const GithubGraphqlApiResponseSchema = z.object({
         stargazerCount: z.number(),
       }),
       z.null(),
-    ])
+    ]),
   ),
 });
 
@@ -49,10 +49,7 @@ const PackageJsonDepsSchema = z.object({
 });
 
 export const repoHash = (repo: Repo) => {
-  const hash = crypto
-    .createHash("sha256")
-    .update(`${repo.owner}/${repo.name}`)
-    .digest("hex");
+  const hash = crypto.createHash("sha256").update(`${repo.owner}/${repo.name}`).digest("hex");
   return `repo_${hash}`;
 };
 
@@ -165,9 +162,7 @@ export async function fetchNpmPackageData(packageName: string) {
 
   const repo = parseGithubUrl(parsedData.data.repository.url);
   const repoUrl =
-    repo?.owner && repo?.name
-      ? `https://github.com/${repo.owner}/${repo.name}`
-      : null;
+    repo?.owner && repo?.name ? `https://github.com/${repo.owner}/${repo.name}` : null;
 
   return {
     name: packageName,
@@ -191,9 +186,7 @@ export async function fetchNpmPackagesData(packageNames: string[]) {
     return [];
   }
 
-  const results = await Promise.all(
-    packageNames.map((pkg) => fetchNpmPackageData(pkg))
-  );
+  const results = await Promise.all(packageNames.map((pkg) => fetchNpmPackageData(pkg)));
 
   return results;
 }
@@ -249,15 +242,9 @@ export async function fetchPackageJson(url: string) {
 }
 
 export type NpmPackageData = Awaited<ReturnType<typeof fetchNpmPackageData>>;
-export type GithubRepoData = Awaited<
-  ReturnType<typeof fetchGithubReposData>
->[number];
-export type PackageJsonData = Awaited<
-  ReturnType<typeof fetchPackageJson>
->["metadata"];
-export type Dependency = Awaited<
-  ReturnType<typeof fetchPackageJson>
->["dependencies"][number];
+export type GithubRepoData = Awaited<ReturnType<typeof fetchGithubReposData>>[number];
+export type PackageJsonData = Awaited<ReturnType<typeof fetchPackageJson>>["metadata"];
+export type Dependency = Awaited<ReturnType<typeof fetchPackageJson>>["dependencies"][number];
 export type Package = Dependency & {
   npm: NpmPackageData | null;
   github: GithubRepoData | null;

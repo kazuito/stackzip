@@ -2,8 +2,8 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <header className="h-14 flex items-center px-6 max-w-5xl mx-auto">
-      <Link href="/" className="font-bold font-mono">
+    <header className="mx-auto flex h-14 max-w-5xl items-center px-6">
+      <Link href="/" className="font-mono font-bold">
         Stackzip
       </Link>
     </header>

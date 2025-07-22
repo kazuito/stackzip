@@ -7,9 +7,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 const LandingForm = () => {
-  const [query, setQuery] = useState(
-    "https://github.com/kazuito/droll/blob/main/package.json"
-  );
+  const [query, setQuery] = useState("https://github.com/kazuito/droll/blob/main/package.json");
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -19,10 +17,10 @@ const LandingForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 mt-12">
+    <div className="mt-12 flex flex-col items-center gap-4">
       <form
         onSubmit={handleSubmit}
-        className="flex justify-center items-center max-w-md mx-auto w-full"
+        className="mx-auto flex w-full max-w-md items-center justify-center"
       >
         <Input
           placeholder="URL for package.json"
@@ -31,12 +29,10 @@ const LandingForm = () => {
           onChange={(e) => setQuery(e.target.value)}
         />
         <Button type="submit" className="whitespace-nowrap">
-          Explore now <ArrowRightIcon className="w-4 h-4" />
+          Explore now <ArrowRightIcon className="h-4 w-4" />
         </Button>
       </form>
-      <p className="text-sm text-gray-500">
-        Try it with any public GitHub package.json URL
-      </p>
+      <p className="text-sm text-gray-500">Try it with any public GitHub package.json URL</p>
     </div>
   );
 };

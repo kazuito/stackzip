@@ -1,37 +1,30 @@
 import LandingForm from "@/components/landing-form";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowRightIcon,
-  FilterIcon,
-  PackageIcon,
-  StarIcon,
-  TelescopeIcon,
-} from "lucide-react";
+import { ArrowRightIcon, FilterIcon, PackageIcon, StarIcon, TelescopeIcon } from "lucide-react";
 import Link from "next/link";
 
 const Page = () => {
   return (
-    <div className="min-h-screen font-monos">
+    <div className="font-monos min-h-screen">
       {/* Hero Section */}
-      <div className="px-6 max-w-6xl mx-auto pt-20 pb-16">
-        <div className="text-center space-y-8">
-          <h1 className="text-3xl sm:text-5xl transition-all duration-400 lg:text-7xl font-bold font-mono tracking-tight">
+      <div className="mx-auto max-w-6xl px-6 pt-20 pb-16">
+        <div className="space-y-8 text-center">
+          <h1 className="font-mono text-3xl font-bold tracking-tight transition-all duration-400 sm:text-5xl lg:text-7xl">
             Dependencies decoded,
             <br />
             <div className="">
-              <span className="inline-flex items-center border px-2 py-1 rounded-xl shadow-xl -rotate-4 bg-card active:scale-95 active:-rotate-3 active:shadow-sm transition-all duration-400 cursor-default">
+              <span className="bg-card inline-flex -rotate-4 cursor-default items-center rounded-xl border px-2 py-1 shadow-xl transition-all duration-400 active:scale-95 active:-rotate-3 active:shadow-sm">
                 <TelescopeIcon className="size-[0.8lh]" />
                 insights
               </span>{" "}
-              <span className="inline-flex transition-all mask-b-from-50% starting:blur-lg duration-1000 starting:opacity-0">
+              <span className="inline-flex mask-b-from-50% transition-all duration-1000 starting:opacity-0 starting:blur-lg">
                 revealed
               </span>
             </div>
           </h1>
 
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Transform any package.json URL into a rich, visual dependency
-            explorer.
+          <p className="mx-auto max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg">
+            Transform any package.json URL into a rich, visual dependency explorer.
           </p>
         </div>
 
@@ -40,37 +33,35 @@ const Page = () => {
 
       {/* Features Section */}
       <div className="bg-sidebar py-20">
-        <div className="px-6 max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="mb-12 text-center text-3xl font-bold">
             Everything you need to understand dependencies
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center space-y-4">
-              <div className="w-12 h-12 bg-primary flex items-center justify-center rounded-lg mx-auto">
-                <StarIcon className="w-6 h-6 text-primary-foreground" />
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className="space-y-4 text-center">
+              <div className="bg-primary mx-auto flex h-12 w-12 items-center justify-center rounded-lg">
+                <StarIcon className="text-primary-foreground h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold">GitHub Integration</h3>
               <p className="text-gray-600">
-                Automatically fetch GitHub stars, repository info, and project
-                descriptions
+                Automatically fetch GitHub stars, repository info, and project descriptions
               </p>
             </div>
 
-            <div className="text-center space-y-4">
-              <div className="w-12 h-12 bg-primary flex items-center justify-center rounded-lg mx-auto">
-                <FilterIcon className="w-6 h-6 text-primary-foreground" />
+            <div className="space-y-4 text-center">
+              <div className="bg-primary mx-auto flex h-12 w-12 items-center justify-center rounded-lg">
+                <FilterIcon className="text-primary-foreground h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold">Smart Filtering</h3>
               <p className="text-gray-600">
-                Group by dependencies, devDependencies, and peerDependencies
-                with easy filtering
+                Group by dependencies, devDependencies, and peerDependencies with easy filtering
               </p>
             </div>
 
-            <div className="text-center space-y-4">
-              <div className="w-12 h-12 bg-primary flex items-center justify-center rounded-lg mx-auto">
-                <PackageIcon className="w-6 h-6 text-primary-foreground" />
+            <div className="space-y-4 text-center">
+              <div className="bg-primary mx-auto flex h-12 w-12 items-center justify-center rounded-lg">
+                <PackageIcon className="text-primary-foreground h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold">Rich Package Info</h3>
               <p className="text-gray-600">
@@ -83,17 +74,15 @@ const Page = () => {
 
       {/* CTA Section */}
       <div className="py-20">
-        <div className="px-6 max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-3xl font-bold font-mono">
-            Ready to explore your dependencies?
-          </h2>
+        <div className="mx-auto max-w-4xl space-y-8 px-6 text-center">
+          <h2 className="font-mono text-3xl font-bold">Ready to explore your dependencies?</h2>
           <p className="text-xl text-gray-600">
-            Paste any package.json URL and start discovering insights about your
-            project&apos;s dependencies.
+            Paste any package.json URL and start discovering insights about your project&apos;s
+            dependencies.
           </p>
           <Button asChild size="lg">
             <Link href="/zip" className="flex items-center gap-2">
-              Get started <ArrowRightIcon className="w-5 h-5" />
+              Get started <ArrowRightIcon className="h-5 w-5" />
             </Link>
           </Button>
         </div>

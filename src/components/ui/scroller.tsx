@@ -4,12 +4,7 @@ import { useComposedRefs } from "@/lib/compose-refs";
 import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-} from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
 import * as React from "react";
 
 const DATA_TOP_SCROLL = "data-top-scroll";
@@ -63,217 +58,205 @@ interface ScrollerProps
   scrollTriggerMode?: "press" | "hover" | "click";
 }
 
-const Scroller = React.forwardRef<HTMLDivElement, ScrollerProps>(
-  (props, forwardedRef) => {
-    const {
-      orientation = "vertical",
-      hideScrollbar,
-      className,
-      size = 40,
-      offset = 0,
-      scrollStep = 40,
-      style,
-      asChild,
-      withNavigation = false,
-      scrollTriggerMode = "press",
-      ...scrollerProps
-    } = props;
+const Scroller = React.forwardRef<HTMLDivElement, ScrollerProps>((props, forwardedRef) => {
+  const {
+    orientation = "vertical",
+    hideScrollbar,
+    className,
+    size = 40,
+    offset = 0,
+    scrollStep = 40,
+    style,
+    asChild,
+    withNavigation = false,
+    scrollTriggerMode = "press",
+    ...scrollerProps
+  } = props;
 
-    const containerRef = React.useRef<HTMLDivElement | null>(null);
-    const composedRef = useComposedRefs(forwardedRef, containerRef);
-    const [scrollVisibility, setScrollVisibility] =
-      React.useState<ScrollVisibility>({
-        up: false,
-        down: false,
-        left: false,
-        right: false,
-      });
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const composedRef = useComposedRefs(forwardedRef, containerRef);
+  const [scrollVisibility, setScrollVisibility] = React.useState<ScrollVisibility>({
+    up: false,
+    down: false,
+    left: false,
+    right: false,
+  });
 
-    const onScrollBy = React.useCallback(
-      (direction: ScrollDirection) => {
-        const container = containerRef.current;
-        if (!container) return;
-
-        const scrollMap: Record<ScrollDirection, () => void> = {
-          up: () => (container.scrollTop -= scrollStep),
-          down: () => (container.scrollTop += scrollStep),
-          left: () => (container.scrollLeft -= scrollStep),
-          right: () => (container.scrollLeft += scrollStep),
-        };
-
-        scrollMap[direction]();
-      },
-      [scrollStep],
-    );
-
-    const scrollHandlers = React.useMemo(
-      () => ({
-        up: () => onScrollBy("up"),
-        down: () => onScrollBy("down"),
-        left: () => onScrollBy("left"),
-        right: () => onScrollBy("right"),
-      }),
-      [onScrollBy],
-    );
-
-    React.useLayoutEffect(() => {
+  const onScrollBy = React.useCallback(
+    (direction: ScrollDirection) => {
       const container = containerRef.current;
       if (!container) return;
 
-      function onScroll() {
-        if (!container) return;
+      const scrollMap: Record<ScrollDirection, () => void> = {
+        up: () => (container.scrollTop -= scrollStep),
+        down: () => (container.scrollTop += scrollStep),
+        left: () => (container.scrollLeft -= scrollStep),
+        right: () => (container.scrollLeft += scrollStep),
+      };
 
-        const isVertical = orientation === "vertical";
+      scrollMap[direction]();
+    },
+    [scrollStep],
+  );
 
-        if (isVertical) {
-          const scrollTop = container.scrollTop;
-          const clientHeight = container.clientHeight;
-          const scrollHeight = container.scrollHeight;
+  const scrollHandlers = React.useMemo(
+    () => ({
+      up: () => onScrollBy("up"),
+      down: () => onScrollBy("down"),
+      left: () => onScrollBy("left"),
+      right: () => onScrollBy("right"),
+    }),
+    [onScrollBy],
+  );
 
-          if (withNavigation) {
-            setScrollVisibility((prev) => {
-              const newUp = scrollTop > offset;
-              const newDown = scrollTop + clientHeight < scrollHeight;
+  React.useLayoutEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-              if (prev.up !== newUp || prev.down !== newDown) {
-                return {
-                  ...prev,
-                  up: newUp,
-                  down: newDown,
-                };
-              }
-              return prev;
-            });
-          }
+    function onScroll() {
+      if (!container) return;
 
-          const hasTopScroll = scrollTop > offset;
-          const hasBottomScroll =
-            scrollTop + clientHeight + offset < scrollHeight;
-          const isVerticallyScrollable = scrollHeight > clientHeight;
+      const isVertical = orientation === "vertical";
 
-          if (hasTopScroll && hasBottomScroll && isVerticallyScrollable) {
-            container.setAttribute(DATA_TOP_BOTTOM_SCROLL, "true");
-            container.removeAttribute(DATA_TOP_SCROLL);
-            container.removeAttribute(DATA_BOTTOM_SCROLL);
-          } else {
-            container.removeAttribute(DATA_TOP_BOTTOM_SCROLL);
-            if (hasTopScroll) container.setAttribute(DATA_TOP_SCROLL, "true");
-            else container.removeAttribute(DATA_TOP_SCROLL);
-            if (hasBottomScroll && isVerticallyScrollable)
-              container.setAttribute(DATA_BOTTOM_SCROLL, "true");
-            else container.removeAttribute(DATA_BOTTOM_SCROLL);
-          }
-        }
-
-        const scrollLeft = container.scrollLeft;
-        const clientWidth = container.clientWidth;
-        const scrollWidth = container.scrollWidth;
+      if (isVertical) {
+        const scrollTop = container.scrollTop;
+        const clientHeight = container.clientHeight;
+        const scrollHeight = container.scrollHeight;
 
         if (withNavigation) {
           setScrollVisibility((prev) => {
-            const newLeft = scrollLeft > offset;
-            const newRight = scrollLeft + clientWidth < scrollWidth;
+            const newUp = scrollTop > offset;
+            const newDown = scrollTop + clientHeight < scrollHeight;
 
-            if (prev.left !== newLeft || prev.right !== newRight) {
+            if (prev.up !== newUp || prev.down !== newDown) {
               return {
                 ...prev,
-                left: newLeft,
-                right: newRight,
+                up: newUp,
+                down: newDown,
               };
             }
             return prev;
           });
         }
 
-        const hasLeftScroll = scrollLeft > offset;
-        const hasRightScroll = scrollLeft + clientWidth + offset < scrollWidth;
-        const isHorizontallyScrollable = scrollWidth > clientWidth;
+        const hasTopScroll = scrollTop > offset;
+        const hasBottomScroll = scrollTop + clientHeight + offset < scrollHeight;
+        const isVerticallyScrollable = scrollHeight > clientHeight;
 
-        if (hasLeftScroll && hasRightScroll && isHorizontallyScrollable) {
-          container.setAttribute(DATA_LEFT_RIGHT_SCROLL, "true");
-          container.removeAttribute(DATA_LEFT_SCROLL);
-          container.removeAttribute(DATA_RIGHT_SCROLL);
+        if (hasTopScroll && hasBottomScroll && isVerticallyScrollable) {
+          container.setAttribute(DATA_TOP_BOTTOM_SCROLL, "true");
+          container.removeAttribute(DATA_TOP_SCROLL);
+          container.removeAttribute(DATA_BOTTOM_SCROLL);
         } else {
-          container.removeAttribute(DATA_LEFT_RIGHT_SCROLL);
-          if (hasLeftScroll) container.setAttribute(DATA_LEFT_SCROLL, "true");
-          else container.removeAttribute(DATA_LEFT_SCROLL);
-          if (hasRightScroll && isHorizontallyScrollable)
-            container.setAttribute(DATA_RIGHT_SCROLL, "true");
-          else container.removeAttribute(DATA_RIGHT_SCROLL);
+          container.removeAttribute(DATA_TOP_BOTTOM_SCROLL);
+          if (hasTopScroll) container.setAttribute(DATA_TOP_SCROLL, "true");
+          else container.removeAttribute(DATA_TOP_SCROLL);
+          if (hasBottomScroll && isVerticallyScrollable)
+            container.setAttribute(DATA_BOTTOM_SCROLL, "true");
+          else container.removeAttribute(DATA_BOTTOM_SCROLL);
         }
       }
 
-      onScroll();
-      container.addEventListener("scroll", onScroll);
-      window.addEventListener("resize", onScroll);
+      const scrollLeft = container.scrollLeft;
+      const clientWidth = container.clientWidth;
+      const scrollWidth = container.scrollWidth;
 
-      return () => {
-        container.removeEventListener("scroll", onScroll);
-        window.removeEventListener("resize", onScroll);
-      };
-    }, [orientation, offset, withNavigation]);
+      if (withNavigation) {
+        setScrollVisibility((prev) => {
+          const newLeft = scrollLeft > offset;
+          const newRight = scrollLeft + clientWidth < scrollWidth;
 
-    const composedStyle = React.useMemo<React.CSSProperties>(
-      () => ({
-        "--scroll-shadow-size": `${size}px`,
-        ...style,
-      }),
-      [size, style],
-    );
+          if (prev.left !== newLeft || prev.right !== newRight) {
+            return {
+              ...prev,
+              left: newLeft,
+              right: newRight,
+            };
+          }
+          return prev;
+        });
+      }
 
-    const activeDirections = React.useMemo<ScrollDirection[]>(() => {
-      if (!withNavigation) return [];
-      return orientation === "vertical" ? ["up", "down"] : ["left", "right"];
-    }, [orientation, withNavigation]);
+      const hasLeftScroll = scrollLeft > offset;
+      const hasRightScroll = scrollLeft + clientWidth + offset < scrollWidth;
+      const isHorizontallyScrollable = scrollWidth > clientWidth;
 
-    const ScrollerPrimitive = asChild ? Slot : "div";
-
-    const ScrollerImpl = (
-      <ScrollerPrimitive
-        data-slot="scroller"
-        {...scrollerProps}
-        ref={composedRef}
-        style={composedStyle}
-        className={cn(
-          scrollerVariants({ orientation, hideScrollbar, className }),
-        )}
-      />
-    );
-
-    const navigationButtons = React.useMemo(() => {
-      if (!withNavigation) return null;
-
-      return activeDirections
-        .filter((direction) => scrollVisibility[direction])
-        .map((direction) => (
-          <ScrollButton
-            key={direction}
-            data-slot="scroll-button"
-            direction={direction}
-            onClick={scrollHandlers[direction]}
-            triggerMode={scrollTriggerMode}
-          />
-        ));
-    }, [
-      activeDirections,
-      scrollVisibility,
-      scrollHandlers,
-      scrollTriggerMode,
-      withNavigation,
-    ]);
-
-    if (withNavigation) {
-      return (
-        <div className="relative w-full">
-          {navigationButtons}
-          {ScrollerImpl}
-        </div>
-      );
+      if (hasLeftScroll && hasRightScroll && isHorizontallyScrollable) {
+        container.setAttribute(DATA_LEFT_RIGHT_SCROLL, "true");
+        container.removeAttribute(DATA_LEFT_SCROLL);
+        container.removeAttribute(DATA_RIGHT_SCROLL);
+      } else {
+        container.removeAttribute(DATA_LEFT_RIGHT_SCROLL);
+        if (hasLeftScroll) container.setAttribute(DATA_LEFT_SCROLL, "true");
+        else container.removeAttribute(DATA_LEFT_SCROLL);
+        if (hasRightScroll && isHorizontallyScrollable)
+          container.setAttribute(DATA_RIGHT_SCROLL, "true");
+        else container.removeAttribute(DATA_RIGHT_SCROLL);
+      }
     }
 
-    return ScrollerImpl;
-  },
-);
+    onScroll();
+    container.addEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      container.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [orientation, offset, withNavigation]);
+
+  const composedStyle = React.useMemo<React.CSSProperties>(
+    () => ({
+      "--scroll-shadow-size": `${size}px`,
+      ...style,
+    }),
+    [size, style],
+  );
+
+  const activeDirections = React.useMemo<ScrollDirection[]>(() => {
+    if (!withNavigation) return [];
+    return orientation === "vertical" ? ["up", "down"] : ["left", "right"];
+  }, [orientation, withNavigation]);
+
+  const ScrollerPrimitive = asChild ? Slot : "div";
+
+  const ScrollerImpl = (
+    <ScrollerPrimitive
+      data-slot="scroller"
+      {...scrollerProps}
+      ref={composedRef}
+      style={composedStyle}
+      className={cn(scrollerVariants({ orientation, hideScrollbar, className }))}
+    />
+  );
+
+  const navigationButtons = React.useMemo(() => {
+    if (!withNavigation) return null;
+
+    return activeDirections
+      .filter((direction) => scrollVisibility[direction])
+      .map((direction) => (
+        <ScrollButton
+          key={direction}
+          data-slot="scroll-button"
+          direction={direction}
+          onClick={scrollHandlers[direction]}
+          triggerMode={scrollTriggerMode}
+        />
+      ));
+  }, [activeDirections, scrollVisibility, scrollHandlers, scrollTriggerMode, withNavigation]);
+
+  if (withNavigation) {
+    return (
+      <div className="relative w-full">
+        {navigationButtons}
+        {ScrollerImpl}
+      </div>
+    );
+  }
+
+  return ScrollerImpl;
+});
 Scroller.displayName = "Scroller";
 
 const scrollButtonVariants = cva(
@@ -307,17 +290,9 @@ interface ScrollButtonProps extends React.ComponentPropsWithoutRef<"button"> {
 
 const ScrollButton = React.forwardRef<HTMLButtonElement, ScrollButtonProps>(
   (props, forwardedRef) => {
-    const {
-      direction,
-      className,
-      triggerMode = "press",
-      onClick,
-      ...buttonProps
-    } = props;
+    const { direction, className, triggerMode = "press", onClick, ...buttonProps } = props;
 
-    const [autoScrollTimer, setAutoScrollTimer] = React.useState<number | null>(
-      null,
-    );
+    const [autoScrollTimer, setAutoScrollTimer] = React.useState<number | null>(null);
 
     const onAutoScrollStart = React.useCallback(
       (event?: React.MouseEvent<HTMLButtonElement>) => {

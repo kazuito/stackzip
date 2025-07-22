@@ -43,22 +43,20 @@ const PackageDetails = ({ pkg }: Props) => {
 
   if (!pkg.npm?.repository?.url) return null;
   return (
-    <div className="font-mono overflow-y-auto md:px-4">
-      <div className="flex gap-3 items-center sticky top-0 bg-background p-4 md:pt-8">
+    <div className="overflow-y-auto font-mono md:px-4">
+      <div className="bg-background sticky top-0 flex items-center gap-3 p-4 md:pt-8">
         <Image
           src={`https://github.com/${pkg.npm.repository.owner}.png`}
           width={40}
           height={40}
           alt={`Avatar of ${pkg.npm.repository.owner || "repository owner"}`}
-          className="rounded-sm size-7 shrink-0"
+          className="size-7 shrink-0 rounded-sm"
         />
-        <div className="font-semibold text-lg shrink-0">{pkg.name}</div>
-        <div className="ml-auto flex gap-4 items-center min-w-0">
-          <div className="text-sm text-foreground/60 truncate">
-            {pkg.version}
-          </div>
+        <div className="shrink-0 text-lg font-semibold">{pkg.name}</div>
+        <div className="ml-auto flex min-w-0 items-center gap-4">
+          <div className="text-foreground/60 truncate text-sm">{pkg.version}</div>
           {pkg.npm.license && (
-            <Badge variant="secondary" className="text-sm text-foreground/60">
+            <Badge variant="secondary" className="text-foreground/60 text-sm">
               <ScaleIcon />
               {pkg.npm.license}
             </Badge>
@@ -66,9 +64,7 @@ const PackageDetails = ({ pkg }: Props) => {
         </div>
       </div>
       <div className="p-4 pt-0">
-        <div className="text-base sm:text-sm text-foreground/60">
-          {pkg.npm.description}
-        </div>
+        <div className="text-foreground/60 text-base sm:text-sm">{pkg.npm.description}</div>
         {pkg.npm.keywords && (
           <div className="mt-4 flex flex-wrap gap-1">
             {pkg.npm.keywords.map((keyword, i) => (
@@ -78,15 +74,15 @@ const PackageDetails = ({ pkg }: Props) => {
             ))}
           </div>
         )}
-        <div className="flex mt-4 gap-3">
+        <div className="mt-4 flex gap-3">
           <ExternalLink href={pkg.npm.url}>npm</ExternalLink>
           <ExternalLink href={pkg.npm.repository.url}>GitHub</ExternalLink>
         </div>
         <div className="mt-6">
           {loading ? (
-            <Skeleton className="w-full h-[100vh]" />
+            <Skeleton className="h-[100vh] w-full" />
           ) : (
-            <div className="markdown-body starting:opacity-0 transition-all duration-200">
+            <div className="markdown-body transition-all duration-200 starting:opacity-0">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight, rehypeRaw]}

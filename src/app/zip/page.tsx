@@ -25,11 +25,7 @@ import { cn } from "@/lib/utils";
 import { ListFilterIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { Suspense, useEffect, useMemo, useState } from "react";
-import {
-  getGithubReposData,
-  getNpmPackagesData,
-  getPackageJson,
-} from "./actions";
+import { getGithubReposData, getNpmPackagesData, getPackageJson } from "./actions";
 import PackageDrawer from "@/components/package/package-drawer";
 
 const sortBy = {
@@ -54,9 +50,7 @@ function ZipPageContent() {
   const [query, setQuery] = useQueryState("q", {
     defaultValue: "",
   });
-  const [loadingMessage, setLoadingMessage] = useState(
-    !!query ? LOADING_MESSAGES.initial : null
-  );
+  const [loadingMessage, setLoadingMessage] = useState(!!query ? LOADING_MESSAGES.initial : null);
   const [error, setError] = useState<string | null>(null);
   const [activeGroups, setActiveGroups] = useState<string[]>([]);
   const [sortKey, setSortKey] = useState<keyof typeof sortBy>("stars");
@@ -73,9 +67,7 @@ function ZipPageContent() {
   const packages = useMemo(() => {
     return dependencies.map((dep) => {
       const npmData = npmDataList.find((data) => data?.name === dep.name);
-      const githubData = githubDataList.find(
-        (data) => data?.packageName === dep.name
-      );
+      const githubData = githubDataList.find((data) => data?.packageName === dep.name);
       return {
         ...dep,
         npm: npmData || null,
@@ -112,19 +104,15 @@ function ZipPageContent() {
       setPackageJsonData(metadata);
       setDependencies(deps);
       setLoadingMessage(LOADING_MESSAGES.npm);
-      const npmDataListTemp = await getNpmPackagesData(
-        deps.map((dep) => dep.name)
-      );
+      const npmDataListTemp = await getNpmPackagesData(deps.map((dep) => dep.name));
       setNpmDataList(npmDataListTemp);
       setLoadingMessage(LOADING_MESSAGES.github);
       const githubDataListTemp = await getGithubReposData(
-        npmDataListTemp.filter((pkg): pkg is NpmPackageData => pkg !== null)
+        npmDataListTemp.filter((pkg): pkg is NpmPackageData => pkg !== null),
       );
       setGithubDataList(githubDataListTemp);
     } catch (err) {
-      setError(
-        (err as Error).message || "An error occurred while fetching data."
-      );
+      setError((err as Error).message || "An error occurred while fetching data.");
     } finally {
       setLoadingMessage(null);
     }
@@ -140,19 +128,15 @@ function ZipPageContent() {
   }, [groupNames]);
 
   return (
-    <div className="max-w-5xl mx-auto px-6 font-mono">
+    <div className="mx-auto max-w-5xl px-6 font-mono">
       <InputForm onSubmit={onSubmit} defaultQuery={query} />
       {packageJsonData && (
-        <div className="starting:blur-sm starting:scale-98 transition-all duration-400">
+        <div className="transition-all duration-400 starting:scale-98 starting:blur-sm">
           <div className="mt-4">
             <PackageJsonCard data={packageJsonData} />
           </div>
-          <div className="flex items-center mt-4 gap-4">
-            <Scroller
-              orientation="horizontal"
-              className="flex grow"
-              hideScrollbar
-            >
+          <div className="mt-4 flex items-center gap-4">
+            <Scroller orientation="horizontal" className="flex grow" hideScrollbar>
               {groupNames.map((groupName) => {
                 const isActive = activeGroups.includes(groupName);
                 return (
@@ -160,12 +144,10 @@ function ZipPageContent() {
                     key={groupName}
                     size="sm"
                     variant={isActive ? "default" : "outline"}
-                    className={cn("border -mr-px", !isActive && "opacity-50")}
+                    className={cn("-mr-px border", !isActive && "opacity-50")}
                     onClick={() => {
                       setActiveGroups((prev) =>
-                        isActive
-                          ? prev.filter((g) => g !== groupName)
-                          : [...prev, groupName]
+                        isActive ? prev.filter((g) => g !== groupName) : [...prev, groupName],
                       );
                     }}
                   >
@@ -193,17 +175,12 @@ function ZipPageContent() {
                 title="Toggle sort order"
               >
                 <ListFilterIcon
-                  className={cn(
-                    "transition-all duration-400",
-                    !sortDesc && "rotate-x-180"
-                  )}
+                  className={cn("transition-all duration-400", !sortDesc && "rotate-x-180")}
                 />
               </Button>
               <Select
                 value={sortKey}
-                onValueChange={(value) =>
-                  setSortKey(value as keyof typeof sortBy)
-                }
+                onValueChange={(value) => setSortKey(value as keyof typeof sortBy)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Sort by" />
@@ -224,19 +201,17 @@ function ZipPageContent() {
         </div>
       )}
       {loadingMessage && (
-        <div className="flex items-center justify-center gap-2 mt-20 animate-bounce">
+        <div className="mt-20 flex animate-bounce items-center justify-center gap-2">
           {loadingMessage}
-          <div className="w-[4px] h-[0.7lh] bg-foreground/80 animate-caret-blink"></div>
+          <div className="bg-foreground/80 animate-caret-blink h-[0.7lh] w-[4px]"></div>
         </div>
       )}
       {error && <p className="text-red-500">Error: {error}</p>}
       {!loadingMessage && !error && computedPackages.length === 0 && (
-        <p className="flex justify-center mt-20 text-foreground/60">
-          No packages found.
-        </p>
+        <p className="text-foreground/60 mt-20 flex justify-center">No packages found.</p>
       )}
       {!loadingMessage && !error && computedPackages.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 my-4 starting:blur-sm starting:opacity-0 transition-all duration-400 starting:translate-y-2">
+        <div className="my-4 grid grid-cols-1 transition-all duration-400 sm:grid-cols-2 lg:grid-cols-3 starting:translate-y-2 starting:opacity-0 starting:blur-sm">
           {computedPackages.map((pkg) => (
             <PackageCard
               key={`${pkg.name}-${pkg.version}`}
@@ -246,10 +221,7 @@ function ZipPageContent() {
           ))}
         </div>
       )}
-      <PackageDrawer
-        pkg={activePackage}
-        onClose={() => setActivePackage(null)}
-      />
+      <PackageDrawer pkg={activePackage} onClose={() => setActivePackage(null)} />
     </div>
   );
 }

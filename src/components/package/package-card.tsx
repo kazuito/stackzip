@@ -18,11 +18,11 @@ const PackageCard = ({ pkg, onClick }: Props) => {
 
   return (
     <div
-      className="p-4 cursor-default border -mr-px group/card -mb-px flex font-mono flex-col hover:bg-sidebar transition-all"
+      className="group/card hover:bg-sidebar -mr-px -mb-px flex cursor-default flex-col border p-4 font-mono transition-all"
       onClick={onClick}
     >
-      <div className="flex justify-between items-center gap-2">
-        <div className="flex items-center gap-2.5 min-w-0">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2.5">
           <Image
             alt=""
             src={`https://github.com/${repo?.owner}.png`}
@@ -32,19 +32,13 @@ const PackageCard = ({ pkg, onClick }: Props) => {
           />
           <h3 className="truncate font-medium">{pkg.name}</h3>
         </div>
-        <div className="text-sm text-foreground/60 truncate max-w-1/2">
-          {pkg.version}
-        </div>
+        <div className="text-foreground/60 max-w-1/2 truncate text-sm">{pkg.version}</div>
       </div>
-      <div className="mt-3 text-foreground/60 line-clamp-3 sm:text-sm sm:line-clamp-2 min-h-[2lh]">
+      <div className="text-foreground/60 mt-3 line-clamp-3 min-h-[2lh] sm:line-clamp-2 sm:text-sm">
         {pkg.npm?.description}
       </div>
       {pkg.npm?.keywords && (
-        <Scroller
-          className="flex gap-1 mt-3"
-          orientation="horizontal"
-          hideScrollbar
-        >
+        <Scroller className="mt-3 flex gap-1" orientation="horizontal" hideScrollbar>
           {pkg.npm.keywords.map((keyword, i) => (
             <Badge key={`${keyword}-${i}`} variant="outline">
               {keyword}
@@ -52,19 +46,15 @@ const PackageCard = ({ pkg, onClick }: Props) => {
           ))}
         </Scroller>
       )}
-      <div className="flex justify-between mt-auto pt-3">
+      <div className="mt-auto flex justify-between pt-3">
         <div className="flex items-center gap-1">
           <StarIcon className="size-3" />
           <span className="text-sm">{formattedStars}</span>
         </div>
-        <div className="text-sm text-foreground/60 group-hover/card:hidden">
-          {pkg.npm?.license}
-        </div>
-        <div className="hidden gap-3 group-hover/card:flex text-foreground/60">
+        <div className="text-foreground/60 text-sm group-hover/card:hidden">{pkg.npm?.license}</div>
+        <div className="text-foreground/60 hidden gap-3 group-hover/card:flex">
           {pkg.npm?.url && <ExternalLink href={pkg.npm?.url}>npm</ExternalLink>}
-          {pkg.github?.url && (
-            <ExternalLink href={pkg.github?.url}>GitHub</ExternalLink>
-          )}
+          {pkg.github?.url && <ExternalLink href={pkg.github?.url}>GitHub</ExternalLink>}
         </div>
       </div>
     </div>

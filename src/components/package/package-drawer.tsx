@@ -24,10 +24,7 @@ const PackageDrawer = ({ pkg, onClose }: Props) => {
   if (isDesktop) {
     return (
       <Dialog open={!!pkg} onOpenChange={onClose}>
-        <DialogContent
-          className="max-w-4xl! w-full mx-auto h-[90vh]"
-          showCloseButton={false}
-        >
+        <DialogContent className="mx-auto h-[90vh] w-full max-w-4xl!" showCloseButton={false}>
           <DialogTitle className="sr-only">{displayPackage.name}</DialogTitle>
           <PackageDetails pkg={displayPackage} />
         </DialogContent>
@@ -37,7 +34,7 @@ const PackageDrawer = ({ pkg, onClose }: Props) => {
 
   return (
     <Drawer open={!!pkg} onClose={onClose}>
-      <DrawerContent className="max-w-5xl mx-auto h-[90vh]">
+      <DrawerContent className="mx-auto h-[90vh] max-w-5xl">
         <DrawerTitle className="sr-only">{displayPackage.name}</DrawerTitle>
         <PackageDetails pkg={displayPackage} />
       </DrawerContent>
