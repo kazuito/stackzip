@@ -208,7 +208,7 @@ function ZipPageContent() {
       )}
       {error && <p className="text-red-500">Error: {error}</p>}
       {!loadingMessage && !error && computedPackages.length === 0 && (
-        <p className="text-foreground/60 mt-20 flex justify-center transition-all duration-400 starting:-translate-y-2 starting:blur-xs starting:opacity-0">
+        <p className="text-foreground/60 mt-20 flex justify-center transition-all duration-400 starting:-translate-y-2 starting:opacity-0 starting:blur-xs">
           No packages found.
         </p>
       )}
