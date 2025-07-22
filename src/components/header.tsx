@@ -11,7 +11,9 @@ const Header = () => {
         <div className="font-semibold">Stackzip</div>
       </Link>
       <div className="ml-auto">
-        <ExternalLink className="text-foreground/60" href="https://github.com/kazuito/stackzip">Source</ExternalLink>
+        <ExternalLink className="text-foreground/60" href="https://github.com/kazuito/stackzip">
+          Source
+        </ExternalLink>
       </div>
     </header>
   );

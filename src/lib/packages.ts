@@ -49,8 +49,12 @@ const PackageJsonDepsSchema = z.object({
 });
 
 export const repoHash = (repo: Repo) => {
-  const hash = crypto.createHash("sha256").update(`${repo.owner}/${repo.name}`).digest("hex");
-  return `repo_${hash}`;
+  const hash = crypto
+    .createHash("sha256")
+    .update(`${repo.owner}/${repo.name}`)
+    .digest("hex")
+    .slice(0, 8);
+  return `_${hash}`;
 };
 
 /**
@@ -143,7 +147,7 @@ export async function fetchGithubReposData(npmPackages: NpmPackageData[]) {
  * @returns
  */
 export async function fetchNpmPackageData(packageName: string) {
-  const res = await fetch(`https://registry.npmjs.org/${packageName}`);
+  const res = await fetch(`https://registry.npmjs.org/${packageName}/latest`);
 
   if (!res.ok) {
     // throw new Error("Failed to fetch npm package data");
