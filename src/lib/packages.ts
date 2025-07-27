@@ -110,6 +110,7 @@ export async function fetchGithubReposData(npmPackages: NpmPackageData[]) {
     method: "POST",
     headers,
     body: JSON.stringify({ query }),
+    next: { revalidate: 86400 }, // 24 hours
   });
 
   if (!res.ok) {
@@ -147,7 +148,9 @@ export async function fetchGithubReposData(npmPackages: NpmPackageData[]) {
  * @returns
  */
 export async function fetchNpmPackageData(packageName: string) {
-  const res = await fetch(`https://registry.npmjs.org/${packageName}/latest`);
+  const res = await fetch(`https://registry.npmjs.org/${packageName}/latest`, {
+    next: { revalidate: 86400 }, // 24 hours
+  });
 
   if (!res.ok) {
     // throw new Error("Failed to fetch npm package data");
@@ -208,7 +211,9 @@ export async function fetchPackageJson(url: string) {
   }
 
   const rowUrl = `https://raw.githubusercontent.com/${parsed.owner}/${parsed.name}/${parsed.branch}/${parsed.filepath}`;
-  const res = await fetch(rowUrl);
+  const res = await fetch(rowUrl, {
+    next: { revalidate: 86400 }, // 24 hours
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch package.json");
