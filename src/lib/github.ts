@@ -23,6 +23,7 @@ export async function fetchReadme(repo: Repo) {
 
   const res = await fetch(url, {
     headers,
+    next: { revalidate: 86400 }, // 24 hours
   });
 
   if (!res.ok) {
