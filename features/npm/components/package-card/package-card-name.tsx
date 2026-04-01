@@ -7,10 +7,10 @@ export const PackageCardName = () => {
   return (
     <h3 className="relative z-20 min-w-0 text-sm font-semibold">
       <a
-        href={`https://npmx.com/package/${encodeURIComponent(data.name)}`}
+        href={`https://npmx.dev/package/${encodeURIComponent(data.name)}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="block truncate transition-colors hover:text-foreground"
+        className="block hover:underline truncate transition-colors hover:text-foreground"
       >
         {data.name}
       </a>
