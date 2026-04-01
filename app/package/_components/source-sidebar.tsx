@@ -24,14 +24,7 @@ export const SourceSidebar = ({
 
   return (
     <aside className="rounded-lg border bg-card p-5 space-y-4 text-sm">
-      <h2 className="font-semibold text-base">Source</h2>
-
-      {pkg.name && (
-        <div>
-          <span className="text-muted-foreground">Name</span>
-          <p className="font-medium">{pkg.name}</p>
-        </div>
-      )}
+      <div className="font-accent text-lg">{pkg.name ?? "(Unknown)"}</div>
       {pkg.version && (
         <div>
           <span className="text-muted-foreground">Version</span>
