@@ -52,7 +52,7 @@ After any code change, run `pnpm check` to format, lint, and typecheck in one pa
 - npm registry (`registry.npmjs.org`) and downloads API (`api.npmjs.org`) are called directly (CORS-enabled).
 
 ### URL state
-- Managed via `nuqs`. Query params: `src` (package.json URL or npm package spec) and `breadcrumbs` (JSON-encoded ancestor trail for package drill-down navigation).
+- Managed via `nuqs`. Query params: `src` (package.json URL or npm package spec) and `breadcrumbs` (compact ancestor trail string for package drill-down navigation; package-name crumbs store only `src`, URL-derived crumbs store `label>src`, and crumbs are joined with `|`).
 
 ### Styling
 - Tailwind v4 with shadcn CSS variables (oklch color space, dark mode via `.dark` class).

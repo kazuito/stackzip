@@ -14,34 +14,45 @@ import {
 } from "./package-breadcrumbs";
 import { SourceSidebar } from "./source-sidebar";
 
+const BREADCRUMB_ITEM_SEPARATOR = "|";
+const BREADCRUMB_VALUE_SEPARATOR = ">";
+
 function parseBreadcrumbs(value: string | null): PackageBreadcrumbItem[] {
   if (!value) return [];
 
-  try {
-    const parsed = JSON.parse(value);
-    if (!Array.isArray(parsed)) return [];
+  return value.split(BREADCRUMB_ITEM_SEPARATOR).flatMap((item) => {
+    if (!item) return [];
 
-    return parsed.flatMap((item) => {
-      if (
-        typeof item !== "object" ||
-        item === null ||
-        !("label" in item) ||
-        !("src" in item) ||
-        typeof item.label !== "string" ||
-        typeof item.src !== "string"
-      ) {
-        return [];
+    const separatorIndex = item.indexOf(BREADCRUMB_VALUE_SEPARATOR);
+
+    try {
+      if (separatorIndex === -1) {
+        const src = decodeURIComponent(item);
+        return src ? [{ label: src, src }] : [];
       }
 
-      return [{ label: item.label, src: item.src }];
-    });
-  } catch {
-    return [];
-  }
+      const label = decodeURIComponent(item.slice(0, separatorIndex));
+      const src = decodeURIComponent(item.slice(separatorIndex + 1));
+
+      if (!label || !src) return [];
+      return [{ label, src }];
+    } catch {
+      return [];
+    }
+  });
 }
 
 function serializeBreadcrumbs(items: PackageBreadcrumbItem[]): string | null {
-  return items.length > 0 ? JSON.stringify(items) : null;
+  if (items.length === 0) return null;
+
+  return items
+    .map(({ label, src }) => {
+      const encodedSrc = encodeURIComponent(src);
+      if (label === src) return encodedSrc;
+
+      return `${encodeURIComponent(label)}${BREADCRUMB_VALUE_SEPARATOR}${encodedSrc}`;
+    })
+    .join(BREADCRUMB_ITEM_SEPARATOR);
 }
 
 export const PackagePageClient = () => {
