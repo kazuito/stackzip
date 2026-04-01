@@ -1,6 +1,7 @@
 "use client";
 
 import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import type { PackageJson } from "@/features/package-json/types";
 
@@ -136,7 +137,17 @@ export const SourceSidebar = ({
           <div className="text-muted-foreground">Keywords</div>
           <div className="flex flex-wrap gap-1.5">
             {pkg.keywords.slice(0, 8).map((keyword) => (
-              <Badge key={keyword} variant="outline">
+              <Badge
+                render={
+                  <Link
+                    href={`https://npmx.dev/search?q=keyword:${encodeURIComponent(keyword)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                }
+                key={keyword}
+                variant="outline"
+              >
                 {keyword}
               </Badge>
             ))}
