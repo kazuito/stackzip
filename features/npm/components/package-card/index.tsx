@@ -19,7 +19,7 @@ const PackageCardRoot = ({
   <PackageCardContext value={data}>
     <div
       className={cn(
-        "border bg-card p-4 space-y-2.5 flex flex-col",
+        "border hover:bg-card p-4 transition hover:duration-0 duration-200 space-y-2.5 flex flex-col group/item",
         className,
       )}
       {...props}
