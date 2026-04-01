@@ -140,7 +140,7 @@ export const SourceSidebar = ({
         <div className="space-y-2">
           <div className="text-muted-foreground">Keywords</div>
           <div className="flex flex-wrap gap-1.5">
-            {pkg.keywords.slice(0, 8).map((keyword) => (
+            {[...new Set(pkg.keywords)].map((keyword) => (
               <Badge
                 render={
                   <Link
