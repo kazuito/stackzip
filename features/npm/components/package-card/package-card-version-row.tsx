@@ -10,20 +10,29 @@ const statusColor = {
   major: "text-red-400",
 } as const;
 
-export const PackageCardVersionRow = () => {
+const statusMessage = {
+  current: "Up to date",
+  minor: "Minor update available",
+  major: "Major update available",
+} as const;
+
+export const PackageCardVersion = () => {
   const data = use(PackageCardContext)!;
+
+  const tooltip =
+    data.outdatedStatus === "current"
+      ? statusMessage.current
+      : `${statusMessage[data.outdatedStatus]}: ${data.latest}`;
+
   return (
-    <div className="flex items-center gap-2 text-xs">
-      <span className="text-muted-foreground font-mono">{data.range}</span>
-      <span className="text-muted-foreground">→</span>
-      <span
-        className={cn(
-          "font-mono font-medium",
-          statusColor[data.outdatedStatus],
-        )}
-      >
-        {data.latest}
-      </span>
-    </div>
+    <span
+      className={cn(
+        "ml-auto shrink-0 font-mono text-xs font-medium",
+        statusColor[data.outdatedStatus],
+      )}
+      title={tooltip}
+    >
+      {data.range}
+    </span>
   );
 };

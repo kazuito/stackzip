@@ -1,4 +1,4 @@
-export interface NpmPackage {
+export interface NpmPackageLatest {
   name: string;
   description?: string;
   license?: string;
@@ -7,22 +7,16 @@ export interface NpmPackage {
     type?: string;
     url?: string;
   };
+  version: string;
+}
+
+export interface NpmPackageAbbreviated {
+  name: string;
   "dist-tags": {
     latest: string;
     [tag: string]: string;
   };
-  time: {
-    modified: string;
-    created: string;
-    [version: string]: string;
-  };
-}
-
-export interface NpmDownloads {
-  downloads: number;
-  start: string;
-  end: string;
-  package: string;
+  modified: string;
 }
 
 export type OutdatedStatus = "current" | "minor" | "major";
@@ -35,7 +29,6 @@ export interface NpmPackageData {
   repositoryUrl?: string;
   latest: string;
   modified: string;
-  downloads: number;
   outdatedStatus: OutdatedStatus;
   range: string;
 }

@@ -1,8 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchNpmDownloads } from "../lib/downloads";
-import { fetchNpmPackage } from "../lib/registry";
+import {
+  fetchNpmPackageAbbreviated,
+  fetchNpmPackageLatest,
+} from "../lib/registry";
 import { getOutdatedStatus } from "../lib/semver";
 import type { NpmPackageData } from "../types";
 
@@ -22,23 +24,23 @@ export function useNpmPackage(name: string, range: string) {
   return useQuery<NpmPackageData>({
     queryKey: ["npm-package", name],
     queryFn: async () => {
-      const [pkg, downloads] = await Promise.all([
-        fetchNpmPackage(name),
-        fetchNpmDownloads(name).catch(
-          () => ({ downloads: 0 }) as { downloads: number },
-        ),
+      const [latest, abbreviated] = await Promise.all([
+        fetchNpmPackageLatest(name),
+        fetchNpmPackageAbbreviated(name),
       ]);
 
       return {
-        name: pkg.name,
-        description: pkg.description,
-        license: pkg.license,
-        homepage: pkg.homepage,
-        repositoryUrl: normalizeRepoUrl(pkg.repository),
-        latest: pkg["dist-tags"].latest,
-        modified: pkg.time.modified,
-        downloads: downloads.downloads,
-        outdatedStatus: getOutdatedStatus(range, pkg["dist-tags"].latest),
+        name: latest.name,
+        description: latest.description,
+        license: latest.license,
+        homepage: latest.homepage,
+        repositoryUrl: normalizeRepoUrl(latest.repository),
+        latest: abbreviated["dist-tags"].latest,
+        modified: abbreviated.modified,
+        outdatedStatus: getOutdatedStatus(
+          range,
+          abbreviated["dist-tags"].latest,
+        ),
         range,
       };
     },

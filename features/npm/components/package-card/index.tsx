@@ -9,7 +9,7 @@ import { PackageCardLinks } from "./package-card-links";
 import { PackageCardMeta } from "./package-card-meta";
 import { PackageCardName } from "./package-card-name";
 import { PackageCardSkeleton } from "./package-card-skeleton";
-import { PackageCardVersionRow } from "./package-card-version-row";
+import { PackageCardVersion } from "./package-card-version-row";
 
 const PackageCardRoot = ({
   data,
@@ -28,8 +28,8 @@ export const PackageCard = {
   Root: PackageCardRoot,
   Icon: PackageCardIcon,
   Name: PackageCardName,
+  Version: PackageCardVersion,
   Description: PackageCardDescription,
-  VersionRow: PackageCardVersionRow,
   Links: PackageCardLinks,
   Meta: PackageCardMeta,
   Skeleton: PackageCardSkeleton,

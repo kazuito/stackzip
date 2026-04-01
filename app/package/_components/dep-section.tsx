@@ -23,11 +23,13 @@ const PackageCardItem = ({ entry }: { entry: DepEntry }) => {
       <div className="flex items-center gap-2">
         <PackageCard.Icon />
         <PackageCard.Name />
+        <PackageCard.Version />
       </div>
       <PackageCard.Description />
-      <PackageCard.VersionRow />
-      <PackageCard.Links />
-      <PackageCard.Meta />
+      <div className="flex items-center gap-3">
+        <PackageCard.Meta />
+        <PackageCard.Links />
+      </div>
     </PackageCard.Root>
   );
 };

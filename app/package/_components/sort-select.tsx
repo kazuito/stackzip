@@ -2,11 +2,10 @@
 
 import { cn } from "@/lib/utils";
 
-export type SortKey = "name" | "downloads" | "published" | "latest";
+export type SortKey = "name" | "published" | "latest";
 
 const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: "name", label: "Name (A → Z)" },
-  { value: "downloads", label: "Weekly Downloads" },
   { value: "published", label: "Last Published" },
   { value: "latest", label: "Latest Version" },
 ];
