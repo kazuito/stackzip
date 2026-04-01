@@ -13,14 +13,26 @@ const DEP_LABELS: Record<string, string> = {
   optionalDependencies: "optionalDependencies",
 };
 
-const PackageCardItem = ({ entry }: { entry: DepEntry }) => {
+const PackageCardItem = ({
+  entry,
+  onSelect,
+}: {
+  entry: DepEntry;
+  onSelect: (name: string) => void;
+}) => {
   const { data, isLoading, isError } = useNpmPackage(entry.name, entry.range);
 
   if (isError) return null;
   if (isLoading || !data) return <PackageCard.Skeleton />;
 
   return (
-    <PackageCard.Root data={data} className="-m-px">
+    <PackageCard.Root data={data} className="-m-px relative cursor-pointer">
+      <button
+        type="button"
+        aria-label={`Show dependencies for ${entry.name}`}
+        className="absolute inset-0 z-10 rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+        onClick={() => onSelect(entry.name)}
+      />
       <div className="flex items-center gap-2">
         <PackageCard.Icon />
         <PackageCard.Name />
@@ -38,10 +50,12 @@ const PackageCardItem = ({ entry }: { entry: DepEntry }) => {
 export const DepSection = ({
   type,
   entries,
+  onPackageSelect,
   className,
 }: {
   type: string;
   entries: DepEntry[];
+  onPackageSelect: (name: string) => void;
   className?: string;
 }) => {
   if (entries.length === 0) return null;
@@ -58,7 +72,11 @@ export const DepSection = ({
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 m-px">
         {sorted.map((entry) => (
-          <PackageCardItem key={entry.name} entry={entry} />
+          <PackageCardItem
+            key={entry.name}
+            entry={entry}
+            onSelect={onPackageSelect}
+          />
         ))}
       </div>
     </section>

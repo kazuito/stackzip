@@ -8,15 +8,82 @@ import { DEP_TYPES, type DepEntry } from "@/features/package-json/types";
 import { DepSection } from "./dep-section";
 import { EmptyState } from "./empty-state";
 import { ErrorState } from "./error-state";
+import {
+  type PackageBreadcrumbItem,
+  PackageBreadcrumbs,
+} from "./package-breadcrumbs";
 import { SourceSidebar } from "./source-sidebar";
+
+function parseBreadcrumbs(value: string | null): PackageBreadcrumbItem[] {
+  if (!value) return [];
+
+  try {
+    const parsed = JSON.parse(value);
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed.flatMap((item) => {
+      if (
+        typeof item !== "object" ||
+        item === null ||
+        !("label" in item) ||
+        !("src" in item) ||
+        typeof item.label !== "string" ||
+        typeof item.src !== "string"
+      ) {
+        return [];
+      }
+
+      return [{ label: item.label, src: item.src }];
+    });
+  } catch {
+    return [];
+  }
+}
+
+function serializeBreadcrumbs(items: PackageBreadcrumbItem[]): string | null {
+  return items.length > 0 ? JSON.stringify(items) : null;
+}
 
 export const PackagePageClient = () => {
   const router = useRouter();
-  const [src, setSrc] = useQueryState("src", parseAsString);
+  const [src, setSrc] = useQueryState(
+    "src",
+    parseAsString.withOptions({ history: "push" }),
+  );
+  const [breadcrumbsQuery, setBreadcrumbsQuery] = useQueryState(
+    "breadcrumbs",
+    parseAsString.withOptions({ history: "push" }),
+  );
+  const breadcrumbs = parseBreadcrumbs(breadcrumbsQuery);
   const { data: pkg, isLoading, isError, error, refetch } = usePackageJson(src);
+  const currentBreadcrumb = src ? { label: pkg?.name ?? src, src } : null;
+  const breadcrumbItems = currentBreadcrumb
+    ? [...breadcrumbs, currentBreadcrumb]
+    : breadcrumbs;
 
-  const handleSubmit = (url: string) => {
-    setSrc(url);
+  const handleSubmit = (nextSrc: string) => {
+    void Promise.all([setSrc(nextSrc), setBreadcrumbsQuery(null)]);
+  };
+
+  const handlePackageSelect = (nextSrc: string) => {
+    if (!src || nextSrc === src) return;
+
+    const nextBreadcrumbs = serializeBreadcrumbs([
+      ...breadcrumbs,
+      { label: pkg?.name ?? src, src },
+    ]);
+
+    void Promise.all([setSrc(nextSrc), setBreadcrumbsQuery(nextBreadcrumbs)]);
+  };
+
+  const handleBreadcrumbNavigate = (index: number) => {
+    const target = breadcrumbs[index];
+    if (!target) return;
+
+    void Promise.all([
+      setSrc(target.src),
+      setBreadcrumbsQuery(serializeBreadcrumbs(breadcrumbs.slice(0, index))),
+    ]);
   };
 
   const handleClear = () => {
@@ -26,16 +93,6 @@ export const PackagePageClient = () => {
   if (!src) {
     router.push("/");
     return null;
-  }
-
-  if (isError) {
-    return (
-      <ErrorState
-        message={error?.message ?? "Unknown error"}
-        onRetry={() => refetch()}
-        onClear={handleClear}
-      />
-    );
   }
 
   const entriesByType: Record<string, DepEntry[]> = {};
@@ -61,9 +118,21 @@ export const PackagePageClient = () => {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 space-y-6">
-      <UrlInput defaultValue={src} onSubmit={handleSubmit} />
+      <UrlInput defaultValue={src ?? ""} onSubmit={handleSubmit} />
+      <PackageBreadcrumbs
+        items={breadcrumbItems}
+        onNavigate={handleBreadcrumbNavigate}
+      />
 
-      {isLoading && (
+      {isError && (
+        <ErrorState
+          message={error?.message ?? "Unknown error"}
+          onRetry={() => refetch()}
+          onClear={handleClear}
+        />
+      )}
+
+      {!isError && isLoading && (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
@@ -79,9 +148,9 @@ export const PackagePageClient = () => {
         </div>
       )}
 
-      {pkg && totalDeps === 0 && <EmptyState />}
+      {!isError && pkg && totalDeps === 0 && <EmptyState />}
 
-      {pkg && totalDeps > 0 && (
+      {!isError && pkg && totalDeps > 0 && (
         <div className="flex gap-8">
           <div className="flex-1 min-w-0 space-y-8">
             {DEP_TYPES.map((type) =>
@@ -90,6 +159,7 @@ export const PackagePageClient = () => {
                   key={type}
                   type={type}
                   entries={entriesByType[type]}
+                  onPackageSelect={handlePackageSelect}
                 />
               ) : null,
             )}

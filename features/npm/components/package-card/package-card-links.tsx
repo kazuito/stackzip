@@ -28,7 +28,7 @@ export const PackageCardLinks = () => {
   const showHomepage = data.homepage && data.homepage !== data.repositoryUrl;
 
   return (
-    <div className="flex items-center gap-2 pointer-fine:group-hover/item:opacity-100 pointer-fine:opacity-30 transition-opacity duration-200 group-hover/item:duration-0">
+    <div className="relative z-20 flex items-center gap-2 pointer-fine:group-hover/item:opacity-100 pointer-fine:opacity-30 transition-opacity duration-200 group-hover/item:duration-0">
       <LinkIcon href={`https://npmjs.com/package/${data.name}`} label="npm">
         <Package className="size-3.5" />
       </LinkIcon>

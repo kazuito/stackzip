@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export const UrlInput = ({
@@ -14,6 +14,10 @@ export const UrlInput = ({
   onSubmit: (url: string) => void;
 }) => {
   const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
