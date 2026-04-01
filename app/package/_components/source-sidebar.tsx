@@ -4,6 +4,7 @@ import { ExternalLink as ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import type { PackageJson } from "@/features/package-json/types";
+import { npmxKeywordSearchUrl, npmxPackageUrl } from "@/lib/npmx";
 import { cn } from "@/lib/utils";
 
 function repoUrl(repo: PackageJson["repository"]): string | undefined {
@@ -92,7 +93,7 @@ export const SourceSidebar = ({
         <div className="flex flex-wrap items-center gap-2">
           {pkg.name ? (
             <Link
-              href={`https://npmx.dev/package/${encodeURIComponent(pkg.name)}`}
+              href={npmxPackageUrl(pkg.name)}
               target="_blank"
               rel="noopener noreferrer"
               className="font-accent text-lg hover:underline"
@@ -155,7 +156,7 @@ export const SourceSidebar = ({
               <Badge
                 render={
                   <Link
-                    href={`https://npmx.dev/search?q=keyword:${encodeURIComponent(keyword)}`}
+                    href={npmxKeywordSearchUrl(keyword)}
                     target="_blank"
                     rel="noopener noreferrer"
                   />
