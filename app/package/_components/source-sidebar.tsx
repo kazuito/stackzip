@@ -4,6 +4,7 @@ import { ExternalLink as ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import type { PackageJson } from "@/features/package-json/types";
+import { cn } from "@/lib/utils";
 
 function repoUrl(repo: PackageJson["repository"]): string | undefined {
   if (!repo) return undefined;
@@ -47,9 +48,9 @@ const SidebarField = ({
   value: string;
   mono?: boolean;
 }) => (
-  <div>
+  <div className="min-w-0">
     <span className="text-muted-foreground">{label}</span>
-    <p className={mono ? "font-mono" : undefined}>{value}</p>
+    <p className={cn("min-w-0 wrap-anywhere", mono && "font-mono")}>{value}</p>
   </div>
 );
 
@@ -86,7 +87,7 @@ export const SourceSidebar = ({
   const depCountEntries = Object.entries(depCounts);
 
   return (
-    <aside className="rounded-lg border bg-card p-5 space-y-4 text-sm">
+    <aside className="min-w-0 rounded-lg border bg-card p-5 text-sm space-y-4">
       <div className="space-y-2">
         <div className="flex flex-wrap items-center gap-2">
           <div className="font-accent text-lg">{pkg.name ?? "(Unknown)"}</div>
@@ -121,9 +122,12 @@ export const SourceSidebar = ({
           <div className="text-muted-foreground">Entry Points</div>
           <div>
             {entryPoints.map((entry) => (
-              <div key={entry.label} className="flex justify-between gap-3">
-                <span>{entry.label}</span>
-                <span className="max-w-44 truncate font-mono text-muted-foreground">
+              <div
+                key={entry.label}
+                className="flex min-w-0 justify-between gap-3"
+              >
+                <span className="shrink-0">{entry.label}</span>
+                <span className="min-w-0 truncate font-mono text-muted-foreground">
                   {entry.value}
                 </span>
               </div>
