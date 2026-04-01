@@ -7,7 +7,10 @@ export const PackageCardSkeleton = ({ className }: { className?: string }) => (
       className,
     )}
   >
-    <div className="h-4 w-2/3 rounded bg-muted" />
+    <div className="flex items-center gap-2">
+      <div className="size-6 shrink-0 rounded bg-muted" />
+      <div className="h-4 w-2/3 rounded bg-muted" />
+    </div>
     <div className="space-y-1.5">
       <div className="h-3 w-full rounded bg-muted" />
       <div className="h-3 w-4/5 rounded bg-muted" />

@@ -20,7 +20,10 @@ const PackageCardItem = ({ entry }: { entry: DepEntry }) => {
 
   return (
     <PackageCard.Root data={data}>
-      <PackageCard.Name />
+      <div className="flex items-center gap-2">
+        <PackageCard.Icon />
+        <PackageCard.Name />
+      </div>
       <PackageCard.Description />
       <PackageCard.VersionRow />
       <PackageCard.Links />

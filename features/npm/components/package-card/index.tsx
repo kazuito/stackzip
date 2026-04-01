@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import type { NpmPackageData } from "../../types";
 import { PackageCardContext } from "./package-card-context";
 import { PackageCardDescription } from "./package-card-description";
+import { PackageCardIcon } from "./package-card-icon";
 import { PackageCardLinks } from "./package-card-links";
 import { PackageCardMeta } from "./package-card-meta";
 import { PackageCardName } from "./package-card-name";
@@ -25,6 +26,7 @@ const PackageCardRoot = ({
 
 export const PackageCard = {
   Root: PackageCardRoot,
+  Icon: PackageCardIcon,
   Name: PackageCardName,
   Description: PackageCardDescription,
   VersionRow: PackageCardVersionRow,
