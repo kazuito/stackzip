@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { type FormEvent, useEffect, useState } from "react";
+import { type SubmitEvent, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export const UrlInput = ({
@@ -19,7 +19,7 @@ export const UrlInput = ({
     setValue(defaultValue);
   }, [defaultValue]);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmed = value.trim();
     if (trimmed) onSubmit(trimmed);
