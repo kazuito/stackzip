@@ -1,10 +1,12 @@
 "use client";
 
+import { Link2Icon, PackageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const EXAMPLE_GROUPS = [
   {
     label: "Package",
+    icon: PackageIcon,
     examples: [
       { label: "eslint", value: "eslint" },
       { label: "axios", value: "axios" },
@@ -13,6 +15,7 @@ const EXAMPLE_GROUPS = [
   },
   {
     label: "URL",
+    icon: Link2Icon,
     examples: [
       {
         label: "Next.js",
@@ -37,29 +40,40 @@ export const QuickStartButtons = () => {
   const router = useRouter();
 
   return (
-    <div className="flex w-full flex-col gap-3 rounded-2xl border border-border/70 bg-card/40 p-4 text-left">
-      <p className="text-sm text-muted-foreground">
-        Examples. Click one to load it instantly.
+    <div className="flex w-full flex-col gap-2.5 text-left">
+      <p className="text-center text-xs text-muted-foreground/60 tracking-wide">
+        or try an example
       </p>
-      {EXAMPLE_GROUPS.map((group) => (
-        <div key={group.label} className="flex flex-wrap items-center gap-2">
-          <span className="min-w-16 text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground/80">
-            {group.label}
-          </span>
-          {group.examples.map((example) => (
-            <button
-              key={example.label}
-              type="button"
-              onClick={() =>
-                router.push(`/package?src=${encodeURIComponent(example.value)}`)
-              }
-              className="rounded-md border border-border/70 bg-background px-3 py-1.5 font-mono text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+      <div className="flex flex-col items-center gap-2">
+        {EXAMPLE_GROUPS.map((group) => {
+          const Icon = group.icon;
+          return (
+            <div
+              key={group.label}
+              className="flex flex-wrap items-center gap-2"
             >
-              {example.label}
-            </button>
-          ))}
-        </div>
-      ))}
+              <span className="flex items-center gap-1.5 mr-2 text-sm text-muted-foreground max-sm:hidden">
+                <Icon className="size-4" />
+                {group.label}
+              </span>
+              {group.examples.map((example) => (
+                <button
+                  key={example.label}
+                  type="button"
+                  onClick={() =>
+                    router.push(
+                      `/package?src=${encodeURIComponent(example.value)}`,
+                    )
+                  }
+                  className="rounded-md border border-border/50 bg-muted/40 px-2.5 py-1 font-mono text-xs text-muted-foreground/80 transition-colors hover:border-border hover:bg-muted hover:text-foreground"
+                >
+                  {example.label}
+                </button>
+              ))}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
