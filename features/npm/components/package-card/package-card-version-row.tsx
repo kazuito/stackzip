@@ -3,6 +3,7 @@
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
@@ -29,18 +30,20 @@ export const PackageCardVersion = () => {
       : `${statusMessage[data.outdatedStatus]}: ${data.latest}`;
 
   return (
-    <Tooltip>
-      <TooltipTrigger className="ml-auto shrink-0" delay={100}>
-        <span
-          className={cn(
-            "font-mono text-xs font-medium text-muted-foreground",
-            statusColor[data.outdatedStatus],
-          )}
-        >
-          {data.range}
-        </span>
-      </TooltipTrigger>
-      <TooltipContent>{tooltip}</TooltipContent>
-    </Tooltip>
+    <TooltipProvider delay={100}>
+      <Tooltip>
+        <TooltipTrigger className="relative z-20 ml-auto shrink-0">
+          <span
+            className={cn(
+              "font-mono text-xs font-medium text-muted-foreground",
+              statusColor[data.outdatedStatus],
+            )}
+          >
+            {data.range}
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>{tooltip}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
