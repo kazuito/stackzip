@@ -1,7 +1,12 @@
+export interface PackageLicense {
+  type?: string;
+  url?: string;
+}
+
 export interface NpmPackageLatest {
   name: string;
   description?: string;
-  license?: string;
+  license?: string | PackageLicense;
   homepage?: string;
   repository?: {
     type?: string;

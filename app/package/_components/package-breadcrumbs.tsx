@@ -15,7 +15,7 @@ export const PackageBreadcrumbs = ({
   items: PackageBreadcrumbItem[];
   onNavigate: (index: number) => void;
 }) => {
-  if (items.length === 0) return null;
+  if (items.length <= 1) return null;
 
   return (
     <nav aria-label="Breadcrumb">

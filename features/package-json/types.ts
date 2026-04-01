@@ -17,11 +17,16 @@ export interface DepEntry {
   type: DepType;
 }
 
+export interface PackageLicense {
+  type?: string;
+  url?: string;
+}
+
 export interface PackageJson {
   name?: string;
   version?: string;
   description?: string;
-  license?: string;
+  license?: string | PackageLicense;
   homepage?: string;
   repository?: string | { type?: string; url?: string };
   dependencies?: Record<string, string>;

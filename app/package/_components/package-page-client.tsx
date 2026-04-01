@@ -127,6 +127,8 @@ export const PackagePageClient = () => {
     }
   }
 
+  const hasDeps = totalDeps > 0;
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 space-y-6">
       <UrlInput defaultValue={src ?? ""} onSubmit={handleSubmit} />
@@ -159,20 +161,22 @@ export const PackagePageClient = () => {
         </div>
       )}
 
-      {!isError && pkg && totalDeps === 0 && <EmptyState />}
-
-      {!isError && pkg && totalDeps > 0 && (
+      {!isError && pkg && (
         <div className="flex gap-8">
           <div className="flex-1 min-w-0 space-y-8">
-            {DEP_TYPES.map((type) =>
-              entriesByType[type] ? (
-                <DepSection
-                  key={type}
-                  type={type}
-                  entries={entriesByType[type]}
-                  onPackageSelect={handlePackageSelect}
-                />
-              ) : null,
+            {hasDeps ? (
+              DEP_TYPES.map((type) =>
+                entriesByType[type] ? (
+                  <DepSection
+                    key={type}
+                    type={type}
+                    entries={entriesByType[type]}
+                    onPackageSelect={handlePackageSelect}
+                  />
+                ) : null,
+              )
+            ) : (
+              <EmptyState />
             )}
           </div>
           <div className="hidden lg:block w-72 shrink-0">

@@ -13,6 +13,12 @@ function repoUrl(repo: PackageJson["repository"]): string | undefined {
     .replace(/^ssh:\/\/git@/, "https://");
 }
 
+function licenseLabel(license: PackageJson["license"]): string | undefined {
+  if (!license) return undefined;
+  if (typeof license === "string") return license;
+  return license.type ?? license.url;
+}
+
 export const SourceSidebar = ({
   pkg,
   depCounts,
@@ -21,6 +27,8 @@ export const SourceSidebar = ({
   depCounts: Record<string, number>;
 }) => {
   const repo = repoUrl(pkg.repository);
+  const license = licenseLabel(pkg.license);
+  const depCountEntries = Object.entries(depCounts);
 
   return (
     <aside className="rounded-lg border bg-card p-5 space-y-4 text-sm">
@@ -37,10 +45,10 @@ export const SourceSidebar = ({
           <p>{pkg.description}</p>
         </div>
       )}
-      {pkg.license && (
+      {license && (
         <div>
           <span className="text-muted-foreground">License</span>
-          <p>{pkg.license}</p>
+          <p>{license}</p>
         </div>
       )}
 
@@ -72,12 +80,16 @@ export const SourceSidebar = ({
       <div>
         <span className="text-muted-foreground">Dependencies</span>
         <div className="mt-1 space-y-0.5">
-          {Object.entries(depCounts).map(([type, count]) => (
-            <div key={type} className="flex justify-between">
-              <span>{type}</span>
-              <span className="font-mono text-muted-foreground">{count}</span>
-            </div>
-          ))}
+          {depCountEntries.length > 0 ? (
+            depCountEntries.map(([type, count]) => (
+              <div key={type} className="flex justify-between">
+                <span>{type}</span>
+                <span className="font-mono text-muted-foreground">{count}</span>
+              </div>
+            ))
+          ) : (
+            <p className="text-muted-foreground">No dependencies</p>
+          )}
         </div>
       </div>
     </aside>

@@ -6,7 +6,7 @@ import {
   fetchNpmPackageLatest,
 } from "../lib/registry";
 import { getOutdatedStatus } from "../lib/semver";
-import type { NpmPackageData } from "../types";
+import type { NpmPackageData, PackageLicense } from "../types";
 
 function normalizeRepoUrl(repo?: {
   type?: string;
@@ -18,6 +18,14 @@ function normalizeRepoUrl(repo?: {
     .replace(/\.git$/, "")
     .replace(/^git:\/\//, "https://")
     .replace(/^ssh:\/\/git@/, "https://");
+}
+
+function normalizeLicense(
+  license?: string | PackageLicense,
+): string | undefined {
+  if (!license) return undefined;
+  if (typeof license === "string") return license;
+  return license.type ?? license.url;
 }
 
 export function useNpmPackage(name: string, range: string) {
@@ -32,7 +40,7 @@ export function useNpmPackage(name: string, range: string) {
       return {
         name: latest.name,
         description: latest.description,
-        license: latest.license,
+        license: normalizeLicense(latest.license),
         homepage: latest.homepage,
         repositoryUrl: normalizeRepoUrl(latest.repository),
         latest: abbreviated["dist-tags"].latest,
