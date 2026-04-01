@@ -1,8 +1,7 @@
 "use client";
 
 import { ExternalLink, GitBranch, Package } from "lucide-react";
-import { use } from "react";
-import { PackageCardContext } from "./package-card-context";
+import { usePackageCard } from "./package-card-context";
 
 const LinkIcon = ({
   href,
@@ -25,7 +24,7 @@ const LinkIcon = ({
 );
 
 export const PackageCardLinks = () => {
-  const data = use(PackageCardContext)!;
+  const data = usePackageCard();
   const showHomepage = data.homepage && data.homepage !== data.repositoryUrl;
 
   return (
@@ -39,7 +38,7 @@ export const PackageCardLinks = () => {
         </LinkIcon>
       )}
       {showHomepage && (
-        <LinkIcon href={data.homepage!} label="Homepage">
+        <LinkIcon href={data.homepage as string} label="Homepage">
           <ExternalLink className="size-3.5" />
         </LinkIcon>
       )}

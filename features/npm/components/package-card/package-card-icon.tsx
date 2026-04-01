@@ -1,11 +1,11 @@
 "use client";
 
 import { Package } from "lucide-react";
-import { use, useMemo, useState } from "react";
-import { PackageCardContext } from "./package-card-context";
+import { useMemo, useState } from "react";
+import { usePackageCard } from "./package-card-context";
 
 export const PackageCardIcon = () => {
-  const data = use(PackageCardContext)!;
+  const data = usePackageCard();
   const [srcIndex, setSrcIndex] = useState(0);
 
   const sources = useMemo(() => {

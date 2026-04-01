@@ -1,10 +1,9 @@
 "use client";
 
-import { use } from "react";
-import { PackageCardContext } from "./package-card-context";
+import { usePackageCard } from "./package-card-context";
 
 export const PackageCardName = () => {
-  const data = use(PackageCardContext)!;
+  const data = usePackageCard();
   return (
     <h3 className="font-semibold text-sm truncate">
       <a

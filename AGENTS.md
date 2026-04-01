@@ -35,6 +35,7 @@ After any code change, run `pnpm check` to format, lint, and typecheck in one pa
 - `ref` is a regular prop — never use `forwardRef`.
 - Compound components share state via context providers (see `PackageCard` for the pattern).
 - Leaf/presentational components accept `React.ComponentProps<"element">`, merge `className` via `cn()`, and spread remaining props.
+- Always keep `AGENTS.md` (this content) up to date as codebase evolves.
 
 ### File organization
 - Page-specific components: `app/<route>/_components/`.

@@ -67,6 +67,7 @@ export const PackagePageClient = () => {
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
+              // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list never reorders
               key={`skeleton-${i}`}
               className="rounded-lg border bg-card p-4 space-y-3 animate-pulse"
             >

@@ -1,8 +1,7 @@
 "use client";
 
-import { use } from "react";
 import { cn } from "@/lib/utils";
-import { PackageCardContext } from "./package-card-context";
+import { usePackageCard } from "./package-card-context";
 
 const statusColor = {
   current: "text-green-400",
@@ -17,7 +16,7 @@ const statusMessage = {
 } as const;
 
 export const PackageCardVersion = () => {
-  const data = use(PackageCardContext)!;
+  const data = usePackageCard();
 
   const tooltip =
     data.outdatedStatus === "current"

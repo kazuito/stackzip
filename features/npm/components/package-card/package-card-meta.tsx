@@ -1,10 +1,9 @@
 "use client";
 
-import { use } from "react";
-import { PackageCardContext } from "./package-card-context";
+import { usePackageCard } from "./package-card-context";
 
 export const PackageCardMeta = () => {
-  const data = use(PackageCardContext)!;
+  const data = usePackageCard();
   if (!data.license) return null;
   return (
     <span className="rounded bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
