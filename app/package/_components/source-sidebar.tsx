@@ -90,7 +90,18 @@ export const SourceSidebar = ({
     <aside className="min-w-0 rounded-lg border bg-card p-5 text-sm space-y-4">
       <div className="space-y-2">
         <div className="flex flex-wrap items-center gap-2">
-          <div className="font-accent text-lg">{pkg.name ?? "(Unknown)"}</div>
+          {pkg.name ? (
+            <Link
+              href={`https://npmx.dev/package/${encodeURIComponent(pkg.name)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-accent text-lg hover:underline"
+            >
+              {pkg.name}
+            </Link>
+          ) : (
+            <div className="font-accent text-lg">(Unknown)</div>
+          )}
           {pkg.private && <Badge variant="secondary">private</Badge>}
         </div>
         {pkg.description && (
