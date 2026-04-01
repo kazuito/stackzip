@@ -6,9 +6,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <div className="border-t" />
+      <hr className="border-t" />
       <FeaturesSection />
-      <div className="border-t" />
+      <hr className="border-t" />
       <FaqSection />
       <footer className="border-t py-10 text-center">
         <p className="text-xs text-muted-foreground/50">

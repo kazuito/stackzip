@@ -6,6 +6,7 @@ import {
   Search as SearchIcon,
   Zap as ZapIcon,
 } from "lucide-react";
+import { SectionHeader } from "./section-header";
 
 const FEATURES = [
   {
@@ -43,14 +44,7 @@ const FEATURES = [
 
 export const FeaturesSection = () => (
   <section className="mx-auto max-w-4xl px-4 py-24">
-    <div className="mb-12 text-center">
-      <p className="text-[11px] uppercase tracking-widest text-muted-foreground/50 mb-3">
-        what you get
-      </p>
-      <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
-        Everything at a glance
-      </h2>
-    </div>
+    <SectionHeader label="what you get" title="Everything at a glance" />
 
     <div className="grid gap-px bg-border/50 sm:grid-cols-3">
       {FEATURES.map((f) => (

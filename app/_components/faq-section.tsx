@@ -3,6 +3,7 @@
 import { Minus as MinusIcon, Plus as PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { SectionHeader } from "./section-header";
 
 const FAQS = [
   {
@@ -81,14 +82,7 @@ export const FaqSection = () => {
 
   return (
     <section className="mx-auto max-w-2xl px-4 py-24">
-      <div className="mb-12 text-center">
-        <p className="text-[11px] uppercase tracking-widest text-muted-foreground/50 mb-3">
-          questions
-        </p>
-        <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
-          Frequently asked
-        </h2>
-      </div>
+      <SectionHeader label="questions" title="Frequently asked" />
 
       <div>
         {FAQS.map((faq, i) => (
