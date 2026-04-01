@@ -20,7 +20,7 @@ export const Header = ({
       </Link>
       <nav className="ml-auto flex items-center gap-4 text-sm text-muted-foreground">
         <a
-          href="https://github.com"
+          href="https://github.com/kazuito/stackzip"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-foreground transition-colors"
