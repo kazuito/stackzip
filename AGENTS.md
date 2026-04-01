@@ -47,7 +47,8 @@ After any code change, run `pnpm check` to format, lint, and typecheck in one pa
 - The `src` query param accepts either a public `package.json` URL or an npm package spec like `react`, `react@19.2.0`, or `@babel/core@7.29.0`.
 - package.json URLs are proxied through `https://corsmirror.com/v1?url=<url>`.
 - GitHub blob URLs are auto-converted to `raw.githubusercontent.com` before fetching.
-- npm package specs are converted to `https://cdn.jsdelivr.net/npm/<package-spec>/package.json` before fetching.
+- npm package specs with explicit versions are converted to `https://unpkg.com/<package-spec>/package.json` before fetching.
+- Bare npm package names are resolved against the npm registry `latest` version first, then converted to the matching unpkg `package.json` URL.
 - npm registry (`registry.npmjs.org`) and downloads API (`api.npmjs.org`) are called directly (CORS-enabled).
 
 ### URL state

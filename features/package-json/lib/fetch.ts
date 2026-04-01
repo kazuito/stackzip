@@ -1,6 +1,7 @@
+import { fetchNpmPackageLatest } from "@/features/npm/lib/registry";
 import type { PackageJson } from "../types";
 
-const JSDELIVR_NPM_BASE = "https://cdn.jsdelivr.net/npm";
+const UNPKG_NPM_BASE = "https://unpkg.com";
 
 /**
  * Convert a GitHub blob URL to a raw.githubusercontent.com URL.
@@ -57,7 +58,7 @@ function parseNpmPackageSpec(spec: string) {
   return { name, version };
 }
 
-function resolvePackageJsonSource(input: string): string {
+async function resolvePackageJsonSource(input: string): Promise<string> {
   const normalizedInput = input.trim();
 
   if (isUrl(normalizedInput)) {
@@ -71,14 +72,14 @@ function resolvePackageJsonSource(input: string): string {
     );
   }
 
-  const versionSuffix = parsed.version
-    ? `@${encodeURIComponent(parsed.version)}`
-    : "";
-  return `${JSDELIVR_NPM_BASE}/${parsed.name}${versionSuffix}/package.json`;
+  const version =
+    parsed.version ?? (await fetchNpmPackageLatest(parsed.name)).version;
+  const versionSuffix = `@${encodeURIComponent(version)}`;
+  return `${UNPKG_NPM_BASE}/${parsed.name}${versionSuffix}/package.json`;
 }
 
 export async function fetchPackageJson(input: string): Promise<PackageJson> {
-  const rawUrl = resolvePackageJsonSource(input);
+  const rawUrl = await resolvePackageJsonSource(input);
   const res = await fetch(withCorsProxy(rawUrl));
   if (!res.ok) {
     throw new Error(
