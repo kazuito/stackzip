@@ -1,26 +1,31 @@
-import { AlertTriangle, ExternalLink, Eye, Globe } from "lucide-react";
+import {
+  AlertTriangle as AlertTriangleIcon,
+  ExternalLink as ExternalLinkIcon,
+  Eye as EyeIcon,
+  Globe as GlobeIcon,
+} from "lucide-react";
 
 const FEATURES = [
   {
-    icon: Eye,
+    icon: EyeIcon,
     title: "Instant visualization",
     description:
       "See every dependency at a glance — names, versions, descriptions, and links in a card grid.",
   },
   {
-    icon: ExternalLink,
+    icon: ExternalLinkIcon,
     title: "Direct npm links",
     description:
       "One click to npm, GitHub, or the homepage of any package. No more tab-hunting.",
   },
   {
-    icon: AlertTriangle,
+    icon: AlertTriangleIcon,
     title: "Outdated detection",
     description:
       "Color-coded version badges show which deps are current, behind, or a major version out of date.",
   },
   {
-    icon: Globe,
+    icon: GlobeIcon,
     title: "Zero server — runs in your browser",
     description:
       "All data is fetched client-side from the npm registry. Nothing is sent to our servers.",

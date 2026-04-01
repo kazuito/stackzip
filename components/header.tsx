@@ -1,4 +1,4 @@
-import { Package } from "lucide-react";
+import { Package as PackageIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +15,7 @@ export const Header = ({
   >
     <div className="mx-auto flex h-14 max-w-6xl items-center px-4">
       <Link href="/" className="flex items-center gap-2 tracking-tight">
-        <Package className="size-4" />
+        <PackageIcon className="size-4" />
         <span className="font-accent">Stackzip</span>
       </Link>
       <nav className="ml-auto flex items-center gap-4 text-sm text-muted-foreground">

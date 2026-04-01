@@ -1,6 +1,10 @@
 "use client";
 
-import { GitBranch, GlobeIcon, Package } from "lucide-react";
+import {
+  GitBranch as GitBranchIcon,
+  GlobeIcon,
+  Package as PackageIcon,
+} from "lucide-react";
 import { usePackageCard } from "./package-card-context";
 
 const LinkIcon = ({
@@ -30,11 +34,11 @@ export const PackageCardLinks = () => {
   return (
     <div className="relative z-20 flex items-center gap-2 pointer-fine:group-hover/item:opacity-100 pointer-fine:opacity-30 transition-opacity duration-200 group-hover/item:duration-0">
       <LinkIcon href={`https://npmjs.com/package/${data.name}`} label="npm">
-        <Package className="size-3.5" />
+        <PackageIcon className="size-3.5" />
       </LinkIcon>
       {data.repositoryUrl && (
         <LinkIcon href={data.repositoryUrl} label="GitHub">
-          <GitBranch className="size-3.5" />
+          <GitBranchIcon className="size-3.5" />
         </LinkIcon>
       )}
       {showHomepage && (

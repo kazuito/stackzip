@@ -1,6 +1,6 @@
 "use client";
 
-import { Package } from "lucide-react";
+import { Package as PackageIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { usePackageCard } from "./package-card-context";
 
@@ -33,7 +33,7 @@ export const PackageCardIcon = () => {
   }, [data.repositoryUrl, data.homepage]);
 
   if (srcIndex >= sources.length) {
-    return <Package className="size-6 shrink-0 text-muted-foreground" />;
+    return <PackageIcon className="size-6 shrink-0 text-muted-foreground" />;
   }
 
   return (

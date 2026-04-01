@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
+import { ExternalLink as ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import type { PackageJson } from "@/features/package-json/types";
@@ -60,7 +60,7 @@ const SidebarLink = ({ href, label }: { href: string; label: string }) => (
     rel="noopener noreferrer"
     className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
   >
-    <ExternalLink className="size-3.5" /> {label}
+    <ExternalLinkIcon className="size-3.5" /> {label}
   </a>
 );
 
@@ -165,7 +165,7 @@ export const SourceSidebar = ({
               href={`mailto:${bugsContact}`}
               className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
             >
-              <ExternalLink className="size-3.5" /> Bugs Email
+              <ExternalLinkIcon className="size-3.5" /> Bugs Email
             </a>
           )}
         </div>

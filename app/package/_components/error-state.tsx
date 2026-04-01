@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle as AlertTriangleIcon } from "lucide-react";
 
 export const ErrorState = ({
   message,
@@ -12,7 +12,7 @@ export const ErrorState = ({
   onClear: () => void;
 }) => (
   <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
-    <AlertTriangle className="size-10 text-destructive" />
+    <AlertTriangleIcon className="size-10 text-destructive" />
     <h2 className="text-lg font-medium">Failed to load package.json</h2>
     <p className="text-sm text-muted-foreground max-w-md">{message}</p>
     <div className="flex gap-2">

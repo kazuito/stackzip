@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight as ChevronRightIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface PackageBreadcrumbItem {
@@ -75,7 +75,7 @@ const PackageBreadcrumbRow = ({
     </li>
     {!isLast && (
       <li aria-hidden="true" className="[&>svg]:size-3.5">
-        <ChevronRight />
+        <ChevronRightIcon />
       </li>
     )}
   </>

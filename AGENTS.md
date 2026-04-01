@@ -57,6 +57,7 @@ After any code change, run `pnpm check` to format, lint, and typecheck in one pa
 ### Styling
 - Tailwind v4 with shadcn CSS variables (oklch color space, dark mode via `.dark` class).
 - Always use `cn("base-classes", className)` — never raw string concatenation for class merging.
+- Lucide imports should use local `*Icon` names, either by importing the `...Icon` export or aliasing bare Lucide exports to an `...Icon` suffix.
 
 ## Safety / Gotchas
 
