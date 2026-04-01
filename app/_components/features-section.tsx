@@ -11,42 +11,33 @@ const FEATURES = [
   {
     icon: EyeIcon,
     title: "Instant overview",
-    description:
-      "Every dependency rendered as a card with name, version, description, and links.",
-    span: "sm:col-span-2",
+    description: "Every dependency as a card — name, version, and links.",
   },
   {
     icon: ZapIcon,
     title: "Zero config",
-    description: "Paste and go. No setup, no login, no API key.",
-    span: "",
+    description: "Paste a package name and go. No setup or login.",
   },
   {
     icon: AlertTriangleIcon,
     title: "Version drift",
-    description:
-      "Color-coded badges flag which deps are current, behind, or a major version out.",
-    span: "",
+    description: "Color-coded badges flag outdated dependencies.",
   },
   {
     icon: ArrowUpRightIcon,
     title: "One-click links",
-    description: "Jump to npm, GitHub, or homepage for any package.",
-    span: "",
+    description: "Jump straight to npm, GitHub, or the homepage.",
   },
   {
     icon: SearchIcon,
     title: "Deep drill-down",
-    description:
-      "Click any dependency to explore its own dependency tree. Breadcrumb trail keeps you oriented.",
-    span: "",
+    description: "Click any dep to explore its own dependency tree.",
   },
   {
     icon: GlobeIcon,
     title: "Fully client-side",
     description:
-      "All data comes straight from the npm registry. Nothing hits our servers.",
-    span: "sm:col-span-2",
+      "All data fetched from npm directly. Nothing leaves your browser.",
   },
 ];
 
@@ -61,18 +52,18 @@ export const FeaturesSection = () => (
       </h2>
     </div>
 
-    <div className="grid gap-px bg-border/50 sm:grid-cols-4">
+    <div className="grid gap-px bg-border/50 sm:grid-cols-3">
       {FEATURES.map((f) => (
         <div
           key={f.title}
-          className={`group bg-background p-6 sm:p-8 transition-colors hover:bg-muted/30 ${f.span}`}
+          className="group bg-background p-6 sm:p-8 transition-colors hover:bg-muted/30"
         >
-          <div className="mb-4 flex items-center gap-3">
-            <div className="flex size-8 items-center justify-center border border-border/60 bg-muted/40 text-muted-foreground transition-colors group-hover:border-foreground/20 group-hover:text-foreground">
-              <f.icon className="size-4" />
-            </div>
-            <h3 className="font-medium tracking-tight">{f.title}</h3>
+          <div className="mb-3 flex size-8 items-center justify-center border border-border/60 bg-muted/40 text-muted-foreground transition-colors group-hover:border-foreground/20 group-hover:text-foreground">
+            <f.icon className="size-4" />
           </div>
+          <h3 className="mb-1.5 text-sm font-medium tracking-tight">
+            {f.title}
+          </h3>
           <p className="text-sm leading-relaxed text-muted-foreground">
             {f.description}
           </p>
