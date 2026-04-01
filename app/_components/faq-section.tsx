@@ -10,12 +10,28 @@ const FAQS = [
     a: 'An npm package name like "react" or "@babel/core@7.29.0", or a public package.json URL such as a GitHub Raw link.',
   },
   {
+    q: "Can I use a GitHub URL directly?",
+    a: "Yes. GitHub blob URLs are automatically converted to raw URLs before fetching. Just paste the link to any public package.json file.",
+  },
+  {
     q: "Does this work with private packages?",
     a: "Only public sources. Private repos require auth that isn't supported yet, and private npm packages won't resolve from the public registry.",
   },
   {
     q: "Is any data sent to a server?",
     a: "No. Everything runs in your browser. Registry and download data are fetched directly from the client.",
+  },
+  {
+    q: "How does version detection work?",
+    a: "Each dependency's installed version is compared against the latest on npm using semver. Badges are color-coded: green for current, yellow for minor/patch behind, red for a major version out of date.",
+  },
+  {
+    q: "Can I explore transitive dependencies?",
+    a: "Yes. Click any dependency card to drill down into its own dependency tree. A breadcrumb trail at the top lets you navigate back through the chain.",
+  },
+  {
+    q: "What npm registries are supported?",
+    a: "Currently only the public npmjs.org registry. Custom or private registries are not supported yet.",
   },
   {
     q: "Why is a package missing?",
