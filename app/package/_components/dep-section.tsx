@@ -19,7 +19,7 @@ const PackageCardItem = ({ entry }: { entry: DepEntry }) => {
   if (isLoading || !data) return <PackageCard.Skeleton />;
 
   return (
-    <PackageCard.Root data={data}>
+    <PackageCard.Root data={data} className="-m-px">
       <div className="flex items-center gap-2">
         <PackageCard.Icon />
         <PackageCard.Name />
@@ -55,7 +55,7 @@ export const DepSection = ({
           {entries.length}
         </span>
       </h2>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 m-px">
         {sorted.map((entry) => (
           <PackageCardItem key={entry.name} entry={entry} />
         ))}
