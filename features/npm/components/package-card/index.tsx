@@ -1,0 +1,34 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+import type { NpmPackageData } from "../../types";
+import { PackageCardContext } from "./package-card-context";
+import { PackageCardDescription } from "./package-card-description";
+import { PackageCardLinks } from "./package-card-links";
+import { PackageCardMeta } from "./package-card-meta";
+import { PackageCardName } from "./package-card-name";
+import { PackageCardSkeleton } from "./package-card-skeleton";
+import { PackageCardVersionRow } from "./package-card-version-row";
+
+const PackageCardRoot = ({
+  data,
+  className,
+  ...props
+}: React.ComponentProps<"div"> & { data: NpmPackageData }) => (
+  <PackageCardContext value={data}>
+    <div
+      className={cn("rounded-lg border bg-card p-4 space-y-2.5", className)}
+      {...props}
+    />
+  </PackageCardContext>
+);
+
+export const PackageCard = {
+  Root: PackageCardRoot,
+  Name: PackageCardName,
+  Description: PackageCardDescription,
+  VersionRow: PackageCardVersionRow,
+  Links: PackageCardLinks,
+  Meta: PackageCardMeta,
+  Skeleton: PackageCardSkeleton,
+};
