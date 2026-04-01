@@ -12,6 +12,7 @@ import {
   type PackageBreadcrumbItem,
   PackageBreadcrumbs,
 } from "./package-breadcrumbs";
+import { PackagePageSkeleton } from "./package-page-skeleton";
 import { SourceSidebar } from "./source-sidebar";
 
 const BREADCRUMB_ITEM_SEPARATOR = "|";
@@ -145,21 +146,7 @@ export const PackagePageClient = () => {
         />
       )}
 
-      {!isError && isLoading && (
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list never reorders
-              key={`skeleton-${i}`}
-              className="rounded-lg border bg-card p-4 space-y-3 animate-pulse"
-            >
-              <div className="h-4 w-2/3 rounded bg-muted" />
-              <div className="h-3 w-full rounded bg-muted" />
-              <div className="h-3 w-1/2 rounded bg-muted" />
-            </div>
-          ))}
-        </div>
-      )}
+      {!isError && isLoading && <PackagePageSkeleton />}
 
       {!isError && pkg && (
         <div className="flex gap-8">
