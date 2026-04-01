@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { PackageCard } from "@/features/npm/components/package-card";
 import { useNpmPackage } from "@/features/npm/hooks/use-npm-package";
 import type { DepEntry } from "@/features/package-json/types";
@@ -49,11 +50,11 @@ export const DepSection = ({
 
   return (
     <section className={cn("space-y-4", className)}>
-      <h2 className="flex items-center gap-2 text-base font-semibold">
-        {DEP_LABELS[type] ?? type}
-        <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-          {entries.length}
+      <h2 className="flex items-center gap-2 ">
+        <span className="font-accent text-base">
+          {DEP_LABELS[type] ?? type}
         </span>
+        <Badge variant="outline">{entries.length}</Badge>
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 m-px">
         {sorted.map((entry) => (
