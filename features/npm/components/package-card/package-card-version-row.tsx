@@ -1,12 +1,17 @@
 "use client";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { usePackageCard } from "./package-card-context";
 
 const statusColor = {
-  current: "text-green-400",
-  minor: "text-amber-400",
-  major: "text-red-400",
+  current: "text-muted-foreground",
+  minor: "border-b border-dashed text-yellow-400 border-yellow-400",
+  major: "border-b border-dashed text-red-400 border-red-400",
 } as const;
 
 const statusMessage = {
@@ -24,14 +29,18 @@ export const PackageCardVersion = () => {
       : `${statusMessage[data.outdatedStatus]}: ${data.latest}`;
 
   return (
-    <span
-      className={cn(
-        "ml-auto shrink-0 font-mono text-xs font-medium",
-        statusColor[data.outdatedStatus],
-      )}
-      title={tooltip}
-    >
-      {data.range}
-    </span>
+    <Tooltip>
+      <TooltipTrigger className="ml-auto shrink-0" delay={100}>
+        <span
+          className={cn(
+            "font-mono text-xs font-medium text-muted-foreground",
+            statusColor[data.outdatedStatus],
+          )}
+        >
+          {data.range}
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
+    </Tooltip>
   );
 };
