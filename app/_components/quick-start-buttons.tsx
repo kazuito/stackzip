@@ -6,26 +6,26 @@ const EXAMPLE_GROUPS = [
   {
     label: "Package",
     examples: [
-      { label: "react", value: "react" },
-      { label: "next@16.2.2", value: "next@16.2.2" },
-      { label: "@babel/core@7.29.0", value: "@babel/core@7.29.0" },
+      { label: "eslint", value: "eslint" },
+      { label: "axios", value: "axios" },
+      { label: "typescript@6.0.2", value: "typescript@6.0.2" },
     ],
   },
   {
     label: "URL",
     examples: [
       {
-        label: "Next.js repo",
+        label: "Next.js",
         value:
           "https://raw.githubusercontent.com/vercel/next.js/canary/package.json",
       },
       {
-        label: "Vite repo",
+        label: "Vite",
         value:
           "https://raw.githubusercontent.com/vitejs/vite/main/package.json",
       },
       {
-        label: "shadcn/ui repo",
+        label: "shadcn/ui",
         value:
           "https://raw.githubusercontent.com/shadcn-ui/ui/main/package.json",
       },
