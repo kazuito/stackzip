@@ -6,10 +6,15 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <div className="border-t" />
       <FeaturesSection />
+      <div className="border-t" />
       <FaqSection />
-      <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        Built with Next.js. All data fetched client-side from the npm registry.
+      <footer className="border-t py-10 text-center">
+        <p className="text-xs text-muted-foreground/50">
+          Built with Next.js. All data fetched client-side from the npm
+          registry.
+        </p>
       </footer>
     </>
   );

@@ -1,48 +1,79 @@
 import {
   AlertTriangle as AlertTriangleIcon,
-  ExternalLink as ExternalLinkIcon,
+  ArrowUpRight as ArrowUpRightIcon,
   Eye as EyeIcon,
   Globe as GlobeIcon,
+  Search as SearchIcon,
+  Zap as ZapIcon,
 } from "lucide-react";
 
 const FEATURES = [
   {
     icon: EyeIcon,
-    title: "Instant visualization",
+    title: "Instant overview",
     description:
-      "See every dependency at a glance — names, versions, descriptions, and links in a card grid.",
+      "Every dependency rendered as a card with name, version, description, and links.",
+    span: "sm:col-span-2",
   },
   {
-    icon: ExternalLinkIcon,
-    title: "Direct npm links",
-    description:
-      "One click to npm, GitHub, or the homepage of any package. No more tab-hunting.",
+    icon: ZapIcon,
+    title: "Zero config",
+    description: "Paste and go. No setup, no login, no API key.",
+    span: "",
   },
   {
     icon: AlertTriangleIcon,
-    title: "Outdated detection",
+    title: "Version drift",
     description:
-      "Color-coded version badges show which deps are current, behind, or a major version out of date.",
+      "Color-coded badges flag which deps are current, behind, or a major version out.",
+    span: "",
+  },
+  {
+    icon: ArrowUpRightIcon,
+    title: "One-click links",
+    description: "Jump to npm, GitHub, or homepage for any package.",
+    span: "",
+  },
+  {
+    icon: SearchIcon,
+    title: "Deep drill-down",
+    description:
+      "Click any dependency to explore its own dependency tree. Breadcrumb trail keeps you oriented.",
+    span: "",
   },
   {
     icon: GlobeIcon,
-    title: "Zero server — runs in your browser",
+    title: "Fully client-side",
     description:
-      "All data is fetched client-side from the npm registry. Nothing is sent to our servers.",
+      "All data comes straight from the npm registry. Nothing hits our servers.",
+    span: "sm:col-span-2",
   },
 ];
 
 export const FeaturesSection = () => (
-  <section className="mx-auto max-w-4xl px-4 py-16">
-    <h2 className="text-center text-2xl tracking-tight mb-10 font-accent">
-      Features
-    </h2>
-    <div className="grid gap-6 sm:grid-cols-2">
+  <section className="mx-auto max-w-4xl px-4 py-24">
+    <div className="mb-12 text-center">
+      <p className="text-[11px] uppercase tracking-widest text-muted-foreground/50 mb-3">
+        what you get
+      </p>
+      <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
+        Everything at a glance
+      </h2>
+    </div>
+
+    <div className="grid gap-px bg-border/50 sm:grid-cols-4">
       {FEATURES.map((f) => (
-        <div key={f.title} className="rounded-lg border bg-card p-6 space-y-2">
-          <f.icon className="size-5 text-muted-foreground" />
-          <h3 className="font-semibold">{f.title}</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+        <div
+          key={f.title}
+          className={`group bg-background p-6 sm:p-8 transition-colors hover:bg-muted/30 ${f.span}`}
+        >
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex size-8 items-center justify-center border border-border/60 bg-muted/40 text-muted-foreground transition-colors group-hover:border-foreground/20 group-hover:text-foreground">
+              <f.icon className="size-4" />
+            </div>
+            <h3 className="font-medium tracking-tight">{f.title}</h3>
+          </div>
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {f.description}
           </p>
         </div>
