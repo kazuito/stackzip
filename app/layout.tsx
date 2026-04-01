@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistPixelSquare.variable} ${GeistMono.variable} h-full antialiased dark`}
+      className={`${GeistPixelSquare.variable} ${GeistMono.variable} h-full antialiased dark font-mono`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>
