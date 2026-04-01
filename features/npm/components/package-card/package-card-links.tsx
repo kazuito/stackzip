@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, GitBranch, Package } from "lucide-react";
+import { ExternalLink, GitBranch, GlobeIcon, Package } from "lucide-react";
 import { usePackageCard } from "./package-card-context";
 
 const LinkIcon = ({
@@ -39,7 +39,7 @@ export const PackageCardLinks = () => {
       )}
       {showHomepage && (
         <LinkIcon href={data.homepage as string} label="Homepage">
-          <ExternalLink className="size-3.5" />
+          <GlobeIcon className="size-3.5" />
         </LinkIcon>
       )}
     </div>
