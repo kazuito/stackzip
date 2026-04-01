@@ -29,7 +29,7 @@ const FEATURES = [
 
 export const FeaturesSection = () => (
   <section className="mx-auto max-w-4xl px-4 py-16">
-    <h2 className="text-center text-2xl font-bold tracking-tight mb-10">
+    <h2 className="text-center text-2xl tracking-tight mb-10 font-accent">
       Features
     </h2>
     <div className="grid gap-6 sm:grid-cols-2">

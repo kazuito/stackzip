@@ -1,15 +1,15 @@
 const FAQS = [
   {
     q: "What is Stackzip?",
-    a: "Stackzip is a free tool that visualizes the npm dependencies of any package.json file. Just paste a URL and explore.",
+    a: "Stackzip is a free tool that visualizes the npm dependencies of any package.json file. Paste a package name or a public package.json URL and explore.",
   },
   {
-    q: "How do I get my package.json URL?",
-    a: 'Navigate to your package.json on GitHub and click the "Raw" button. Copy that URL and paste it here.',
+    q: "What can I paste into the input?",
+    a: 'You can paste an npm package name like "react" or "@babel/core@7.29.0", or a public package.json URL such as a GitHub Raw link.',
   },
   {
     q: "Does this work with private packages?",
-    a: "The package.json URL must be publicly accessible. Private GitHub repos require authentication which isn't supported yet.",
+    a: "Only public sources work. Private GitHub repos require authentication which isn't supported yet, and private npm packages won't resolve from the public registry/CDN.",
   },
   {
     q: "Is my data sent to a server?",
@@ -27,7 +27,9 @@ const FAQS = [
 
 export const FaqSection = () => (
   <section className="mx-auto max-w-2xl px-4 py-16">
-    <h2 className="text-center text-2xl font-bold tracking-tight mb-10">FAQ</h2>
+    <h2 className="text-center text-2xl font-accent tracking-tight mb-10">
+      FAQ
+    </h2>
     <div className="space-y-6">
       {FAQS.map((faq) => (
         <div key={faq.q} className="space-y-1">

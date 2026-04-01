@@ -8,7 +8,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Stackzip — Visualize npm dependencies",
   description:
-    "Paste a package.json URL and instantly visualize every dependency with metadata from the npm registry.",
+    "Paste an npm package name or package.json URL and instantly visualize every dependency with metadata from the npm registry.",
 };
 
 export default function RootLayout({

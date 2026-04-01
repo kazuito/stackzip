@@ -29,10 +29,10 @@ export const UrlInput = ({
     >
       <div className="relative flex-1">
         <input
-          type="url"
+          type="text"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Paste a package.json URL..."
+          placeholder="Paste a package.json URL or npm package..."
           className="h-10 w-full rounded-lg border bg-background px-3 text-sm outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring/50"
         />
       </div>

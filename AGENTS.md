@@ -1,6 +1,6 @@
 # Stackzip
 
-- Visualizes npm dependencies from any `package.json` URL as a card grid with metadata.
+- Visualizes npm dependencies from any npm package name or `package.json` URL as a card grid with metadata.
 - Next.js 16 App Router, React 19, Tailwind v4, shadcn/ui (base-nova style), Biome, TypeScript strict.
 - All data fetching is client-side — no API routes or server proxy (CORS proxy via corsmirror.com).
 
@@ -44,12 +44,14 @@ After any code change, run `pnpm check` to format, lint, and typecheck in one pa
 
 ### Data fetching
 - All fetching happens client-side via `@tanstack/react-query`.
+- The `src` query param accepts either a public `package.json` URL or an npm package spec like `react`, `react@19.2.0`, or `@babel/core@7.29.0`.
 - package.json URLs are proxied through `https://corsmirror.com/v1?url=<url>`.
 - GitHub blob URLs are auto-converted to `raw.githubusercontent.com` before fetching.
+- npm package specs are converted to `https://cdn.jsdelivr.net/npm/<package-spec>/package.json` before fetching.
 - npm registry (`registry.npmjs.org`) and downloads API (`api.npmjs.org`) are called directly (CORS-enabled).
 
 ### URL state
-- Managed via `nuqs`. Query params: `src` (package.json URL).
+- Managed via `nuqs`. Query params: `src` (package.json URL or npm package spec).
 
 ### Styling
 - Tailwind v4 with shadcn CSS variables (oklch color space, dark mode via `.dark` class).

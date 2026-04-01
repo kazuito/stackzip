@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, GitBranch, GlobeIcon, Package } from "lucide-react";
+import { GitBranch, GlobeIcon, Package } from "lucide-react";
 import { usePackageCard } from "./package-card-context";
 
 const LinkIcon = ({
