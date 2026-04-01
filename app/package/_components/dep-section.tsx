@@ -26,7 +26,7 @@ const PackageCardItem = ({ entry }: { entry: DepEntry }) => {
         <PackageCard.Version />
       </div>
       <PackageCard.Description />
-      <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between gap-3 mt-auto">
         <PackageCard.Meta />
         <PackageCard.Links />
       </div>

@@ -18,7 +18,10 @@ const PackageCardRoot = ({
 }: React.ComponentProps<"div"> & { data: NpmPackageData }) => (
   <PackageCardContext value={data}>
     <div
-      className={cn("rounded-lg border bg-card p-4 space-y-2.5", className)}
+      className={cn(
+        "border rounded-lg bg-card p-4 space-y-2.5 flex flex-col",
+        className,
+      )}
       {...props}
     />
   </PackageCardContext>

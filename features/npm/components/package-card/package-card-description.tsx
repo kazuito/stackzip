@@ -7,7 +7,7 @@ export const PackageCardDescription = () => {
   const data = use(PackageCardContext)!;
   if (!data.description) return null;
   return (
-    <p className="text-xs text-muted-foreground line-clamp-4 leading-relaxed">
+    <p className="text-xs text-muted-foreground line-clamp-3 leading-relaxed">
       {data.description}
     </p>
   );
