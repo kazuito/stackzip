@@ -25,6 +25,7 @@ export const PackageBreadcrumbs = ({
 
           return (
             <PackageBreadcrumbRow
+              // biome-ignore lint/suspicious/noArrayIndexKey: breadcrumbs are a positional history stack; index is part of the identity
               key={`${item.src}-${index}`}
               index={index}
               isLast={isLast}
