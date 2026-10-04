@@ -11,8 +11,8 @@ const SectionSkeleton = ({
 }) => (
   <section className="space-y-4">
     <div className="flex animate-pulse items-center gap-2">
-      <div className={`h-5 rounded bg-muted ${titleWidthClassName}`} />
-      <div className="h-5 w-10 rounded-md border border-border bg-muted/60" />
+      <div className={`h-5 rounded bg-muted/50 ${titleWidthClassName}`} />
+      <div className="h-5 w-10 rounded-md border border-border bg-muted/30" />
     </div>
     <div className="m-px grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: cardCount }).map((_, index) => (
@@ -29,39 +29,39 @@ const SectionSkeleton = ({
 const SourceSidebarSkeleton = () => (
   <aside className="rounded-lg border bg-card p-5 text-sm">
     <div className="animate-pulse space-y-4">
-      <div className="h-7 w-2/3 rounded bg-muted" />
+      <div className="h-7 w-2/3 rounded bg-muted/50" />
 
       <div className="space-y-1.5">
-        <div className="h-3 w-16 rounded bg-muted" />
-        <div className="h-4 w-20 rounded bg-muted" />
+        <div className="h-3 w-16 rounded bg-muted/50" />
+        <div className="h-4 w-20 rounded bg-muted/50" />
       </div>
 
       <div className="space-y-1.5">
-        <div className="h-3 w-20 rounded bg-muted" />
-        <div className="h-3 w-full rounded bg-muted" />
-        <div className="h-3 w-5/6 rounded bg-muted" />
+        <div className="h-3 w-20 rounded bg-muted/50" />
+        <div className="h-3 w-full rounded bg-muted/50" />
+        <div className="h-3 w-5/6 rounded bg-muted/50" />
       </div>
 
       <div className="space-y-1.5">
-        <div className="h-3 w-14 rounded bg-muted" />
-        <div className="h-4 w-12 rounded bg-muted" />
+        <div className="h-3 w-14 rounded bg-muted/50" />
+        <div className="h-4 w-12 rounded bg-muted/50" />
       </div>
 
       <div className="space-y-2">
-        <div className="h-4 w-24 rounded bg-muted" />
-        <div className="h-4 w-28 rounded bg-muted" />
+        <div className="h-4 w-24 rounded bg-muted/50" />
+        <div className="h-4 w-28 rounded bg-muted/50" />
       </div>
 
       <div className="space-y-2">
-        <div className="h-3 w-20 rounded bg-muted" />
+        <div className="h-3 w-20 rounded bg-muted/50" />
         {Array.from({ length: 3 }).map((_, index) => (
           <div
             // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton list never reorders
             key={index}
             className="flex items-center justify-between"
           >
-            <div className="h-3 w-28 rounded bg-muted" />
-            <div className="h-3 w-6 rounded bg-muted" />
+            <div className="h-3 w-28 rounded bg-muted/50" />
+            <div className="h-3 w-6 rounded bg-muted/50" />
           </div>
         ))}
       </div>
