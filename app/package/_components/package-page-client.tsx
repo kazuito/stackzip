@@ -13,7 +13,7 @@ import {
   PackageBreadcrumbs,
 } from "./package-breadcrumbs";
 import { PackagePageSkeleton } from "./package-page-skeleton";
-import { SourceSidebar } from "./source-sidebar";
+import { SourceSidebar, SourceSidebarDrawer } from "./source-sidebar";
 
 const BREADCRUMB_ITEM_SEPARATOR = "|";
 const BREADCRUMB_VALUE_SEPARATOR = ">";
@@ -151,6 +151,9 @@ export const PackagePageClient = () => {
       {!isError && pkg && (
         <div className="flex gap-8">
           <div className="flex-1 min-w-0 space-y-8">
+            <div className="lg:hidden">
+              <SourceSidebarDrawer pkg={pkg} depCounts={depCounts} />
+            </div>
             {hasDeps ? (
               DEP_TYPES.map((type) =>
                 entriesByType[type] ? (

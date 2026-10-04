@@ -1,8 +1,18 @@
 "use client";
 
-import { ExternalLink as ExternalLinkIcon } from "lucide-react";
+import {
+  ChevronUp as ChevronUpIcon,
+  ExternalLink as ExternalLinkIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { PackageLogo } from "@/features/npm/components/package-logo";
 import type { PackageJson } from "@/features/package-json/types";
 import { npmxKeywordSearchUrl, npmxPackageUrl } from "@/lib/npmx";
@@ -67,13 +77,16 @@ const SidebarLink = ({ href, label }: { href: string; label: string }) => (
   </a>
 );
 
+type SourceSidebarProps = {
+  pkg: PackageJson;
+  depCounts: Record<string, number>;
+};
+
 export const SourceSidebar = ({
   pkg,
   depCounts,
-}: {
-  pkg: PackageJson;
-  depCounts: Record<string, number>;
-}) => {
+  className,
+}: SourceSidebarProps & { className?: string }) => {
   const repo = repoUrl(pkg.repository);
   const license = licenseLabel(pkg.license);
   const author = authorLabel(pkg.author);
@@ -89,7 +102,12 @@ export const SourceSidebar = ({
   const depCountEntries = Object.entries(depCounts);
 
   return (
-    <aside className="min-w-0 rounded-lg border bg-card p-5 text-sm space-y-4">
+    <aside
+      className={cn(
+        "min-w-0 rounded-lg border bg-card p-5 text-sm space-y-4",
+        className,
+      )}
+    >
       <div className="space-y-2">
         <div className="flex flex-wrap items-center gap-2">
           <PackageLogo
@@ -211,3 +229,39 @@ export const SourceSidebar = ({
     </aside>
   );
 };
+
+export const SourceSidebarDrawer = ({ pkg, depCounts }: SourceSidebarProps) => (
+  <Drawer showSwipeHandle>
+    <DrawerTrigger
+      render={
+        <Button
+          variant="outline"
+          size="lg"
+          className="w-full justify-start gap-2 bg-card"
+        />
+      }
+    >
+      <PackageLogo
+        key={pkg.name}
+        repositoryUrl={repoUrl(pkg.repository)}
+        homepage={pkg.homepage}
+        className="size-5"
+      />
+      <span className="truncate font-accent">{pkg.name ?? "(Unknown)"}</span>
+      {pkg.version && (
+        <span className="font-mono text-muted-foreground">{pkg.version}</span>
+      )}
+      <ChevronUpIcon className="ml-auto text-muted-foreground" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerTitle className="sr-only">Package details</DrawerTitle>
+      <div className="overflow-y-auto">
+        <SourceSidebar
+          pkg={pkg}
+          depCounts={depCounts}
+          className="rounded-none border-0 bg-transparent"
+        />
+      </div>
+    </DrawerContent>
+  </Drawer>
+);
