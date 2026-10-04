@@ -51,6 +51,8 @@
   --animate-shimmer: shimmer 2.5s linear infinite;
   --animate-pulse-subtle: pulse-subtle 3s ease-in-out infinite;
   --animate-glow: glow 3s ease-in-out infinite alternate;
+
+  --header-h: --spacing(14);
 }
 
 :root {

@@ -8,12 +8,12 @@ export const Header = ({
 }: React.ComponentProps<"header">) => (
   <header
     className={cn(
-      "border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50",
+      "bg-linear-to-b from-background/80 fixed inset-x-0 top-0 z-50",
       className,
     )}
     {...props}
   >
-    <div className="mx-auto flex h-14 max-w-6xl items-center px-4">
+    <div className="mx-auto flex h-(--header-h) max-w-6xl items-center px-4">
       <Link href="/" className="flex items-center gap-2 tracking-tight">
         <PackageIcon className="size-4" />
         <span className="font-accent">Stackzip</span>

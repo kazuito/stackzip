@@ -131,7 +131,7 @@ export const PackagePageClient = () => {
   const hasDeps = totalDeps > 0;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 space-y-6">
+    <div className="mx-auto max-w-6xl px-4 pb-6 space-y-6 pt-(--header-h)">
       <UrlInput defaultValue={src ?? ""} onSubmit={handleSubmit} />
       <PackageBreadcrumbs
         items={breadcrumbItems}
@@ -167,7 +167,7 @@ export const PackagePageClient = () => {
             )}
           </div>
           <div className="hidden lg:block w-72 shrink-0">
-            <div className="sticky top-20">
+            <div className="sticky top-(--header-h) space-y-6">
               <SourceSidebar pkg={pkg} depCounts={depCounts} />
             </div>
           </div>
