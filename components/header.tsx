@@ -1,5 +1,6 @@
 import { Package as PackageIcon } from "lucide-react";
 import Link from "next/link";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { cn } from "@/lib/utils";
 
 export const Header = ({
@@ -13,7 +14,8 @@ export const Header = ({
     )}
     {...props}
   >
-    <div className="mx-auto flex h-(--header-h) max-w-6xl items-center px-4">
+    <ProgressiveBlur strength={12} layers={10} />
+    <div className="relative mx-auto flex h-(--header-h) max-w-6xl items-center px-4">
       <Link href="/" className="flex items-center gap-2 tracking-tight">
         <PackageIcon className="size-4" />
         <span className="font-accent">Stackzip</span>

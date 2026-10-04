@@ -12,7 +12,7 @@
 - `features/npm/` — npm domain: types, registry/downloads fetch helpers, semver logic, `useNpmPackage` hook, `PackageCard` compound component, `PackageLogo` (GitHub avatar / favicon fallback chain, shared with the source sidebar).
 - `features/package-json/` — package.json domain: types, fetch helper (with GitHub URL conversion + CORS proxy), `usePackageJson` hook.
 - `components/` — Shared across routes: header, URL input, providers (QueryClient + nuqs).
-- `components/ui/` — shadcn/ui primitives (Base UI backed).
+- `components/ui/` — shadcn/ui primitives (Base UI backed), plus `ProgressiveBlur` (layered backdrop blur, configurable `side`/`strength`/`layers`).
 - `lib/utils.ts` — `cn()` helper (clsx + tailwind-merge).
 
 ## Commands
