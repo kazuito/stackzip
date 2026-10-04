@@ -3,11 +3,11 @@
 import { useRouter } from "next/navigation";
 
 const EXAMPLES = [
-  { label: "react", value: "react" },
+  { label: "astro", value: "astro" },
   { label: "next", value: "next" },
   { label: "eslint", value: "eslint" },
   { label: "vite", value: "vite" },
-  { label: "axios", value: "axios" },
+  { label: "vitest", value: "vitest" },
   { label: "express", value: "express" },
 ];
 
