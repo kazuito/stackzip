@@ -3,6 +3,7 @@
 import { ExternalLink as ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { PackageLogo } from "@/features/npm/components/package-logo";
 import type { PackageJson } from "@/features/package-json/types";
 import { npmxKeywordSearchUrl, npmxPackageUrl } from "@/lib/npmx";
 import { cn } from "@/lib/utils";
@@ -91,6 +92,11 @@ export const SourceSidebar = ({
     <aside className="min-w-0 rounded-lg border bg-card p-5 text-sm space-y-4">
       <div className="space-y-2">
         <div className="flex flex-wrap items-center gap-2">
+          <PackageLogo
+            key={pkg.name}
+            repositoryUrl={repo}
+            homepage={pkg.homepage}
+          />
           {pkg.name ? (
             <Link
               href={npmxPackageUrl(pkg.name)}

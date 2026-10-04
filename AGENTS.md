@@ -9,7 +9,7 @@
 - `app/` — Next.js routes. Page-specific components go in `_components/` within each route folder.
 - `app/_components/` — Landing page components (hero, features, FAQ).
 - `app/package/_components/` — `/package` page components (dep grid, sidebar, error/empty states).
-- `features/npm/` — npm domain: types, registry/downloads fetch helpers, semver logic, `useNpmPackage` hook, `PackageCard` compound component.
+- `features/npm/` — npm domain: types, registry/downloads fetch helpers, semver logic, `useNpmPackage` hook, `PackageCard` compound component, `PackageLogo` (GitHub avatar / favicon fallback chain, shared with the source sidebar).
 - `features/package-json/` — package.json domain: types, fetch helper (with GitHub URL conversion + CORS proxy), `usePackageJson` hook.
 - `components/` — Shared across routes: header, URL input, providers (QueryClient + nuqs).
 - `components/ui/` — shadcn/ui primitives (Base UI backed).
