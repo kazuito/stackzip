@@ -18,15 +18,15 @@
 ## Commands
 
 ```bash
-pnpm install              # install deps
-pnpm dev                  # dev server
-pnpm typecheck            # tsc --noEmit
-pnpm lint                 # biome lint
-pnpm check                # biome check --write --unsafe + typecheck
-pnpm build                # production build
+bun install              # install deps
+bun run dev              # dev server
+bun run typecheck        # tsc --noEmit
+bun run lint             # biome lint
+bun run check            # biome check --write --unsafe + typecheck
+bun run build            # production build
 ```
 
-After any code change, run `pnpm check` to format, lint, and typecheck in one pass.
+After any code change, run `bun run check` to format, lint, and typecheck in one pass.
 
 ## Codebase Rules
 

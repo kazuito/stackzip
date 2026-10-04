@@ -20,8 +20,8 @@ The app resolves the source client-side, fetches package metadata, and renders d
 ## Getting Started
 
 ```bash
-pnpm install
-pnpm dev
+bun install
+bun run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
@@ -29,12 +29,12 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Scripts
 
 ```bash
-pnpm dev        # start the dev server
-pnpm build      # build for production
-pnpm start      # start the production server
-pnpm lint       # run Biome lint
-pnpm typecheck  # run TypeScript checks
-pnpm check      # format, lint, and typecheck
+bun run dev        # start the dev server
+bun run build      # build for production
+bun run start      # start the production server
+bun run lint       # run Biome lint
+bun run typecheck  # run TypeScript checks
+bun run check      # format, lint, and typecheck
 ```
 
 ## How It Works
