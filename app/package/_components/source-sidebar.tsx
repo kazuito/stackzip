@@ -14,19 +14,10 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { PackageLogo } from "@/features/npm/components/package-logo";
+import { normalizeRepoUrl } from "@/features/npm/lib/repository";
 import type { PackageJson } from "@/features/package-json/types";
 import { npmxKeywordSearchUrl, npmxPackageUrl } from "@/lib/npmx";
 import { cn } from "@/lib/utils";
-
-function repoUrl(repo: PackageJson["repository"]): string | undefined {
-  if (!repo) return undefined;
-  if (typeof repo === "string") return repo;
-  return repo.url
-    ?.replace(/^git\+/, "")
-    .replace(/\.git$/, "")
-    .replace(/^git:\/\//, "https://")
-    .replace(/^ssh:\/\/git@/, "https://");
-}
 
 function licenseLabel(license: PackageJson["license"]): string | undefined {
   if (!license) return undefined;
@@ -93,7 +84,7 @@ export const SourceSidebar = ({
   depCounts,
   className,
 }: SourceSidebarProps & { className?: string }) => {
-  const repo = repoUrl(pkg.repository);
+  const repo = normalizeRepoUrl(pkg.repository);
   const license = licenseLabel(pkg.license);
   const author = authorLabel(pkg.author);
   const bugs = bugsUrl(pkg.bugs);
@@ -250,7 +241,7 @@ export const SourceSidebarDrawer = ({ pkg, depCounts }: SourceSidebarProps) => (
     >
       <PackageLogo
         key={pkg.name}
-        repositoryUrl={repoUrl(pkg.repository)}
+        repositoryUrl={normalizeRepoUrl(pkg.repository)}
         homepage={pkg.homepage}
         className="size-5"
       />

@@ -5,20 +5,9 @@ import {
   fetchNpmPackageAbbreviated,
   fetchNpmPackageLatest,
 } from "../lib/registry";
+import { normalizeRepoUrl } from "../lib/repository";
 import { getOutdatedStatus } from "../lib/semver";
 import type { NpmPackageData, PackageLicense } from "../types";
-
-function normalizeRepoUrl(repo?: {
-  type?: string;
-  url?: string;
-}): string | undefined {
-  if (!repo?.url) return undefined;
-  return repo.url
-    .replace(/^git\+/, "")
-    .replace(/\.git$/, "")
-    .replace(/^git:\/\//, "https://")
-    .replace(/^ssh:\/\/git@/, "https://");
-}
 
 function normalizeLicense(
   license?: string | PackageLicense,
