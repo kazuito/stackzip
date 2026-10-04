@@ -42,7 +42,7 @@ export interface PackageJson {
   license?: string | PackageLicense;
   homepage?: string;
   author?: string | PackagePerson;
-  keywords?: string[];
+  keywords?: string | string[];
   packageManager?: string;
   main?: string;
   module?: string;

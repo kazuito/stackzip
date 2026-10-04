@@ -46,6 +46,12 @@ function bugsUrl(bugs: PackageJson["bugs"]): string | undefined {
   return bugs.url;
 }
 
+function keywordList(keywords: PackageJson["keywords"]): string[] {
+  if (!keywords) return [];
+  const list = typeof keywords === "string" ? keywords.split(",") : keywords;
+  return [...new Set(list.map((keyword) => keyword.trim()).filter(Boolean))];
+}
+
 function bugsEmail(bugs: PackageJson["bugs"]): string | undefined {
   if (!bugs || typeof bugs === "string") return undefined;
   return bugs.email;
@@ -92,6 +98,7 @@ export const SourceSidebar = ({
   const author = authorLabel(pkg.author);
   const bugs = bugsUrl(pkg.bugs);
   const bugsContact = bugsEmail(pkg.bugs);
+  const keywords = keywordList(pkg.keywords);
   const entryPoints = [
     { label: "main", value: pkg.main },
     { label: "module", value: pkg.module },
@@ -172,11 +179,11 @@ export const SourceSidebar = ({
         </div>
       )}
 
-      {pkg.keywords && pkg.keywords.length > 0 && (
+      {keywords.length > 0 && (
         <div className="space-y-2">
           <div className="text-muted-foreground">Keywords</div>
           <div className="flex flex-wrap gap-1.5">
-            {[...new Set(pkg.keywords)].map((keyword) => (
+            {keywords.map((keyword) => (
               <Badge
                 render={
                   <Link
